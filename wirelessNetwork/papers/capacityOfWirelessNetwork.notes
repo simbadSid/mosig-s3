@@ -1,0 +1,12 @@
+
+
+	- Definitions
+		* Bit-distance product:		?
+		* Range of transmission		? Is it the distance between nodes, or the distance at which nodes may communicate
+		* Capacity:			~ througput (in this context)
+		* Power:			Energy per second
+
+
+	- Transmission success (over 1 hop): function of the distance sender/receiver, the distance between other transmissions nodes on the same chanel
+	
+	- Protocol model: Transmission success only depends on the distance between the sender and all the other senders
