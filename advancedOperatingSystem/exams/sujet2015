@@ -1,0 +1,81 @@
+= What I remember from the OS subject =
+
+== Olivier's part ==
+
+1) Describe the memory layout for a Type I hypervisor to host a guest OS
+    - Describe it in terms of regions, pages, page access rights
+    - What are the limitations, if any ?
+
+2) Why does the DMA use physical addresses and not virtual addresses ?
+    - Remark we do not consider IOMMU, just regular MMU and DMA
+
+3) Assume the following mapping :
+    * MMU
+        - 2000 -> void
+        - 2100 -> void
+    * shadow page table (virtual to real)
+        - 2000 -> 1500
+        - 2100 -> void
+    * real to physical  : 1500 -> void
+    * Questions
+        - Describe what happens when the process reads the page 2000
+            - Describe it in regards to the hardware, the type I hypervisor
+              and the guest OS
+        - Same for page 2100
+
+4) Let's assume the system does not have a page table, only a TLB
+    - Design a way to exploit the TLB for a Type-I hypervisor
+    - Evaluate the performance of your design
+
+5) Evaluate the overhead when we use an external pager for a microkernel.
+   We suppose the microkernel has blocking IPC. Evaluate it in terms of :
+    - latency
+    - System calls
+    - Code path
+    - Locality in i-cache and d-cache
+    - interrupts
+
+6) Design a file server for a microkernel with non-blocking IPC. We suppose
+  standard libC function calls.
+
+7) If you have a Type-I hypervisor with different ISAs, how useful are hardware
+  extensions ? You will base your argumentation on a hypervisor running on bare
+  metal, emulating a x86 ISA from an ARM processor.
+
+== Renault's part =======================================================================================
+
+8) Don't take this one for granted. The questions might change. I believe
+  Renault change his questions a lot more often than Olivier, but this might
+  just be speculation ;)
+
+  I remembered a lot less questions about this part. They were about specific
+  aspect of the course. Before the exam, write on your sheet all the names you
+  can find. Or you might find yourself in frustration, not knowing what is the
+  exam talking about.
+
+9) Question about the SR-IOV
+    - What device is this ?
+        - No further explanation is given in the question. You'd better remember
+          what actually is an SR-IOV. Just print out all the acronyms in the
+          course, just to be sure.
+    - How useful is it when coupled with an IOMMU ?
+
+10) Cite an advantage and a disadvantage of a modular type-I hypervisor (can't
+  remember the example) compared to a monolithic type-I hypervisor (like Linux
+  KVM).
+
+11) A friend of yours claim "With the new x86 hardware support for virtualization,
+  we don't need para-virtualization anymore !"
+    - Do you agree with him ? If so, explain why.
+    - If you disagree, explain why with at least 1 counter-example
+
+12) Compare the security between :
+    - A Linux process running in Dune mode (no hypervisor)
+    - A process running within a Type-II Virtual Machine, with an "OS-library"
+      linked to the application
+    - *note*: I believe this question was referring to two of the presentations
+      we had to do. In doubt, just take notes of the presentations so that you
+      actually _remember_ what it was about in the exam.
+
+== That's all folks ==
+* Good luck with your OS exam ! May Olivier be with you. Just avoid cookies.

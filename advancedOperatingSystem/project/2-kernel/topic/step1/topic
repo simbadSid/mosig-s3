@@ -1,0 +1,65 @@
+
+
+
+It is the absolute minimum boot code for an ARM platform.
+
+The project is an Eclipse project, it uses a standard makefile.
+
+It has been tested on Linux/Ubuntu 14.04.
+
+It compiles and runs on top of Qemu, but you need to setup
+
+a view path in the makefile to match your configuration.
+
+
+The goal is to help get started off the ground with the minimal
+
+setting for bare-metal software on an ARM platform.
+
+
+You are asked to do the following before the next lecture:
+
+
+     - Start by looking at the README.
+
+
+     - Understanding the makefile and how the code is compile and linked 
+into an ELF (test.elf).
+
+       You must also understand the use of objcopy and the generation of 
+a binary (test.bin)
+
+       You must understand in particular the linker script (ldscript).
+
+
+     - Look at the code and understand it.
+
+       In particular, understand the polling nature of the code and how 
+the UART is manipulated.
+
+       Understand the hardware registers, you are given the PL011 manual 
+(attached).
+
+
+     - Compile and single-step through the code, using gdb (command line)
+
+       Understand how this is done, until you can actually start Qemu 
+and gdb manually,
+
+       on your own...
+
+
+     - Test using Qemu via a serial line above a telnet, as it is shown 
+in the Makefile.
+
+
+You have a first set of documents to help you.
+
+     - A tutorial on GDB
+
+     - A README on Qemu and GDB.
+
+     - The PL011 specification document.
+
+
+Have fun.

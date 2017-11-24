@@ -1,0 +1,19 @@
+
+
+
+
+	- Simulation test bed (simulate the cube re-mapper pattern with simplified functions):
+		* Private repo	: https://github.com/simbadSid/asynchronousIoHpc_benchmark
+		* JSC repo	: https://trac.version.fz-juelich.de/scalasca_soft/browser/CubeMiscellaneous/AIO-Benchmarks
+		* JSC svn link	: https://svn.version.fz-juelich.de/scalasca_soft/CubeMiscellaneous/AIO-Benchmarks
+
+	- Cube remapper: custom asynchronous implementation:
+		* JSC repo	: https://trac.version.fz-juelich.de/scalasca_soft/browser/Cube2.0/CubeLib/branches/DEV-SL-AIO
+		* JSC svn link	: https://svn.version.fz-juelich.de/scalasca_soft/Cube2.0/CubeLib/branches/DEV-SL-AIO
+
+	- Cube remapper: pre-existing (synchronous) implementation:
+		* JSC repo	: https://trac.version.fz-juelich.de/scalasca_soft/browser/Cube2.0/CubeLib/trunk
+		* JSC svn link	: https://svn.version.fz-juelich.de/scalasca_soft/Cube2.0/CubeLib/trunk
+
+	- Custom code for evaluating the cube-remapper (Custom asynchronous VS. pre-existing synchronous)
+		* Private repo	: https://github.com/simbadSid/cubeRemapper_perfBenchmark/tree/master

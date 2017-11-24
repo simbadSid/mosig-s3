@@ -1,0 +1,1630 @@
+%!PS-Adobe-1.0
+%%Title: final.mss
+%%DocumentFonts: (atend)
+%%Creator: Daniel Julin and Scribe 6(1600)
+%%CreationDate: 30 June 1989 22:59
+%%Pages: (atend)
+%%EndComments
+% PostScript Prelude for Scribe.
+/BS {/SV save def 0.0 792.0 translate .01 -.01 scale} bind def
+/ES {showpage SV restore} bind def
+/SC {setrgbcolor} bind def
+/FMTX matrix def
+/RDF {WFT SLT 0.0 eq 
+  {SSZ 0.0 0.0 SSZ neg 0.0 0.0 FMTX astore}
+  {SSZ 0.0 SLT neg sin SLT cos div SSZ mul SSZ neg 0.0 0.0 FMTX astore}
+  ifelse makefont setfont} bind def
+/SLT 0.0 def
+/SI { /SLT exch cvr def RDF} bind def
+/WFT /Courier findfont def
+/SF { /WFT exch findfont def RDF} bind def
+/SSZ 1000.0 def
+/SS { /SSZ exch 100.0 mul def RDF} bind def
+/AF { /WFT exch findfont def /SSZ exch 100.0 mul def RDF} bind def
+/MT /moveto load def
+/XM {currentpoint exch pop moveto} bind def
+/UL {gsave newpath moveto dup 2.0 div 0.0 exch rmoveto
+   setlinewidth 0.0 rlineto stroke grestore} bind def
+/LH {gsave newpath moveto setlinewidth
+   0.0 rlineto
+   gsave stroke grestore} bind def
+/LV {gsave newpath moveto setlinewidth
+   0.0 exch rlineto
+   gsave stroke grestore} bind def
+/BX {gsave newpath moveto setlinewidth
+   exch
+   dup 0.0 rlineto
+   exch 0.0 exch neg rlineto
+   neg 0.0 rlineto
+   closepath
+   gsave stroke grestore} bind def
+/BX1 {grestore} bind def
+/BX2 {setlinewidth 1 setgray stroke grestore} bind def
+/PB {/PV save def newpath translate
+    100.0 -100.0 scale pop /showpage {} def} bind def
+/PE {PV restore} bind def
+/GB {/PV save def newpath translate rotate
+    div dup scale 100.0 -100.0 scale /showpage {} def} bind def
+/GE {PV restore} bind def
+/FB {dict dup /FontMapDict exch def begin} bind def
+/FM {cvn exch cvn exch def} bind def
+/FE {end /original-findfont /findfont load def  /findfont
+   {dup FontMapDict exch known{FontMapDict exch get} if
+   original-findfont} def} bind def
+/BC {gsave moveto dup 0 exch rlineto exch 0 rlineto neg 0 exch rlineto closepath clip} bind def
+/EC /grestore load def
+/SH /show load def
+/MX {exch show 0.0 rmoveto} bind def
+/W {0 32 4 -1 roll widthshow} bind def
+/WX {0 32 5 -1 roll widthshow 0.0 rmoveto} bind def
+%%EndProlog
+%%Page: 0 1
+BS
+0 SI
+12 /Times-Bold AF
+20549 8004 MT
+(Mach: A Foundation for Open Systems)SH
+11 SS 
+26628 10314 MT
+(A Position Paper)SH
+9 /Times-Roman AF
+19137 11905 MT
+(Richard Rashid, Robert Baron, Alessandro Forin, David Golub,)SH
+20375 12919 MT
+(Michael Jones, Daniel Julin, Douglas Orr, Richard Sanzi)SH
+/Times-Italic SF
+25512 14947 MT
+(School of Computer Science)SH
+25550 15961 MT
+(Carnegie Mellon University)SH
+24812 16975 MT
+(Pittsburgh, Pennsylvania 15213)SH
+/Times-Roman SF
+33300 24017 MT
+(for proprietary systems -- each at considerable expense.  Bal-)50 W
+11 /Times-Bold AF
+7200 24137 MT
+(1. Introduction)SH
+9 /Times-Roman AF
+33300 25115 MT
+(looning software development)
+166 W( costs translate into increased)167 W
+7700 25235 MT
+(Operating systems have become one of the most hotly con-)75 W
+33300 26213 MT
+(cost for the user)
+3 W( and delays in the introduction of new features)2 W
+7200 26333 MT
+(tested battlegrounds for)
+203 W( "open system standards".  Various)202 W
+33300 27311 MT
+(and new applications.)SH
+7200 27431 MT
+(national, international and industry)
+128 W( groups are attempting to)129 W
+7200 28529 MT
+(define, implement and ultimately convince users to buy)
+97 W( new)96 W
+7200 29627 MT
+("open" computing environments. Most of these efforts have)138 W
+11 /Times-Bold AF
+33300 29848 MT
+(2. An Alternative Approach to OS)SH
+7 /Times-Roman AF
+21350 30398 MT
+(1)SH
+9 SS 
+7200 30725 MT
+(centered around versions of the UNIX)75 W
+21925 XM
+([9] operating system,)75 W
+11 /Times-Bold AF
+34400 30946 MT
+(Organization)SH
+9 /Times-Roman AF
+7200 31823 MT
+(but there is no consensus among industrial groups as to which)20 W
+33800 32044 MT
+(An alternative approach)
+68 W( to building an entire operating sys-)69 W
+7200 32921 MT
+("version" of UNIX is ultimately the correct)
+102 W( basis for a open)101 W
+33300 33142 MT
+(tem is to separate those parts of the operating system which)105 W
+7200 34019 MT
+(system standard.  Already two)
+46 W( major industrial organizations,)47 W
+33300 34240 MT
+(control the basic)
+343 W( hardware resources -- often called the)344 W
+7200 35117 MT
+(the Open Software)
+65 W( Foundation and UNIX International, have)64 W
+33300 35338 MT
+(operating system "kernel" -- from those parts of the)
+38 W( operating)37 W
+7200 36215 MT
+(endorsed two rather different UNIX)
+83 W( implementations: IBM's)84 W
+33300 36436 MT
+(system which determine the unique characteristics of)
+332 W( an)333 W
+7200 37313 MT
+(AIX and AT&T's System V.4. Non-UNIX systems)
+144 W( such as)143 W
+33300 37534 MT
+(operating system)
+158 W( environment, for example a particular file)157 W
+7200 38411 MT
+(the Macintosh OS, MS-DOS and)
+305 W( OS/2 are also seen as)306 W
+33300 38632 MT
+(system interface. The advantage of this)
+87 W( scheme is that it can)88 W
+7200 39509 MT
+("standards" by various hardware and software developers.)SH
+33300 39730 MT
+(allow more than one operating system environment to be)250 W
+7700 40734 MT
+(This divergence of systems and)
+4 W( standards raises fundamental)3 W
+33300 40828 MT
+(implemented on the same hardware/software base so that)275 W
+7200 41832 MT
+(issues about the strategy which should be employed in the)175 W
+33300 41926 MT
+(machine dependent software need be written only once for)175 W
+7200 42930 MT
+(development of open operating systems. It)
+191 W( has become in-)190 W
+33300 43024 MT
+(each new architecture.)SH
+7200 44028 MT
+(creasingly important to provide support within a)
+81 W( single com-)82 W
+33800 44249 MT
+(The Carnegie)
+121 W( Mellon University Mach kernel)
+122 W( [1])
+SH( is an ex-)122 W
+7200 45126 MT
+(puting environment for "multiple)
+299 W( standards", i.e. multiple)298 W
+33300 45347 MT
+(ample of this layered approach to)
+166 W( operating system design.)165 W
+7200 46224 MT
+(operating system environments)
+68 W( which may be tailored to dif-)69 W
+33300 46445 MT
+(Mach is)
+63 W( a multiprocessor kernel that incorporates in one sys-)64 W
+7200 47322 MT
+(ferent vendor or user needs.  Moreover,)
+169 W( manufacturers fre-)168 W
+33300 47543 MT
+(tem a number of key facilities that allow the efficient im-)190 W
+7200 48420 MT
+(quently need to)
+93 W( provide customers with continuing access to)94 W
+33300 48641 MT
+(plementation of those functions necessary)
+146 W( to support binary)147 W
+7200 49518 MT
+(proprietary operating systems developed during)
+217 W( the 1960's)216 W
+33300 49739 MT
+(compatibility with existing operating system environments.)220 W
+7200 50616 MT
+(and 1970's \050e.g. VMS, MVS and MS-DOS\051.)SH
+33300 50837 MT
+(These mechanisms are intended not simply as)
+131 W( extensions to)132 W
+7700 51841 MT
+(Traditional systems such as UNIX or VMS are implemented)25 W
+33300 51935 MT
+(normal operating system facilities but as a)
+144 W( foundation upon)143 W
+7200 52939 MT
+("all in one piece" with knowledge about)
+216 W( the basic system)215 W
+33300 53033 MT
+(which UNIX and other operating system facilities can be)250 W
+7200 54037 MT
+(structure spread)
+221 W( throughout. They are poorly suited to the)222 W
+33300 54131 MT
+(built.)SH
+7200 55135 MT
+(compatible support of multiple operating)
+292 W( system environ-)291 W
+33800 55356 MT
+(We believe that such)
+203 W( a design is very well suited to the)202 W
+7200 56233 MT
+(ments. As)
+485 W( a result,)
+130 W( large computer manufacturers are com-)131 W
+33300 56454 MT
+(implementation of modern)
+77 W( systems, and that it can yield sig-)78 W
+7200 57331 MT
+(monly forced to support)
+47 W( several completely distinct operating)46 W
+33300 57552 MT
+(nificant improvements in terms)
+72 W( of structure, without sacrific-)71 W
+7200 58429 MT
+(system groups: one for OS/2, one)
+54 W( for UNIX and one or more)55 W
+33300 58650 MT
+(ing performance.)
+77 W( Furthermore,)
+380 W( it also allows, at least poten-)78 W
+10800 50 7200 59734 UL
+33300 59748 MT
+(tially, for more)
+73 W( than one operating system environment to be)72 W
+33300 60846 MT
+(supported in "native)
+348 W( mode" simultaneously on the same)349 W
+5 SS 
+7900 60909 MT
+(1)SH
+7 SS 
+8150 61200 MT
+(UNIX is a trademark of AT&T Bell Laboratories)SH
+9 SS 
+33300 61944 MT
+(hardware. To)
+469 W( demonstrate the practical applicability of)
+122 W( this)121 W
+22500 50 7200 63042 UL
+33300 63042 MT
+(concept, and to)
+52 W( evaluate its strengths and weaknesses, we are)53 W
+33300 64140 MT
+(currently working on three separate approaches to)
+18 W( implement-)17 W
+7 SS 
+7200 64155 MT
+(This research was sponsored by)
+212 W( the Defense Advanced Research Projects)213 W
+7200 64988 MT
+(Agency \050DOD\051, ARPA Order No. 4864, monitored by)
+123 W( the Space and Naval)122 W
+9 SS 
+33300 65238 MT
+(ing a 4.3 BSD [3] environment within the Mach framework.)SH
+7 SS 
+7200 65821 MT
+(Warfare Systems Command under contract N00039-85-C-1034.)SH
+11 /Times-Bold AF
+33300 67775 MT
+(3. Mach Features Supporting OS Emulation)SH
+9 /Times-Roman AF
+33800 68873 MT
+(Mach provides an unusually flexible)
+58 W( execution environment)59 W
+33300 69971 MT
+(for both system and user applications. It exposes the)
+39 W( manage-)38 W
+33300 71069 MT
+(ment of CPU, communication, virtual memory)
+39 W( and secondary)40 W
+ES
+%%Page: 1 2
+BS
+0 SI
+9 /Times-Roman AF
+7200 7817 MT
+(storage resources in a way that allows)
+194 W( system applications)193 W
+33300 XM
+(processes using Mach's)
+59 W( flexible virtual memory management)58 W
+7200 8915 MT
+(such as database management facilities)
+37 W( to use those resources)38 W
+33300 XM
+(facilities. The)
+731 W( parent process that established this)
+253 W( shared)254 W
+7200 10013 MT
+(efficiently.)SH
+33300 XM
+(library can then tell the Mach kernel to redirect system call)125 W
+33300 11111 MT
+(traps from the child into the shared library in the address)210 W
+7700 11238 MT
+(The key)
+135 W( features of Mach in its role as a system software)134 W
+33300 12209 MT
+(space of that child.  This)
+138 W( allows any embedded system call)137 W
+7200 12336 MT
+(kernel are:)SH
+33300 13307 MT
+(traps in a program binary to be interpreted outside the kernel)65 W
+/Symbol SF
+8811 13663 MT
+(\267)SH
+/Times-Roman SF
+9450 XM
+(support for multiple threads)
+153 W( of control within a)154 W
+33300 14405 MT
+(and either handled directly or converted into a message to be)60 W
+9450 14761 MT
+(single address space,)SH
+33300 15503 MT
+(sent to)
+190 W( a system server.  There is an override facility that)191 W
+/Symbol SF
+8811 16466 MT
+(\267)SH
+/Times-Roman SF
+9450 XM
+(an extensible and secure interprocess com-)515 W
+33300 16601 MT
+(allows the transparent library code to redirect a call to the)175 W
+9450 17564 MT
+(munication facility \050IPC\051 [10],)SH
+33300 17699 MT
+(kernel if necessary,)
+135 W( to simplify development and debugging)136 W
+33300 18797 MT
+(of the transparent library itself.)
+37 W( This facility can be used for a)36 W
+/Symbol SF
+8811 19269 MT
+(\267)SH
+/Times-Roman SF
+9450 XM
+(architecture independent virtual memory manage-)SH
+33300 19895 MT
+(variety of purposes, such as:)SH
+9450 20367 MT
+(ment \050VM\051 [7],)SH
+/Symbol SF
+34911 21222 MT
+(\267)SH
+/Times-Roman SF
+35550 XM
+(binary compatibility with non-Mach OS environ-)55 W
+/Symbol SF
+8811 22072 MT
+(\267)SH
+/Times-Roman SF
+9450 XM
+(integrated IPC/VM support, including:)
+144 W( copy-on-)143 W
+35550 22320 MT
+(ments,)SH
+9450 23170 MT
+(write message)
+318 W( passing, copy-on-reference net-)319 W
+/Symbol SF
+34911 24025 MT
+(\267)SH
+/Times-Roman SF
+35550 XM
+(support for multiple OS environments \050e.g. UNIX)SH
+9450 24268 MT
+(work communication and extensible memory ob-)55 W
+35550 25123 MT
+(4.3 BSD, UNIX V.4\051,)SH
+9450 25366 MT
+(jects,)SH
+/Symbol SF
+34911 26828 MT
+(\267)SH
+/Times-Roman SF
+35550 XM
+(debugging and monitoring and)SH
+/Symbol SF
+8811 27071 MT
+(\267)SH
+/Times-Roman SF
+9450 XM
+(hooks for transparent shared libraries, to)
+79 W( provide)80 W
+9450 28169 MT
+(binary compatibility with existing operating sys-)95 W
+/Symbol SF
+34911 28533 MT
+(\267)SH
+/Times-Roman SF
+35550 XM
+(network redirection of OS traps.)SH
+9450 29267 MT
+(tem environments.)SH
+7700 30492 MT
+(The Mach kernel provides software equivalents of)
+131 W( the key)132 W
+11 /Times-Bold AF
+33300 31070 MT
+(4. In-kernel OS Emulation)SH
+9 /Times-Roman AF
+7200 31590 MT
+(elements of uniprocessor and multiprocessor architectures.)270 W
+33800 32168 MT
+(In the first implementation of)
+13 W( a 4.3 BSD emulation on top of)14 W
+7200 32688 MT
+(The Mach thread mechanism, for example, is)
+308 W( a kind of)309 W
+33300 33266 MT
+(Mach, the Mach kernel is used as the)
+15 W( lower layer of a two-tier)14 W
+7200 33786 MT
+(software processor.)
+279 W( By)
+781 W( allowing multiple threads to run)278 W
+33300 34364 MT
+(operating system implementation. In such a)
+34 W( scheme the Mach)35 W
+7200 34884 MT
+(within the same program, Mach permits a system)
+72 W( or applica-)73 W
+33300 35462 MT
+(kernel provides support for key functions such as virtual)275 W
+7200 35982 MT
+(tion programmer to directly manage multiple CPUs in)
+53 W( a mul-)52 W
+33300 36560 MT
+(memory, scheduling, interprocess communication and device)85 W
+7200 37080 MT
+(tiprocessor. Mach's)
+1025 W( interprocess communication facility)400 W
+33300 37658 MT
+(access. The target operating)
+60 W( system can then be implemented)59 W
+7200 38178 MT
+(\050IPC\051 provides the kind)
+109 W( of I/O channel between threads that)108 W
+33300 38756 MT
+(using these functions.  In this approach)
+208 W( the entire system,)209 W
+7200 39276 MT
+(may exist in a multiprocessor)
+80 W( with a message-passing bus or)81 W
+33300 39854 MT
+(kernel and OS environment, is packaged as a)
+15 W( unit and run in a)14 W
+7200 40374 MT
+(between workstations on a network.)SH
+33300 40952 MT
+(privileged state just as in a)
+162 W( traditional OS design. In many)163 W
+7700 41599 MT
+(Interprocess communication and memory management in)255 W
+33300 42050 MT
+(respects it continues to resemble)
+88 W( the more traditional operat-)87 W
+7200 42697 MT
+(Mach are)
+45 W( tightly integrated. Memory management techniques)46 W
+33300 43148 MT
+(ing systems it)
+293 W( replaces. One advantage to this approach,)294 W
+7200 43795 MT
+(\050such as the use of memory re-mapping to avoid data)375 W
+33300 44246 MT
+(however, is that more than one)
+123 W( OS environment can be im-)122 W
+7200 44893 MT
+(copying\051 are employed)
+143 W( whenever large amounts of data are)144 W
+33300 45344 MT
+(plemented using the same kernel interface -- reducing the)225 W
+7200 45991 MT
+(sent in a message from one)
+98 W( program to another. This allows)97 W
+33300 46442 MT
+(software effort required)
+48 W( to bring a new architecture to market)47 W
+7200 47089 MT
+(the transmission of megabytes of data at very low cost.)SH
+33300 47540 MT
+(with several supported operating systems.)
+21 W( Another)
+269 W( advantage)22 W
+7700 48314 MT
+(One of the)
+293 W( most unusual and important facilities Mach)294 W
+33300 48638 MT
+(is that the basic)
+103 W( kernel could be made freely available to all)102 W
+7200 49412 MT
+(provides is the notion of a memory object which an applica-)85 W
+33300 49736 MT
+(without compromising the proprietary added value of)
+31 W( the par-)32 W
+7200 50510 MT
+(tion program)
+88 W( may create and manage. The memory object is)89 W
+33300 50834 MT
+(ticular operating)
+104 W( system environment layered above it.  This)103 W
+7200 51608 MT
+(like a file or data container which can be mapped into)
+166 W( the)165 W
+33300 51932 MT
+(approach would allow companies to share the costs of porting)25 W
+7200 52706 MT
+(address space of a program. Unlike)
+234 W( traditional systems in)235 W
+33300 53030 MT
+(the kernel to a new architecture.)SH
+7200 53804 MT
+(which the operating system has)
+65 W( complete control of "paging")64 W
+33800 54255 MT
+(Commercial versions of Mach available)
+138 W( today are, in fact,)137 W
+7200 54902 MT
+(data to and from such a data object,)
+36 W( Mach allows the applica-)37 W
+33300 55353 MT
+(examples of 4.3 BSD)
+290 W( UNIX layered above Mach kernel)291 W
+7200 56000 MT
+(tion which)
+35 W( creates the memory object to act as though it were)34 W
+33300 56451 MT
+(primitives and packaged together with)
+145 W( the Mach code.  Al-)144 W
+7200 57098 MT
+(the disk storage or "pager" for that object.  Mach)
+234 W( virtual)235 W
+33300 57549 MT
+(though one might assume)
+41 W( that this layered approach to UNIX)42 W
+7200 58196 MT
+(memory objects)
+105 W( are represented as communication channels.)104 W
+33300 58647 MT
+(implementation would be a performance disadvantage,)550 W
+7200 59294 MT
+(On a page fault, the kernel sends a)
+136 W( message to the backing)137 W
+33300 59745 MT
+(measurements of Mach versus traditional UNIX implemen-)175 W
+7200 60392 MT
+(storage communication channel of a memory object to get the)25 W
+33300 60843 MT
+(tations indicate otherwise.)
+163 W( Simple)
+550 W( compilation benchmarks)162 W
+7200 61490 MT
+(data contained in the faulted page.)
+383 W( This)
+992 W( provides the)384 W
+33300 61941 MT
+(on SUN 3/60)
+268 W( workstations, for example, run nearly 40%)269 W
+7200 62588 MT
+(flexibility necessary to implement)
+47 W( efficiently such system ap-)46 W
+33300 63039 MT
+(faster under)
+37 W( Mach than they do under Sun Microsystems own)36 W
+7200 63686 MT
+(plications as file systems, databases,)
+146 W( dynamic encryption or)147 W
+33300 64137 MT
+(SunOS 4.0 version of UNIX.)
+161 W( Times)
+549 W( for UNIX "fork" and)162 W
+7200 64784 MT
+(compression of data on access or even)
+369 W( network shared)368 W
+33300 65235 MT
+("exec" operations are also nearly a factor)
+67 W( of two faster under)66 W
+7200 65882 MT
+(memory.)SH
+33300 66333 MT
+(Mach than SunOS.)SH
+7700 67107 MT
+(Finally, the Mach transparent library facility)
+109 W( allows a code)110 W
+7200 68205 MT
+(library to be loaded into the address space of a program)250 W
+7200 69303 MT
+(without its knowledge, which can intercept system calls)
+28 W( made)29 W
+7200 70401 MT
+(by that program.  Transparent shared)
+33 W( libraries are loaded by a)32 W
+7200 71499 MT
+(parent process and)
+460 W( transparently inherited by its child)461 W
+ES
+%%Page: 2 3
+BS
+0 SI
+9 /Times-Roman AF
+35550 7817 MT
+(could allow vendors with proprietary OS environ-)SH
+11 /Times-Bold AF
+7200 7937 MT
+(5. Out-of-kernel OS Emulation: Two)SH
+9 /Times-Roman AF
+35550 8915 MT
+(ments to more quickly take)
+12 W( advantage of Mach as)13 W
+11 /Times-Bold AF
+8300 9035 MT
+(Approaches)SH
+9 /Times-Roman AF
+35550 10013 MT
+(a basis for their systems.)SH
+7700 10133 MT
+(A second approach to building)
+137 W( a layered operating system)138 W
+7200 11231 MT
+(environment has even greater potential for)
+361 W( open system)360 W
+33800 11238 MT
+(In practice, this single task)
+245 W( Unix server works well and)244 W
+7200 12329 MT
+(development. The kernel can be packaged by itself as a)
+4 W( "pure")5 W
+33300 12336 MT
+(demonstrates the feasibility of)
+290 W( such an approach. Its im-)291 W
+7200 13427 MT
+(kernel with no operating)
+260 W( system environment. In this ap-)259 W
+33300 13434 MT
+(plementation was completed in less than)
+166 W( sixth months, and)165 W
+7200 14525 MT
+(proach, only the)
+6 W( kernel runs in privileged state. The rest of the)7 W
+33300 14532 MT
+(can already be used for self-development.)
+7 W( It)
+241 W( currently runs on)8 W
+7200 15623 MT
+(operating system environment runs, in)
+70 W( effect, as one or more)69 W
+33300 15630 MT
+(VAX and Sun 3 platforms and is functionally interchangeable)25 W
+7200 16721 MT
+(programs \050or, more precisely, one or more)
+106 W( server processes\051)107 W
+33300 16728 MT
+(with existing versions of 4.3)
+112 W( BSD/Mach on those machines.)113 W
+7200 17819 MT
+(on top of the kernel. User applications run as before, but)220 W
+33300 17826 MT
+(We expect to extend this implementation to the other)425 W
+7200 18917 MT
+(instead of making direct calls on the operating)
+197 W( system via)198 W
+33300 18924 MT
+(hardware platforms which run Mach and to put this version)125 W
+7200 20015 MT
+(system calls traps, the kernel's)
+129 W( communication and memory)128 W
+33300 20022 MT
+(into production use within CMU over the next)
+128 W( few months.)127 W
+7200 21113 MT
+(management facilities are employed to communicate infor-)200 W
+33300 21120 MT
+(Initial performance measurements are encouraging.)
+114 W( A)
+454 W( com-)115 W
+7200 22211 MT
+(mation between the)
+559 W( application and operating system)558 W
+33300 22218 MT
+(pilation benchmark which takes takes)
+38 W( 29 seconds to complete)37 W
+7200 23309 MT
+(processes. The reason this)
+140 W( implementation strategy is so at-)141 W
+33300 23316 MT
+(on a Sun 3/60 running in-kernel 4.3BSD/Mach takes)
+303 W( 34)304 W
+7200 24407 MT
+(tractive for open systems, is that)
+96 W( it can allow more than one)95 W
+33300 24414 MT
+(seconds with out-of-kernel BSD support)
+63 W( and 49 seconds run-)62 W
+7200 25505 MT
+(operating system environment to be)
+162 W( supported on the same)163 W
+33300 25512 MT
+(ning under SunOS 4.0.)SH
+7200 26603 MT
+(machine, on the same kernel, at)
+58 W( the same time. Systems such)57 W
+7200 27701 MT
+(as UNIX or OS/2 could)
+180 W( potentially co-exist in their native)181 W
+11 /Times-Bold AF
+33300 28049 MT
+(7. Multiserver UNIX)SH
+9 /Times-Roman AF
+7200 28799 MT
+(form. The)
+424 W( kernel becomes a kind of universal "socket" into)99 W
+33800 29147 MT
+(This system divides responsibility)
+53 W( for UNIX support among)54 W
+7200 29897 MT
+(which more than one operating system environment)
+156 W( can be)157 W
+33300 30245 MT
+(a collection of libraries and servers responsible for particular)75 W
+7200 30995 MT
+(plugged, insulating that software)
+35 W( from the hardware itself and)34 W
+33300 31343 MT
+(OS functions)
+221 W( such as naming, authentication and file data)222 W
+7200 32093 MT
+(greatly simplifying its design and maintenance.)SH
+33300 32441 MT
+(access. Wherever)
+251 W( possible, the)
+13 W( interfaces between the various)12 W
+7700 33318 MT
+(This approach is currently being put to the test at Carnegie)90 W
+33300 33539 MT
+(system components, and those components themselves, are)200 W
+7200 34416 MT
+(Mellon in the development of)
+113 W( two rather different user-state)112 W
+33300 34637 MT
+(designed to be independent)
+160 W( of the target environment. This)159 W
+7200 35514 MT
+(implementations of Berkeley UNIX 4.3 BSD:)
+779 W( the)780 W
+33300 35735 MT
+(approach presents two major advantages:)SH
+/Times-Italic SF
+7200 36612 MT
+(Multithreaded System)136 W
+/Times-Roman SF
+15572 XM
+(and the)136 W
+/Times-Italic SF
+18694 XM
+(Multiserver System)136 W
+/Times-Roman SF
+(. Both im-)135 W
+/Symbol SF
+34911 37062 MT
+(\267)SH
+/Times-Roman SF
+35550 XM
+(access to various)
+60 W( system resources can be shared)61 W
+7200 37710 MT
+(plementations run unmodified 4.3 BSD binaries.)SH
+35550 38160 MT
+(by multiple independent operating system en-)305 W
+35550 39258 MT
+(vironments, communicating over a network or)260 W
+11 /Times-Bold AF
+7200 40247 MT
+(6. The Multithreaded UNIX Server)SH
+9 /Times-Roman AF
+35550 40356 MT
+(concurrently executing on the same machine.)SH
+7700 41345 MT
+(This system consists of transparent library)
+289 W( support aug-)290 W
+/Symbol SF
+34911 42061 MT
+(\267)SH
+/Times-Roman SF
+35550 XM
+(individual components can easily be reused for)175 W
+7200 42443 MT
+(mented by)
+137 W( a multithreaded UNIX server.  This server, con-)136 W
+35550 43159 MT
+(the implementation of different operating system)75 W
+7200 43541 MT
+(tained in a single task, is typically invoked)
+86 W( via a Mach mes-)87 W
+35550 44257 MT
+(environments.)SH
+7200 44639 MT
+(sage exchange for)
+257 W( each system call issued by application)256 W
+33800 45482 MT
+(On the negative side, this approach)
+186 W( requires sophisticated)185 W
+7200 45737 MT
+(processes. In)
+313 W( addition to managing)
+44 W( system call emulation for)45 W
+33300 46580 MT
+(synchronization between servers)
+266 W( to achieve precise UNIX)267 W
+7200 46835 MT
+(Unix processes, the Unix server acts)
+73 W( as an external pager for)72 W
+33300 47678 MT
+(semantics, and)
+104 W( very careful design of the standardized inter-)103 W
+7200 47933 MT
+(Unix inodes.  It is implemented using Mach's)
+253 W( C-Threads)254 W
+33300 48776 MT
+(faces. The)
+313 W( major interfaces defined)
+44 W( for that system organiza-)45 W
+7200 49031 MT
+(package with each incoming request)
+213 W( handled by a cthread)212 W
+33300 49874 MT
+(tion are:)SH
+7200 50129 MT
+(allocated from a pool of waiting threads.)SH
+/Symbol SF
+34911 51201 MT
+(\267)SH
+/Times-Roman SF
+35550 XM
+(a standard access)
+184 W( protocol defining the authen-)183 W
+7700 51354 MT
+(A single task operating system emulation)
+219 W( of this kind is)220 W
+35550 52299 MT
+(tication, access control and naming procedures)230 W
+7200 52452 MT
+(attractive for several reasons:)SH
+35550 53397 MT
+(used for access to all system objects)
+17 W( such as files,)16 W
+/Symbol SF
+8811 53779 MT
+(\267)SH
+/Times-Roman SF
+9450 XM
+(The server is)
+184 W( solely responsible for performing)183 W
+35550 54495 MT
+(devices, processes, etc.)SH
+9450 54877 MT
+(the emulation of all)
+137 W( OS environment semantics.)138 W
+9450 55975 MT
+(The structure of the server)
+120 W( is, in fact, similar to)119 W
+/Symbol SF
+34911 56200 MT
+(\267)SH
+/Times-Roman SF
+35550 XM
+(a standard I/O protocol for the transfer of data)175 W
+9450 57073 MT
+(that of an in-kernel)
+53 W( implementation; it has global)54 W
+35550 57298 MT
+(between the producers and consumers)
+292 W( of that)291 W
+9450 58171 MT
+(knowledge of all the information needed)
+111 W( for the)110 W
+35550 58396 MT
+(data.)SH
+9450 59269 MT
+(emulation. Internal)
+665 W( context switching between)220 W
+/Symbol SF
+34911 60101 MT
+(\267)SH
+/Times-Roman SF
+35550 XM
+(a standard exception protocol to handle excep-)200 W
+9450 60367 MT
+(threads can be extremely fast.)SH
+35550 61199 MT
+(tions happening)
+82 W( during client-server interactions,)81 W
+/Symbol SF
+8811 62072 MT
+(\267)SH
+/Times-Roman SF
+9450 XM
+(The OS server is completely pageable and can in)50 W
+35550 62297 MT
+(and to report asynchronous events to clients.)SH
+9450 63170 MT
+(fact make more efficient use)
+12 W( of memory \050by shar-)13 W
+33800 63522 MT
+(The following sections describe the major)
+189 W( components of)190 W
+9450 64268 MT
+(ing data structures and stack space\051 than can a)175 W
+33300 64620 MT
+(this system.)SH
+9450 65366 MT
+(multiple server implementation.)SH
+10 /Times-Bold AF
+33300 66370 MT
+(7.1. Mach Object Programming Facility)SH
+9 /Symbol AF
+8811 67071 MT
+(\267)SH
+/Times-Roman SF
+9450 XM
+(It can be)
+141 W( relatively straightforward to transform)142 W
+33800 67468 MT
+(The development of the multiserver)
+113 W( UNIX system is aided)112 W
+9450 68169 MT
+(an existing in-kernel OS implementation into)345 W
+33300 68566 MT
+(by a C-based)
+241 W( object-oriented programming package called)242 W
+9450 69267 MT
+(such a)
+138 W( server, because most of the code can be)139 W
+/Times-Italic SF
+33300 69664 MT
+(MachObjects)SH
+/Times-Roman SF
+(, which has been)
+35 W( integrated with the Mach inter-)34 W
+9450 70365 MT
+(simply carried)
+229 W( over. This can make it easy to)228 W
+33300 70762 MT
+(process communication facility.  This package allows:)SH
+9450 71463 MT
+(preserve both existing code and semantics.)
+129 W( This)130 W
+ES
+%%Page: 3 4
+BS
+0 SI
+9 /Times-Roman AF
+35550 7817 MT
+(protocols used for network access \050TCP/IP, OSI,)75 W
+/Symbol SF
+8811 7920 MT
+(\267)SH
+/Times-Roman SF
+9450 XM
+(dynamic class/method specification,)SH
+35550 8915 MT
+(etc\051,)SH
+/Symbol SF
+8811 9625 MT
+(\267)SH
+/Times-Roman SF
+9450 XM
+(class/superclass hierarchy,)SH
+/Symbol SF
+34911 10620 MT
+(\267)SH
+/Times-Roman SF
+35550 XM
+(the UNIX)
+42 W( File Server, which manages UNIX file)43 W
+/Symbol SF
+8811 11330 MT
+(\267)SH
+/Times-Roman SF
+9450 XM
+(multiple inheritance through delegation,)SH
+35550 11718 MT
+(systems on permanent storage,)
+72 W( but uses the stan-)71 W
+35550 12816 MT
+(dard naming and I/O protocols, so that it is)
+11 W( acces-)12 W
+/Symbol SF
+8811 13035 MT
+(\267)SH
+/Times-Roman SF
+9450 XM
+(automatic remote delegation \050through IPC\051,)SH
+35550 13914 MT
+(sible from all environments,)SH
+/Symbol SF
+8811 14740 MT
+(\267)SH
+/Times-Roman SF
+9450 XM
+(user-specifiable method lookup)
+412 W( to implement)413 W
+/Symbol SF
+34911 15619 MT
+(\267)SH
+/Times-Roman SF
+35550 XM
+(the NFS Server, which translates requests)
+171 W( from)170 W
+9450 15838 MT
+(other forms of inheritance,)SH
+35550 16717 MT
+(the standard access)
+260 W( and I/O interface into the)261 W
+/Symbol SF
+8811 17543 MT
+(\267)SH
+/Times-Roman SF
+9450 XM
+(automatic dispatching of method invocations to)175 W
+35550 17815 MT
+(NFS protocol,)
+8 W( allowing access to remote NFS file)7 W
+9450 18641 MT
+(multiple threads of control,)SH
+35550 18913 MT
+(systems,)SH
+/Symbol SF
+8811 20346 MT
+(\267)SH
+/Times-Roman SF
+9450 XM
+(reference count garbage collection of objects and)SH
+/Symbol SF
+34911 20618 MT
+(\267)SH
+/Times-Roman SF
+35550 XM
+(the UNIX TTY Server,)
+90 W( a front-end for access to)91 W
+35550 21716 MT
+(terminal lines and pseudo terminals, implement-)120 W
+/Symbol SF
+8811 22051 MT
+(\267)SH
+/Times-Roman SF
+9450 XM
+(automatic object locking.)SH
+35550 22814 MT
+(ing the line disciplines and)SH
+7700 23276 MT
+(To simplify the organization of the various components,)250 W
+7200 24374 MT
+(libraries of standard MachObjects)
+135 W( classes are used, that im-)134 W
+/Symbol SF
+34911 24519 MT
+(\267)SH
+/Times-Roman SF
+35550 XM
+(the UNIX Pipe Server, implementing traditional)130 W
+7200 25472 MT
+(plement the standard)
+268 W( system interfaces. In many cases, a)269 W
+35550 25617 MT
+(UNIX pipes, using FIFO)
+463 W( buffers in shared)462 W
+7200 26570 MT
+(special MachObject mechanism is used to)
+131 W( allow a server to)130 W
+35550 26715 MT
+(memory.)SH
+7200 27668 MT
+(dynamically select the class of an object to be instantiated in)70 W
+7200 28766 MT
+(its client's)
+137 W( address space. When this approach is used, only)136 W
+11 /Times-Bold AF
+33300 29252 MT
+(8. Related Work)SH
+9 /Times-Roman AF
+7200 29864 MT
+(the client-side object must implement the standard)
+57 W( interfaces.)58 W
+33800 30350 MT
+(Several other research groups)
+303 W( are also investigating the)304 W
+7200 30962 MT
+(Each server may use a different, specialized protocol to com-)50 W
+33300 31448 MT
+(issues involved)
+108 W( with OS emulation, particularly with respect)107 W
+7200 32060 MT
+(municate with the client-side objects that it returns.)SH
+33300 32546 MT
+(to the UNIX environment.)
+612 W( CMU's Accent operating)613 W
+33300 33644 MT
+(system [6])
+SH( was used as the base for a System III Unix)
+41 W( emula-)40 W
+10 /Times-Bold AF
+7200 33810 MT
+(7.2. Transparent Library)SH
+9 /Times-Roman AF
+33300 34742 MT
+(tion called)462 W
+/Times-Italic SF
+38224 XM
+(QNIX)SH
+/Times-Roman SF
+(. The)1149 W
+/Times-Italic SF
+44011 XM
+(Amoeba)SH
+/Times-Roman SF
+47649 XM
+(system [8])
+SH( uses port)463 W
+7700 34908 MT
+(The transparent library is responsible for translating)
+282 W( the)283 W
+33300 35840 MT
+(capabilities in a manner very similar to that of Mach to)270 W
+7200 36006 MT
+(UNIX 4.3 BSD system calls from)
+56 W( an application process into)55 W
+33300 36938 MT
+(implement a)
+92 W( fast server-based system. The)93 W
+/Times-Italic SF
+49432 XM
+(CHORUS)SH
+/Times-Roman SF
+53300 XM
+(system)SH
+7200 37104 MT
+(invocations on the appropriate)
+190 W( system servers, via the cor-)191 W
+33525 38036 MT
+([2] has adopted an)
+84 W( object-oriented approach to build a com-)83 W
+7200 38202 MT
+(responding MachObjects elements.)SH
+33300 39134 MT
+(plete UNIX emulation; its use of memory protection is)350 W
+7700 39427 MT
+(An important)
+37 W( aspect of the system organization is that many)36 W
+33300 40232 MT
+(however rather different)
+98 W( from that adopted for the Mach OS)97 W
+7200 40525 MT
+(emulated system calls, for example)175 W
+/Times-Italic SF
+20975 XM
+(read)SH
+/Times-Roman SF
+23025 XM
+(and)SH
+/Times-Italic SF
+24725 XM
+(write)SH
+/Times-Roman SF
+(, can be)175 W
+33300 41330 MT
+(emulators. The)275 W
+/Times-Italic SF
+39475 XM
+(Taos)SH
+/Times-Roman SF
+41725 XM
+(system [4])
+SH( provides an emulation of)275 W
+7200 41623 MT
+(implemented within the transparent library with no messages)75 W
+33300 42428 MT
+(Ultrix in the Topaz environment. Several of)
+17 W( the concepts used)16 W
+7200 42721 MT
+(exchanged with servers.  This is possible)
+83 W( because many data)84 W
+33300 43526 MT
+(for the Mach OS emulators are inspired)
+58 W( from ideas presented)59 W
+7200 43819 MT
+(objects can be)
+282 W( represented as Mach memory objects and)281 W
+33300 44624 MT
+(with the)SH
+/Times-Italic SF
+36450 XM
+(Sprite)SH
+/Times-Roman SF
+38825 XM
+(and)SH
+/Times-Italic SF
+40350 XM
+(V)SH
+/Times-Roman SF
+41125 XM
+(systems [5] [11].)SH
+7200 44917 MT
+(mapped into the address space of the)
+58 W( transparent library after)59 W
+7200 46015 MT
+(a)SH
+/Times-Italic SF
+7953 XM
+(open)SH
+/Times-Roman SF
+10056 XM
+(call is)
+128 W( made. The)127 W
+/Times-Italic SF
+16940 XM
+(read)SH
+/Times-Roman SF
+18942 XM
+(and)SH
+/Times-Italic SF
+20594 XM
+(write)SH
+/Times-Roman SF
+22796 XM
+(calls thus translate)127 W
+7200 47113 MT
+(into simple memory references into this mapped area.)SH
+11 /Times-Bold AF
+33300 47161 MT
+(9. Mach availability)SH
+9 /Times-Roman AF
+33800 48259 MT
+(The portability of Mach has been)
+31 W( demonstrated by the range)30 W
+10 /Times-Bold AF
+7200 48863 MT
+(7.3. System Servers)SH
+9 /Times-Roman AF
+33300 49357 MT
+(of uniprocessor and multiprocessor systems on which)
+206 W( it is)207 W
+7700 49961 MT
+(The various system servers cooperate to implement)
+6 W( the func-)7 W
+33300 50455 MT
+(available. Mach)
+615 W( has been)
+195 W( ported to the VAX architecture)194 W
+7200 51059 MT
+(tions needed for the emulation.)
+120 W( As indicated, many of these)119 W
+33300 51553 MT
+(uniprocessors and multiprocessors, the SUN)
+246 W( 3 family, the)247 W
+7200 52157 MT
+(servers are in fact independent of the specific)
+47 W( UNIX environ-)48 W
+33300 52651 MT
+(IBM RT PC family, the)
+163 W( DecStation 3100, the 64-processor)162 W
+7200 53255 MT
+(ment, and only the fact)
+162 W( that they are invoked from the 4.3)161 W
+33300 53749 MT
+(IBM RP3, the 8-processor IBM)
+21 W( ACE multiprocessor worksta-)22 W
+7200 54353 MT
+(BSD transparent library produces 4.3 BSD semantics from)
+3 W( the)4 W
+33300 54847 MT
+(tion, the Sequent Balance, the Macintosh II, the IBM 370, the)30 W
+7200 55451 MT
+(point of view of the application)
+33 W( processes.  The major servers)32 W
+33300 55945 MT
+(SUN 4, the Intel 386 and the Intel i860.)
+43 W( Implementations)
+312 W( for)44 W
+7200 56549 MT
+(are or will be:)SH
+33300 57043 MT
+(other MIPS R2000 and R3000)
+63 W( machines are nearing comple-)62 W
+/Symbol SF
+8811 57876 MT
+(\267)SH
+/Times-Roman SF
+9450 XM
+(the Name Server, implementing a hierarchical)280 W
+33300 58141 MT
+(tion and several implementations for the Motorola 88000 are)75 W
+9450 58974 MT
+(name space with only directories, symbolic)
+71 W( links)70 W
+33300 59239 MT
+(underway. Commercial versions)
+115 W( of Mach are available from)114 W
+9450 60072 MT
+(and mount points, which can be used to)
+328 W( tie)329 W
+33300 60337 MT
+(BBN Advanced Computers, Evans and Sutherland)
+79 W( Computer)80 W
+9450 61170 MT
+(together several other name spaces)
+67 W( and represent)66 W
+33300 61435 MT
+(Division, Encore Computers and NeXT.)
+70 W( In)
+363 W( addition to these)69 W
+9450 62268 MT
+(the "root" of the UNIX name space,)SH
+33300 62533 MT
+(vendor releases of Mach, Mt Xinu,)
+47 W( Inc. has announced that it)48 W
+33300 63631 MT
+(will develop commercial end-user releases of Mach for a)250 W
+/Symbol SF
+8811 63973 MT
+(\267)SH
+/Times-Roman SF
+9450 XM
+(the Task)
+95 W( Manager, responsible for keeping track)96 W
+33300 64729 MT
+(variety of machine architectures.)
+396 W( Finally,)
+1018 W( Prime, Intel,)397 W
+9450 65071 MT
+(of all the application processes participating in)
+18 W( an)17 W
+33300 65827 MT
+(Olivetti, Convergent)
+158 W( and AT&T have recently announced a)157 W
+9450 66169 MT
+(operating system environment,)SH
+33300 66925 MT
+(joint research project to build a multiprocessor)
+231 W( version of)232 W
+/Symbol SF
+8811 67874 MT
+(\267)SH
+/Times-Roman SF
+9450 XM
+(the Authentication Server, used)
+337 W( to verify the)338 W
+33300 68023 MT
+(System V.4 using the Mach kernel.)SH
+9450 68972 MT
+(credentials of processes performing operations on)15 W
+33800 69248 MT
+(All software implemented by the Mach project)
+144 W( is licensed)143 W
+9450 70070 MT
+(behalf of the authorized users of the system,)SH
+33300 70346 MT
+(and distributed to universities, research laboratories and cor-)100 W
+33300 71444 MT
+(porations at no cost by Carnegie Mellon.)SH
+/Symbol SF
+8811 71775 MT
+(\267)SH
+/Times-Roman SF
+9450 XM
+(the Network Server, implementing the transport)150 W
+ES
+%%Page: 4 5
+BS
+0 SI
+11 /Times-Bold AF
+15886 7937 MT
+(References)SH
+8 SS 
+7200 9944 MT
+(1.)SH
+/Times-Roman SF
+8200 XM
+(Accetta, M.J., Baron, R.V., Bolosky, W., Golub, D.B., Rashid,)SH
+7200 10868 MT
+(R.F., Tevanian, A., and Young, M.W.  Mach: A New Kernel Foun-)SH
+7200 11792 MT
+(dation for UNIX Development.  Proceedings of Summer Usenix,)SH
+7200 12716 MT
+(July, 1986.)SH
+/Times-Bold SF
+7200 14189 MT
+(2.)SH
+/Times-Roman SF
+8200 XM
+(Francois Armand and Michel Gien and Marc Guillemont and)SH
+7200 15113 MT
+(Pierre Leonard.  Towards a Distributed UNIX System - The)SH
+7200 16037 MT
+(CHORUS Approach.  Proceedings of the European UNIX Systems)SH
+7200 16961 MT
+(User Group Conference, September, 1986.)SH
+/Times-Bold SF
+7200 18434 MT
+(3.)SH
+/Times-Roman SF
+8200 XM
+(Joy, W., et. al.  4.2BSD System Manual.  Technical report ,)SH
+7200 19358 MT
+(Computer Systems Research Group, Computer Science Division,)SH
+7200 20282 MT
+(University of California, Berkeley, July, 1983.)SH
+/Times-Bold SF
+7200 21755 MT
+(4.)SH
+/Times-Roman SF
+8200 XM
+(Paul R. McJones and Garret F. Swart.  Evolving the UNIX System)SH
+7200 22679 MT
+(Interface to Support Multithreaded Programs.  Research Report 21,)SH
+7200 23603 MT
+(DEC Systems Research Center, September, 1987.)SH
+/Times-Bold SF
+7200 25076 MT
+(5.)SH
+/Times-Roman SF
+8200 XM
+(John K. Ousterhout and Andrew R. Cherenson and Frederick)SH
+7200 26000 MT
+(Douglis and Michael N. Nelson and Brent B. Welch.  "The Sprite)SH
+7200 26924 MT
+(Network Operating System".)SH
+/Times-Italic SF
+16878 XM
+(IEEE Computer 21)SH
+/Times-Roman SF
+(, 2 \050February 1988\051,)SH
+7200 27848 MT
+(23-36.)SH
+/Times-Bold SF
+7200 29321 MT
+(6.)SH
+/Times-Roman SF
+8200 XM
+(Rashid, R. F. and Robertson, G.  Accent: A Communication)SH
+7200 30245 MT
+(Oriented Network Operating System Kernel.  Proc. 8th Symposium)SH
+7200 31169 MT
+(on Operating Systems Principles, December, 1981, pp. 64-75.)SH
+/Times-Bold SF
+7200 32642 MT
+(7.)SH
+/Times-Roman SF
+8200 XM
+(Rashid, R.F., Tevanian, A., Young, M.W., Golub, D.B., Baron,)SH
+7200 33566 MT
+(R.V., Black, D.L., Bolosky, W., and Chew, J.J.  Machine-)SH
+7200 34490 MT
+(Independent Virtual Memory Management for Paged Uniprocessor)SH
+7200 35414 MT
+(and Multiprocessor Architectures.  Proceedings of the 2nd Sym-)SH
+7200 36338 MT
+(posium on Architectural Support for Programming Languages and)SH
+7200 37262 MT
+(Operating Systems, ACM, October, 1987.)SH
+/Times-Bold SF
+7200 38735 MT
+(8.)SH
+/Times-Roman SF
+8200 XM
+(Robbert van Renesse and Hans van Staveren and Andrew)SH
+7200 39659 MT
+(S. Tanenbaum.  "Performance of the World's Fastest Distributed)SH
+7200 40583 MT
+(Operating System".)SH
+/Times-Italic SF
+13879 XM
+(ACM Operating Systems Review 22)SH
+/Times-Roman SF
+(, 4 \050October)SH
+7200 41507 MT
+(1988\051, 23-34.)SH
+/Times-Bold SF
+7200 42980 MT
+(9.)SH
+/Times-Roman SF
+8200 XM
+(D.M. Ritchie and K. Thompson.  "The UNIX time-sharing)SH
+7200 43904 MT
+(system".)SH
+/Times-Italic SF
+10347 XM
+(Bell System Technical Journal)SH
+/Times-Roman SF
+20498 XM
+(\050July 1978\051.)SH
+/Times-Bold SF
+7200 45377 MT
+(10.)SH
+/Times-Roman SF
+8600 XM
+(Sansom, R.D., Julin, D.P. and Rashid R.F.  Extending a)SH
+7200 46301 MT
+(Capability Based System into a Network Environment.  Proceedings)SH
+7200 47225 MT
+(of the ACM SIGCOMM 86 Symposium on Communications Ar-)SH
+7200 48149 MT
+(chitectures and Protocols, August, 86, pp. 265-274. Also available as)SH
+7200 49073 MT
+(Technical Report CMU-CS-86-115.)SH
+/Times-Bold SF
+7200 50546 MT
+(11.)SH
+/Times-Roman SF
+8600 XM
+(Willy Zwaenepoel.  "Implementation and Performance of Pipes)SH
+7200 51470 MT
+(in the V-System".)SH
+/Times-Italic SF
+13324 XM
+(IEEE Trans. on Comput. C-34)SH
+/Times-Roman SF
+(, 12 \050December)SH
+7200 52394 MT
+(1985\051, 99-106.)SH
+ES
+%%Page: i 6
+BS
+0 SI
+11 /Times-Bold AF
+26414 7937 MT
+(Table of Contents)SH
+10 SS 
+8700 9017 MT
+(1. Introduction)SH
+53500 XM
+(0)SH
+8700 10097 MT
+(2. An Alternative Approach to OS Organization)SH
+53500 XM
+(0)SH
+8700 11177 MT
+(3. Mach Features Supporting OS Emulation)SH
+53500 XM
+(0)SH
+8700 12257 MT
+(4. In-kernel OS Emulation)SH
+53500 XM
+(1)SH
+8700 13337 MT
+(5. Out-of-kernel OS Emulation: Two Approaches)SH
+53500 XM
+(2)SH
+8700 14417 MT
+(6. The Multithreaded UNIX Server)SH
+53500 XM
+(2)SH
+8700 15497 MT
+(7. Multiserver UNIX)SH
+53500 XM
+(2)SH
+9 SS 
+10350 16489 MT
+(7.1. Mach Object Programming Facility)SH
+53550 XM
+(2)SH
+10350 17481 MT
+(7.2. Transparent Library)SH
+53550 XM
+(3)SH
+10350 18473 MT
+(7.3. System Servers)SH
+53550 XM
+(3)SH
+10 SS 
+8700 19553 MT
+(8. Related Work)SH
+53500 XM
+(3)SH
+8700 20633 MT
+(9. Mach availability)SH
+53500 XM
+(3)SH
+ES
+%%Trailer
+%%Pages: 6 
+%%DocumentFonts: Times-Roman Times-Bold Times-Italic Symbol
