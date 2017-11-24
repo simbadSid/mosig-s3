@@ -1,0 +1,124 @@
+%----------------------------------------------------------------------------------------
+%	PACKAGES AND OTHER DOCUMENT CONFIGURATIONS
+%----------------------------------------------------------------------------------------
+\documentclass[12pt]{article}											% font size
+
+\usepackage{amssymb}
+\usepackage{amsmath,amsfonts}
+\usepackage{subfig}
+\usepackage{graphicx}													% to include images
+\usepackage{float}														% to float figures
+\usepackage{booktabs,makecell}											% for diagonal cells
+\usepackage{hyperref}													% for hyperlinks
+\usepackage{listings}													% for including files
+\usepackage[top=1in, bottom=1in, left=1.25in, right=1.25in]{geometry}	% set margins
+\usepackage[utf8]{inputenc}												% for unicode input characters
+\usepackage{helvet}														% use helvetica per default
+\usepackage{hyperref}													% for hyperlinks
+\usepackage[T1]{fontenc}
+\usepackage[english]{babel}
+\usepackage{color}
+\usepackage{lineno}
+
+\renewcommand{\familydefault}{\sfdefault}								% use sans serif per default
+
+\definecolor{codegreen}{rgb}{0,0.6,0}									%New colors defined below
+\definecolor{codegray}{rgb}{0.5,0.5,0.5}
+\definecolor{codepurple}{rgb}{0.58,0,0.82}
+\definecolor{backcolour}{rgb}{0.95,0.95,0.92}
+
+\lstdefinestyle{mystyle}{												%Code listing style named "mystyle"
+  backgroundcolor=\color{backcolour},   commentstyle=\color{codegreen},
+  keywordstyle=\color{magenta},
+  numberstyle=\tiny\color{codegray},
+  stringstyle=\color{codepurple},
+  basicstyle=\footnotesize,
+  breakatwhitespace=false,         
+  breaklines=true,                 
+  captionpos=b,                    
+  keepspaces=true,                 
+  numbers=left,                    
+  numbersep=5pt,                  
+  showspaces=false,                
+  showstringspaces=false,
+  showtabs=false,                  
+  tabsize=2
+}
+
+\lstset{style=mystyle}													%"mystyle" code listing set
+
+% ----------------------------------------------------------------------------------------
+%	TITLE SECTION 
+% ----------------------------------------------------------------------------------------
+
+\makeatletter
+\makeatother
+\renewcommand{\familydefault}{\sfdefault}								% use sans serif per default
+\makeatother
+\title
+{
+	Short stories\\
+    \emph{}
+}
+\author{Written by an unknown and inexperienced author}
+\date{\today}
+
+
+\begin{document}
+\maketitle
+%\linenumbers
+
+
+%***** Etudier les temps ********
+
+Massachusetts, june 2016.   Misha, a young physicist was siting on a cozy chair, facing the secretary who asked her to wait there.   This was one of the first time she left her native Kansas-farmer village.   And it was to make her only dream come true:  integrate the most prestigious university ever; The MIT.   The one that published all the papers and studies she was greedily reading while her classmates where discovering the taste of whiskey and the smell of pot.   *******TOOOOO LONG:  The one that broadcast the radio program about black holes and Doppler effect on moon which she was listening to from her room while her parents and brothers were downstairs, in the leaving room, laying on the sofa, drinking bears and religiously following that stupid "Jerry Spring Show".*******   The one that helped her escape her reality.\\
+
+Misha was a waitress.   A waitress who was trying to save enough money to afford a bus ticket the access fee for the MIT contest.   Her life looked like the one of the main character from a low-budget horror movie:   a handsome and very attractive women working in a gloomy restaurant that only proposes potatoes and eggs fried into a two-month old dark oil.   A restaurant that only local farmers and transiting truck-drivers help to visit.   Most of them were gross, racist and disgusting.   The rare times when a non white American person did venture to that place, Misha could easily forecast the costumers reaction:  "No Mexican cockroach in here", "Get the fuck out of here nigger".   More recently, their favorite phrase toward foreigners was "Trump will get the hell out of you all".\\
+
+Misha did never hate  her job.   She was too focused on her objective to simply care about it.   She did not even notice the stone-age behavior and manners of her costumers.   She did not feel anymore them scratchy hands trying to grab her tiny hips or trying to sneak under her dress.   Fortunately, Hani has always been there to protect her.   She was her shield against all the boys who couldn't stand to be rejected.   Her shield against all the girls who were jealous of that handsome girl who did not even try to joing them group.   That different girl.\\
+
+Hani, was the only person Misha had ever been close to.   She was different.   So different from all the world surrounding them.   The two girls were inseparable.   But Hani new that as soon as her friend will have enough money, she will leave her.   Probably for ever.   But she did not care.\\
+The two girls kissed once.   That was one of the most peaceful moment of Misha's life.   She will probably for ever remember her ****warm**** and slightly wet lips.   The feeling of her sodden and gentle tong.   The softness of her hands landing on her hips skin, sliding up toward her hair and sparkling the warmest feeling that her soul had ever tasted.\\
+No matter how safe and sooth this moment had been, Misha had not even consider changing a single inch of her plans.   She had to leave her native Kansas town.\\
+
+Misha kept silently waiting into this MIT waiting room.   Nothing could make her loose her concentration.   Not even the secretary who was constantly glancing at her shoes or at her dress.   They were probably not fancy enough for such a high society.\\
+After almost fifteen minutes, a door did finally open.   A young fair-haired student went out of the office, followed by an old black man.  The pride and arrogant smile on the student's face went hand-in-hand with his fancy luxury suit.   But Misha did not even notice.   Her eyes could not stand to leave the old men.   She immediately felt comfortable with him.  The tone of his voice, his aristocratic accent, his African-American way to pronounce the letter 'r'.   Everything looked familiar in this men.   Indeed, this was Mr Presley, the host of the scientist radio program that she used to hang on every word for hours.\\
+
+The black old man did not look at Misha.   He simply asked the secretary with a virile voice "next candidate please".   When the secretary asked Misha to follow Mr Presley, the girl was already up.   She entered the office and immediately set on the only chair left empty in the office.   The old men glanced at her for the first time.   "Young girl, you should know that when one enters a private place, he does not site until he is invited to do so".   But Misha did not react.   She was too excited to notice the irritation into her interviewer voice and words.   She was wondering which question will he ask first.   Will he ask for her opinion about his former paper, will he ask her to cite the Newton lows of motion or the difference between the absolute and the special relativity according to the Einstein works?
+
+After several seconds of silence, Mr Presley finally asked his first question.   "What do you think of the application made by Heisenberg of the third Maxwell low?".   Misha could not even wait before answering.   That was the main topic of the last Mr Presley's book.   And she new it by heart.  She immediately started to formulate the considered rule.   She defined very accurately the way Heisenberg considered the application of this rule for his motion case of study.   She explained how Heisenberg probably misused the Rayman approximation formula that leaded to his results.   But non of what she said was enough.
+
+Mister Presley was quietly listening to the young girls.   Misha could not interpret any emotion on his old winkled face.   But she did not need to.   Her voice tone was powerful, straight and full of self-confidence.   She was aware of her knowledge.   Until she finally concluded her answer.
+
+After a quick view to the paper on his desk, Mr Presley answered with all the contempt he could put in a single conversation.   "That was an interesting recite of my own lecture.   But in this school we are committed to exhibit a  visionary and world leading mind for two centuries.  Lazy plagiarism will never be tolerated within this walls.   But the public university will probably be happy to consider you as part of what it calls a scientific team".
+
+%She was so ready for this interview.   She had studied so hardly.   She had prepared this interview so seriously and so accurately.   She had anticipated so many questions.  She felt like she new the MIT researches and concerns better than the person who was about to meet.   She was ready.
+%******* The black "proviseur" kidding ******\\
+
+
+%Non of the smells, the sounds or the people around looked any familiar.   Misha did not even speak the same language as them.
+%This was the day she had expected for so long.\\
+
+
+
+
+
+
+
+%********************* Conclusion
+%Misha new that the men in front of her was still talking to her.   But non of his words could reach her brain.   For the first time of her life, she was totally unable to think or to react.   Too many taught and visions were fighting into her mind.   "What if all this was a dream?".   "I may still have a chance to be admitted".   "Maybe he was just kidding again".\\
+%The more the time was passing, the less 
+
+%Green desk lamp
+
+%Thanks to an unexpectedly quick move, the old men had been able to avoid the flying lamp.   Mister Presley had been able to avoid 
+
+
+
+
+%But non of them did make sense. "What the hell is this nigger saying"
+
+%Racism is every were.  Among white Americans who love trump as much as they love them gun.  Or among black people who are daily killed by blind police officers.
+
+
+\end{document}
