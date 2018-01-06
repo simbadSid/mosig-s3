@@ -1,0 +1,12 @@
+
+
+
+# Convention: <serverName> <serverDescription>
+#	- Server name		: Must be the result of the command "hostname"
+#	- ServerDescription	: <nbr core>-<city>-<server short name>-<processor reference>
+
+
+
+
+#graphite 16-nancy-graphite-Intel_Xeon_E5_2650
+grimoire 16-nancy-grimoire-Intel_Xeon_E5_2630_v3

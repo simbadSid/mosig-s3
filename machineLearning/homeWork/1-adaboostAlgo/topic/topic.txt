@@ -1,0 +1,10 @@
+
+
+- Write a summary of the article not more than 3 pages
+- Send the report to massih amini using the email topic: [MLF - HM2]
+
+
+
+1- Abstract
+2- Introduction: description of ADAboost + motivation to study  what is studied in the article
+3- Analyse: restructure the analyse that is done on the paper: 

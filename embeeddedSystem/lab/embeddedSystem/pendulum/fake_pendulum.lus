@@ -1,0 +1,25 @@
+-- Sampling rate in seconds
+const T=0.02;
+
+-- Length of the stick
+const L=4.0;
+
+const G=10.0; 
+
+function sin(x:real) returns (y:real);
+function cos(x:real) returns (y:real);
+function sqrt(x:real) returns (y:real);
+
+-- DEFINES HERE the library (integrators, derivative)
+-- node I(dx:real) returns (x:real);
+-- node D(x:real) returns (d:real);
+
+-- DEFINES HERE the pendulum equation
+--node PEND( d2x0,d2y0:real) returns (teta:real);
+
+-- DEFINES HERE the full game
+node game(x0,y0:real) returns (x,y: real);
+let	
+	x = x0;
+	y = y0 + L;	
+tel

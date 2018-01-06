@@ -1,0 +1,25 @@
+
+const state_low		=false;
+const state_high	=true;
+
+const state_power_off	= 0;
+const state_power_midle	= 1;
+const state_power_high	= 2;
+
+
+node function(TL:bool, LH:bool, change:bool) returns (side:bool, height:bool);
+let
+	side = state_power_off -> 
+		if (change == false) then
+			state;
+		else
+			if (TL) then
+				if (side == state_power_high) then	side;
+				else					side+1;
+			else then
+				if (side == state_power_off) then	side;
+				else					side -1;
+--	height = state_low ->
+			
+	
+tel

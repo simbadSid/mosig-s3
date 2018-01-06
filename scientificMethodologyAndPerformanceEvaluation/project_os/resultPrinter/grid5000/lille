@@ -1,0 +1,12 @@
+
+
+# Convention: <serverName> <serverDescription>
+#	- Server name		: Must be the result of the command "hostname"
+#	- ServerDescription	: <nbr core>-<city>-<server short name>-<processor reference>
+
+
+
+
+
+chimint 8-lille-chimint-Intel_Xeon_E5_620
+chirloute 8-lille-chirloute-Intel_Xeon_E5_620

@@ -1,0 +1,108 @@
+
+
+
+
+
+
+
+1 - Intro
+Today, and throughout a paper titled ****,  we are going to talk to you about the censorship on the internet.
+
+	As you all know, in France, In europe or in most western country one of the main controversial security issue is linked to the privacy of the user.   How can one be sure that his personal data or uses will not be sniff by a third party, and will not be used on his behalf.
+But in many countries around the world, such an issue is not even considered, given the weight of another issue: the censorship.
+When we talk about censorship, we mostly think about third world countries and government which are constently building them political leadership on the ignorence of them citizens and on the pressure created on the oponents.   But the main country and the one that has the technical tools and knowledge to apply a strong and reliable censorship is probably China.
+
+
+----------------------------------------------------------------
+	For the last fifteen years, different strategies have been used to censor the internet.   Most of this strategies have been officially developed or applied by the chinees government.
+Among these strategies, different level of censorship have been deployed depending on the impact that we may tolerate on the internet content and efficiency:
+
+One may for example block the access to a given IP address or domain name.   Meanwhile, we could consider blocking resources containing specific key words.  Finally, other strategies consist in filtering resources according to the topics they carry such as political or religious topics. 
+
+And most of these methodes have been implemented within the chinees official censorship tool, namely the "GreatFirewall".
+
+
+----------------------------------------------------------------
+All this methodes have been prooved to be efficient and covering a wide scope.   Indeed, china has been able for many years to almost totaly block sensitive web site and reduce to almost null any oponent's speech.   However, all these technics have 2 main drawbacks:
+	First, all this method are publicly known.   Which mean that when a government applies them, it can not do it seecretely.   The responsible of this censorship is then easily identified.
+
+	Second, computer scientists and activists have developed numerous and efficient technics to bypass this sensure, making it less and less efficient on a large number of people with basic computer science knowledge.
+
+This is why, new technics have been developed to enhance the robustness, the efficiency and the privacy of the censorship on the internet.
+The paper that we are about to present studies an example of such a censorship system: the GreatCannon.
+
+
+During this talk, we will start by presenting the most known official chinees censorship tools, namely the GreatFirewall.
+Then, we will present a state of the art of the movement that have been deployed to counter this political and social censorship.
+Finally, we will consider a system that has been proved to be responsible of massive denial of service in March 2015: the GreatCannon.   We will consider some experimentations that leaked informations about its design.   And finally we will use these design specification to link it to the chinees government.
+
+
+
+
+
+
+
+
+
+-----------------------------------------------------------------------------------------------
+4- Great Cannon
+	What we saw previously is a pretty "classical" way to process censorship:  Basically, a sensorship systems stands between an end user and the service provider, and it simply sniff on all the flow that transit.   If any sensitive request or answer is noticed by the censor system, the connection is simply closed.
+Such a system has been verry wildely used at different scalls.   And the history of this usage made obvious two limitations that we highlight:
+
+First, this system is an obvious performance botleneck for the whole network.   As it needs to sniff on all the trafic flow, it is verry likely to create a significant trafic congestion, with all the well known impacts that it may have on the network (economy, security, ...).   Meanwhile, such a system may hardely scall at a large number of users.   And china, with its huge population, and its high number of internet service providers 	is a good example to be aware of that.
+
+Meanwhile, this system is a passive system:   hence, for a given sensitive server, which provides a forbiden service, the censor system may only limit the access to the server.   Which means that the server stays available however the access path to it is closed.   Thus, peopol who are able to bypass this limitation may still access the forbidden service.   And this is why services such as the "GreatFire" which allow building this bypass, represent such a threat for the organization that promotes this censorship.
+****** Scheme 1:      |forbidden service (FB): available service|     Censorship (kills any connection) --  end user
+****** Scheme 2:      |forbidden service (FB): available service|     Censorship (kills any connection)/bypass --  end user
+
+This is why, other systems such as the NSA's QUANTUM or the "GreatCannon" have been deployed based on an active approach of the censorship:   a censorship system does not simply cut the connection between an end user and a forbidden service, but it attacks the service and makes it unavailable.
+
+For some of you who have already heared about the GreatCannon, you may have noticed that I did not present it as a chinees system.   Indeed, as far as we know, the chineese government did never aknowledge any link with this system.   Thus one of the main aim of this paper is to try to find evidences that tend to link the "Great cannon" to the Chinees government.
+   So in this section, after presenting the GreatCannon architecture and designs, we highlight the design similarities between the "Great Cannon" and the "GreatFirwall", which is stated to be controled by the chinees government.
+
+
+
+---------------------------------------------------
+1- Define the Great cannon
+So what is the Great Cannon?   Basically, the great cannon is, as well as the GreatFirewall based on the principle of the men in the midle.
+   It stands betwen an enduser and a server and first observes all the trafic.   Unlike the GreatFirewall, the Great cannon is an on-path system.   Hence, it never blocks or intercepts any packet.
+
+Instead, it simply Sniff on all the transiting flow.   And, using a precise random process, it selects packet which are modified before transmission.   Tipically, this modification consists in the injection of a JavaScript into the response to this request packet.
+This modification allows to somehow take control of the source machines and to eventually thanks to all the gathered machines, orchestrate a massive denial of service attack on any given service.    And this is what happened to GreatFire.org or the GitHub websites.
+
+
+
+---------------------------------------------------
+One of the main technical breakthrough of the GreatCannon is its election policy:  how does it efficientely elects the machines to be infected.
+First of all, despite the GreatFirewall, the GreatCannon does not consider all the observed TCP packets.   Instead it only considers the TCP request packet.   Indeed, a TCP request usually fits in 1 packet, while an answer needs several packets, and needs to reconstruct them. 
+
+
+Meanwhile, ammong all the observed TCP requests, the GreatCannon only selects a subset of this request, roughly 1.75 % of this request according to the assesment made in the paper.   And this packets are the one which are stamped to be eventually infected.
+
+Now among all the machine that make TCP request which one to chose to be used for a massive denial of service attack.   Well the ideal would be to use machine spread all over the world.   This way, it would be even harder to link tha attack to a single country or organization.   It would also be harder to incriminate one single country as the machines that are used are located all over the world.
+
+So this is the objective: to gather and control machines identically distributed all over the world.   But how did the GreatCannon do that.
+Well the TCP request that have been targeted are the one going to the advertising service baibu.   This service is probably daily used by most of your web browser on your behalf to seek for advertising pages.   This service has probably been choosed because it is one of the most world widely used service.   It is also transparently delivering advertising service.   Hence a modification of its content may hardly be detected by an end user.
+
+
+To sumarize, thanks to this election policy, the grat cannon has been able to efficientely and transparently take control of machines all over the world.   This way, it has been able to lead one of the most efficient Distributed Denial of service attack in march 2015.
+But now, how can identify the GreatCannon as responsible of this attack.   Meanwile, how is it possible to link this "GratCannon" service to any chinees organization.
+
+
+---------------------------------------------------
+Basically, to do so, we are going to highligh some specific designs of the chinees service GreatFirewall that has been also noticed on the GreatCannon.   We also exhibit a TTL-based geolocalization method that has localized the two services within the same network.
+
+So first, a TTL design has been noticed on both GreatFirewall and GreatCannon:   
+Basically a TTL stands for Time To Leave.   It a value that is attributed to each TCP packet and which is decremented at each hope from the source to the destination machine.
+But when the GreatFirewall or the GreatCannon receive any TCP packet, they modify its TimeToLeave value in an incremental manner.  Basically, what happens is that successive packet from the same TCP connection will have them TTL value changed to the same value, incremented at each going through.   And this is the way we may know that one of these two systems is running on a given network.    Because such a design is barely used anywhere else than for this two service.  
+
+Now knowing this rare design specificity, one could link the two systems and state that both systems are verry likely using the same portions of codes.
+But the most intresting part, is that this specificity has been used to geolocalize both system on the same chinees network area.  	
+
+
+
+
+
+
+
+

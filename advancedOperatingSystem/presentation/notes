@@ -1,0 +1,82 @@
+
+
+
+
+I- Intro
+	As you probably know, most modern and main stream operating systems are constently building and improving mechanism to allow a large set of relatively heterogenous applications run on the same system.   This is for instance the aim of the MMU which allows different applications to run simultaneously on the same system.   And this way we call this OS general-purpose OS.
+But the main issue introduced by this "broad applicability" mechanism is the time and space footprint that they stamp at each application execution.   Once again the MMU example
+
+	Different approach have been proposed to make general purpose OS less sacrifice per-application performance in favor of generality.   Most of them aim to allow applications to interact with hardware using as few OS interaction as possible (ex: library OS, hardware virtualization and kernel bypass techniques).
+The problem with this approaches is that it requires a lot of engineering to make the OS embed all the functionalities of a general purpose OS and target the same wide broad set of applications.
+
+	In the paper we considered, the EbbRT a framework which allows to build application-specific OS (library OS) that enable to suite the application performance specifications while keeping a significant degree of generality.
+
+
+
+
+
+
+II- Specification of the EbbRT built OS
+	So the main objective of the authors was to help users build a lightweight OS that fits the designs of a given application in order to optimize its performances.   To do so, they have developed the EbbRT, a framework that allows to build a custom lightweight library OS for a given application.
+	- Present the Library OS
+	So First of all, what is a library OS?
+	Basically, a library OS is an OS that is packed within a library or a user space library.   When the user compiles a given application, he will link the application to the OS library.   The resulting binary may be run on bare metal, on the top of a hypervisor or a user process of an other host OS.
+
+
+
+	- Interest of the library OS for building application specific OS
+	The first intrest of using such an architecture is probably its lightweight.   Indeed, the created software stack run on bare metal.
+	An other advantage is its portability accross specific and general purpose OS.   And this allows to reuse some functionality that are already implemented on the host OS which significantly reduces the engineering effort for implementing the OS.
+	Meanwhile, one may also disable this host os functionality.   And this would allow to reduce the kernel footprint at each instruction (hence the execution time of each ABI instruction).
+
+	Second, it is noteworthy that an OS library is a UniKernel or a single address space kernel.   Hence such a kernel avoids all the overhead linked to the scheduling and to the isolation of independent applications (process).   The created OS may this way minimize the system management time in favor of the payload or the application running time. 
+
+
+
+	- A framework for building OS:
+	Now that we have presented the main concept beneath the EbbRT, let's see how to implement an os using this framework.   An most important, how to reduce the engineering effort to implement this OS, and make it possible to build a specific one for each application to fite its specific perfoemance requirements.
+	The main idea of the EbbRT framework is based on verry well known object oriented programing mechanisms.
+	The EbbRT framwork is mainly made of C++ classes called the Elastic building blocks.   The user may reuse as is or extend while he builds a custom OS.  ************************** Thanks  to this relatively easy engineering process, the user may build an OS designed to the performances specification of his application.*******************
+
+	So how is this mechanism usefull for our performance fitting purpose?   For instance, we know the dynamic memory allocation is a performance botleneck when dealing with highly multithreaded application.   Thus, different building block have been implemented to manage the dynamic memory allocation using different strategies depending on the application allocation paterns.   The user may choose which block (C++ class) to embeed to its OS depending on which memory allocation pattern is followed by his application.   It may also dynamically change the used block during the OS run time.
+
+
+
+
+
+
+
+------------------------------------------------------------------------------------------------------------------------------------
+III- What makes the EbbRT built OS adaptable for application-specific performances
+	In this section, we will see how the previously presented designs of the EbbRT framework allows to optimize the performance of a custom user application.   The purpose of this section is to see how the EbbRT allows to dramatically reduce the time and space footprint of the OSs inorder to dedicated as much hardware resources as possible to the user application.
+
+	- Non-preemptive environment (event-driven)
+	The main objective here is to reduce the time footprint of the OS while running an application.   To do so, the EbbRT has adopted an event oriented running environment.   This way, an application (or at least a task of the application) is run till the end without any scheduling interuptions.   Thus we get ride of the scheduling and the context switch of thread oriented environments (every quantum).
+
+
+	- Unikernel architecture:  
+	Now that we have dramatically reduced the overhead to schedule tasks, one could want to reduce the overhead of the ABI functions used by this task.   And here we will talk about one of the most prominent time consuming functionality: the memory access.
+	This OS time overhead is mainly reduced by the Unikernel architecture used by the EbbRT os.   Indeed, as this architecture implements a unique address space for all the applications, the ABI gets ride of the translation time for each address.
+	Meanwhile, it also saves space:   indeed it reduces the foot print of the address translation on the caches.   Hence a bigger portion of the caches is used for the payload instead of the translations.
+
+
+	- Distributed OS architecture on heterogeneous hardware:
+	An other way for the OS to fit the specific application design comes from its distributed architecture.   Indeed, the OS is made of distributed components accross heterogenous hardware platforms.   Hence, a programmer could distributed his application accross different hardware platforms depending on the hardware needs of each part of the application.
+	But the intresting part of this distributed OS design is that the application, despite the fact that it runs on different hardware platforms is not distributed.   It is running on a single OS (which is distributed).   Thus the overhead of the parallel programming (communication, synchronization) is lighten.  And this is mainly due to the fact that the physical memory of the indepent platforms is managed by the same os (hence same address space).
+
+
+
+	- Library model OS (elasticity): allows the user to build its OS while compiling his application.   Hence choose the parts (Ebb) that he want to integrate.   He may also choose which implementation of this block is the most suitable to its application
+	- Allowing different implementation of the system parts to suite the performance specification of the app.  Ex: the memory allocator (EbbRT is modulable/customizable).
+
+
+	- At this point, you may think that the event driven environment that is supported by the EbbRT os may not be compatible with the majority of applications.   Indeed, most of the applications that we use on our mainstream OS are thread oriented.   This is why, along with the event driven environment, the EbbRT provides a simple cooperative model on top of the event driven runing environemt.   And this allows for blocking sementics and an made up concurrency between different execution flows.
+
+The native non-premptive event execution allong with support for cooperative threading allows to reach the efficiency adaptability of the EbbRT os with while targeting a large set of potential user applications.   In the next section, Lucas will present to you all the designs that make the EbbRT OS suitable for a large set of applications, based on different programing paradigms.
+
+
+
+
+
+
+

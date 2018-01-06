@@ -1,0 +1,14 @@
+
+
+
+
+
+
+* Evaluate the overhead when we use an external pager for a microkernel. We
+  suppose the microkernel has blocking IPC. Evaluate it in terms of :
+    - latency
+    - System calls
+    - Code path
+    - Locality in i-cache and d-cache
+    - interrupts
+* 

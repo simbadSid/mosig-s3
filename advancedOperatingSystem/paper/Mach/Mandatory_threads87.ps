@@ -1,0 +1,1944 @@
+%!PS-Adobe-2.0
+%%Title: threads.mss
+%%DocumentFonts: (atend)
+%%Creator: Mary Thompson and Scribe 7(1700)
+%%CreationDate: 24 November 1993 10:00
+%%Pages: (atend)
+%%EndComments
+% PostScript Prelude for Scribe.
+/BS {/SV save def 0.0 792.0 translate .01 -.01 scale} bind def
+/ES {showpage SV restore} bind def
+/SC {setrgbcolor} bind def
+/FMTX matrix def
+/RDF {WFT SLT 0.0 eq 
+  {SSZ 0.0 0.0 SSZ neg 0.0 0.0 FMTX astore}
+  {SSZ 0.0 SLT neg sin SLT cos div SSZ mul SSZ neg 0.0 0.0 FMTX astore}
+  ifelse makefont setfont} bind def
+/SLT 0.0 def
+/SI { /SLT exch cvr def RDF} bind def
+/WFT /Courier findfont def
+/SF { /WFT exch findfont def RDF} bind def
+/SSZ 1000.0 def
+/SS { /SSZ exch 100.0 mul def RDF} bind def
+/AF { /WFT exch findfont def /SSZ exch 100.0 mul def RDF} bind def
+/MT /moveto load def
+/XM {currentpoint exch pop moveto} bind def
+/UL {gsave newpath moveto dup 2.0 div 0.0 exch rmoveto
+   setlinewidth 0.0 rlineto stroke grestore} bind def
+/LH {gsave newpath moveto setlinewidth
+   0.0 rlineto
+   gsave stroke grestore} bind def
+/LV {gsave newpath moveto setlinewidth
+   0.0 exch rlineto
+   gsave stroke grestore} bind def
+/BX {gsave newpath moveto setlinewidth
+   exch
+   dup 0.0 rlineto
+   exch 0.0 exch neg rlineto
+   neg 0.0 rlineto
+   closepath
+   gsave stroke grestore} bind def
+/BX1 {grestore} bind def
+/BX2 {setlinewidth 1 setgray stroke grestore} bind def
+/PB {/PV save def newpath translate
+    100.0 -100.0 scale pop /showpage {} def} bind def
+/PE {PV restore} bind def
+/GB {/PV save def newpath translate rotate
+    div dup scale 100.0 -100.0 scale
+    /showpage {} def
+    /letter {} def
+    /lettersmall {} def
+    /note {} def
+    } bind def
+/GE {PV restore} bind def
+/FB {dict dup /FontMapDict exch def begin} bind def
+/FM {cvn exch cvn exch def} bind def
+/FE {end /original-findfont /findfont load def  /findfont
+   {dup FontMapDict exch known{FontMapDict exch get} if
+   original-findfont} def} bind def
+/BC {gsave moveto dup 0 exch rlineto exch 0 rlineto neg 0 exch rlineto closepath clip} bind def
+/EC /grestore load def
+/SH /show load def
+/MX {exch show 0.0 rmoveto} bind def
+/W {0 32 4 -1 roll widthshow} bind def
+/WX {0 32 5 -1 roll widthshow 0.0 rmoveto} bind def
+/RC {100.0 -100.0 scale
+612.0 0.0 translate
+-90.0 rotate
+.01 -.01 scale} bind def
+/URC {100.0 -100.0 scale
+90.0 rotate
+-612.0 0.0 translate
+.01 -.01 scale} bind def
+/RCC {100.0 -100.0 scale
+0.0 -792.0 translate 90.0 rotate
+.01 -.01 scale} bind def
+/URCC {100.0 -100.0 scale
+-90.0 rotate 0.0 792.0 translate
+.01 -.01 scale} bind def
+%%EndProlog
+%%Page: 0 1
+BS
+0 SI
+14 /Times-Bold AF
+19730 8138 MT
+(Mach Threads and the Unix Kernel:)SH
+23892 9816 MT
+(The Battle for Control)SH
+11 /Times-Roman AF
+17875 15170 MT
+(Avadis Tevanian, Jr., Richard F. Rashid, David B. Golub,)SH
+18840 16366 MT
+(David L. Black, Eric Cooper and Michael W. Young.)SH
+23223 18758 MT
+(Department of Computer Science)SH
+24383 19954 MT
+(Carnegie-Mellon University)SH
+25847 21150 MT
+(Pittsburgh, PA 15213)SH
+14 /Times-Bold AF
+27995 27549 MT
+(Abstract)SH
+11 /Times-Roman AF
+9000 30106 MT
+(This paper examines a kernel)
+159 W( implemented lightweight process mechanism built for the Mach)158 W
+9000 31302 MT
+(operating system. The pros and cons of such a mechanism are discussed along with the)
+37 W( problems)38 W
+9000 32498 MT
+(encountered during its implementation.)SH
+13 /Times-Bold AF
+9000 36249 MT
+(1. Introduction)SH
+11 /Times-Roman AF
+9500 37897 MT
+(The early Unix notion of process was based)
+13 W( on the hardware abstraction of its day: a single CPU)12 W
+9000 39545 MT
+(executing within a memory address space.  Even)
+74 W( today, although, multiprocessors are becoming)75 W
+9000 41193 MT
+(increasingly common, neither Unix System V nor 4.3 BSD provide a)
+80 W( way to manage more than)79 W
+9000 42841 MT
+(one thread of control within an address space.)SH
+9500 45313 MT
+(The addition of lightweight processes to Unix would provide many advantages.  In fact, the)
+22 W( lack)23 W
+9000 46961 MT
+(of kernel support has caused Unix programmers)
+58 W( to implement a variety of coroutine packages to)57 W
+9000 48609 MT
+(support multi-stack)
+226 W( applications.  Lightweight threads of control can allow a programmer to)227 W
+9000 50257 MT
+(encapsulate computations with their stack state and thus achieve greater)
+136 W( modularity.  Research)135 W
+9000 51905 MT
+(systems, such as THOTH)
+5 W( [2])
+SH( and its successor, Stanford's V Kernel)
+5 W( [3],)
+SH( have)
+5 W( shown that multiple)6 W
+9000 53553 MT
+(threads of control within a single)
+101 W( process can be an especially important tool for writing server)100 W
+9000 55201 MT
+(applications. A)
+909 W( thread package could provide an attractive way)
+317 W( to take advantage of the)318 W
+9000 56849 MT
+(parallelism afforded by tightly-coupled shared memory multiprocessors.)SH
+9500 59321 MT
+(This paper examines)
+420 W( a kernel-implemented thread facility built for the Mach operating)419 W
+9000 60969 MT
+(system [1].)
+SH( The)
+695 W( pros and cons of such a mechanism are discussed along)
+210 W( with the problems)211 W
+9000 62617 MT
+(encountered during its implementation.)SH
+ES
+%%Page: 1 2
+BS
+0 SI
+13 /Times-Bold AF
+9000 8071 MT
+(2. Kernel Implemented Threads vs. Coroutines)SH
+11 /Times-Roman AF
+9500 9719 MT
+(Some of the advantages)
+24 W( of lightweight processes can be achieved by out-of-kernel solutions, but)23 W
+9000 11367 MT
+(often at the expense of either preemption or parallelism.)
+98 W( Two)
+472 W( approaches are common:  multi-)99 W
+9000 13015 MT
+(process shared memory implementations and single process coroutines.)SH
+9500 15487 MT
+(Parallel execution can be)
+153 W( achieved with multiple processes in conjunction with some kind of)152 W
+9000 17135 MT
+(shared memory)
+181 W( facility.  For example, in Dynix)
+182 W( [4])
+SH( users can allocate a number of processes)182 W
+9000 18783 MT
+(equal to the number of processors and effectively manage shared computations through an)286 W
+/Times-Italic SF
+9000 20431 MT
+(mmap)SH
+/Times-Roman SF
+(ed region of shared)
+165 W( memory.  Similar tricks allow programmers to build multiprocessor)166 W
+9000 22079 MT
+(applications using Encore's UMAX)
+128 W( [5])
+SH( operating system.)
+128 W( Typically)
+530 W( such systems amount to a)127 W
+9000 23727 MT
+(second layer of scheduling similar to that used within the operating system itself.)SH
+9500 26199 MT
+(A significant advantage)
+82 W( of coroutine packages is that they can significantly reduce the costs of)83 W
+9000 27847 MT
+(multi-thread management or at least isolate them)
+67 W( within a user process.  Out-of-kernel coroutine)66 W
+9000 29495 MT
+(packages do, however, have many problems:)SH
+/Symbol SF
+10969 31073 MT
+(\267)SH
+/Times-Roman SF
+11750 XM
+(Scheduling is)
+216 W( very difficult to do.  Most coroutine packages use non-preemptive)217 W
+11750 32269 MT
+(scheduling.)SH
+/Symbol SF
+10969 34163 MT
+(\267)SH
+/Times-Roman SF
+11750 XM
+(It is impossible to have truly parallel execution in a pure coroutine package.)SH
+/Symbol SF
+10969 36057 MT
+(\267)SH
+/Times-Roman SF
+11750 XM
+(If a coroutine takes a page fault or other type of trap that)
+96 W( causes it to wait \050e.g. for)95 W
+11750 37253 MT
+(disk I/O\051, then all other coroutines must wait.)SH
+/Symbol SF
+10969 39147 MT
+(\267)SH
+/Times-Roman SF
+11750 XM
+(Only a single coroutine may be executing a system)
+200 W( call.  Therefore, if coroutine)201 W
+11750 40343 MT
+(executes a system call that blocks causes the entire set of coroutines to block.)SH
+9500 42815 MT
+(The primary disadvantage of an in-kernel thread implementation)
+24 W( is potential cost.  In addition to)23 W
+9000 44463 MT
+(the cost of crossing the user process/kernel protection boundary with)
+2 W( a trap or system call, there is)3 W
+9000 46111 MT
+(also the cost of thread data structures, which must be managed in kernel virtual)
+121 W( address space,)120 W
+9000 47759 MT
+(and the)
+41 W( cost of general purpose preemptive scheduling, which will typically be much higher than)42 W
+9000 49407 MT
+(those of a specialized coroutine package.)SH
+9500 51879 MT
+(After considering the alternatives and their problems, it was decided that in Mach it would make)16 W
+9000 53527 MT
+(sense to provide primitive multi-threaded support within the kernel which)
+21 W( would provide for both)22 W
+9000 55175 MT
+(parallelism and preemption.  This support would then serve as)
+90 W( the base upon which lightweight)89 W
+9000 56823 MT
+(process packages could be implemented.)SH
+13 /Times-Bold AF
+9000 60574 MT
+(3. Mach Task and Thread Primitives)SH
+11 /Times-Roman AF
+9500 62222 MT
+(Mach splits the Unix abstraction of process into two components:)
+96 W( the)469 W
+/Times-Italic SF
+41695 XM
+(task)SH
+/Times-Roman SF
+43839 XM
+(and the)97 W
+/Times-Italic SF
+47515 XM
+(thread)SH
+/Times-Roman SF
+(. A)469 W
+9000 63870 MT
+(Mach)SH
+/Times-Italic SF
+11933 XM
+(task)SH
+/Times-Roman SF
+14134 XM
+(consists of a collection of)
+154 W( system resources, including an address space.  It can be)153 W
+9000 65518 MT
+(thought of as that part)
+38 W( of a Unix process consisting of its address space, file descriptors, resource)39 W
+9000 67166 MT
+(usage information, etc.  In essence,)
+115 W( a task is a process without a flow of control or register set)114 W
+9000 68814 MT
+(\050hardware state\051.)SH
+9500 71286 MT
+(A Mach)89 W
+/Times-Italic SF
+13526 XM
+(thread)SH
+/Times-Roman SF
+16762 XM
+(is the basic unit)
+89 W( of execution.  A thread executes within the context of exactly)90 W
+10 SS 
+30350 75600 MT
+(1)SH
+ES
+%%Page: 2 3
+BS
+0 SI
+11 /Times-Roman AF
+9000 7955 MT
+(one task.)
+34 W( However,)
+341 W( any number of threads may execute within a single task.  Threads execute in)33 W
+9000 9603 MT
+(pseudo-parallel on a uniprocessor.  When running on a tightly coupled multiprocessor, multiple)97 W
+9000 11251 MT
+(threads may execute in parallel.  A traditional BSD process is implemented in Mach as a)
+136 W( task)135 W
+9000 12899 MT
+(with a single thread of control.)SH
+9500 15371 MT
+(Appendices I)
+49 W( and II list the operations supplied by Mach for creating, managing and destroying)50 W
+9000 17019 MT
+(tasks and threads.)
+53 W( Note)
+380 W( that all such operations are performed using object handles which are in)52 W
+9000 18667 MT
+(fact capabilities to communication channels \050i.e., Mach)SH
+/Times-Italic SF
+33620 XM
+(ports)SH
+/Times-Roman SF
+(\051.)SH
+13 /Times-Bold AF
+9000 22418 MT
+(4. User Level Thread Synchronization)SH
+11 /Times-Roman AF
+9500 24066 MT
+(At any given point in time, a thread can be in one of three states:)SH
+11200 25519 MT
+(1.)SH
+12300 XM
+(A thread that is in)20 W
+/Times-Italic SF
+20557 XM
+(running state)20 W
+/Times-Roman SF
+26709 XM
+(is either executing)
+20 W( on some processor, or is eligible)21 W
+12300 26715 MT
+(for execution on a processor as far as)
+120 W( the user is concerned.  A thread may be in)119 W
+12300 27911 MT
+(running state yet blocked for some reason inside the kernel \050perhaps waiting for a)97 W
+12300 29107 MT
+(page fault to be handled\051.)SH
+11200 31001 MT
+(2.)SH
+12300 XM
+(If a thread is in)10 W
+/Times-Italic SF
+19283 XM
+(will-suspend)SH
+/Times-Roman SF
+25130 XM
+(state, then it can still execute)
+10 W( on some processor until a)9 W
+12300 32197 MT
+(call to)SH
+/Times-Italic SF
+15294 XM
+(thread_wait)SH
+/Times-Roman SF
+20887 XM
+(is invoked.)SH
+11200 34091 MT
+(3.)SH
+12300 XM
+(A thread that is in)98 W
+/Times-Italic SF
+20947 XM
+(suspended)SH
+/Times-Roman SF
+25902 XM
+(state is not executing on processor.  The thread will)98 W
+12300 35287 MT
+(not execute on any processor until it returns to running state.)SH
+9000 36935 MT
+(Each of)
+73 W( these states can also apply to a task.  That is, a task may be in running, will-suspend or)72 W
+9000 38583 MT
+(suspended state.  The state of a task will affect all threads executing within that)
+232 W( task.  For)233 W
+9000 40231 MT
+(example, a)
+12 W( thread can be eligible for execution only if both it and its task are in the running or the)11 W
+9000 41879 MT
+(will-suspend state.)SH
+9500 44351 MT
+(The Mach kernel does not enforce a synchronization model.  Instead, it provides)
+4 W( basic primitives)5 W
+9000 45999 MT
+(upon which different models of synchronization may be built.)
+123 W( One)
+519 W( form such synchronization)122 W
+9000 47647 MT
+(could take would be the Mach IPC facility)
+43 W( [1].)
+SH( Should)
+361 W( an application desire its)
+43 W( own thread-level)44 W
+9000 49295 MT
+(synchronization, it can use the suspend, resume and wait primitives.  For example,)
+57 W( to implement)56 W
+9000 50943 MT
+(P and V style semaphores with shared memory, one could use:)SH
+10 SS 
+30350 75600 MT
+(2)SH
+ES
+%%Page: 3 4
+BS
+0 SI
+11 /Courier AF
+11640 7886 MT
+(P\050semaphore\051)SH
+11640 9000 MT
+({)SH
+16920 10114 MT
+(lock\050semaphore\051;)SH
+16920 11228 MT
+(while \050semaphore->inuse\051 {)SH
+22200 12342 MT
+(thread_suspend\050thread_self\050\051\051;)SH
+22200 13456 MT
+(enqueue\050semaphore->queue, thread_self\050\051\051;)SH
+22200 14570 MT
+(unlock\050semaphore\051;)SH
+22200 15684 MT
+(thread_wait\050thread_self\050\051, TRUE\051;)SH
+22200 16798 MT
+(lock\050semaphore\051;)SH
+16920 17912 MT
+(})SH
+16920 19026 MT
+(semaphore->inuse = TRUE;)SH
+16920 20140 MT
+(unlock\050semaphore\051;)SH
+11640 21254 MT
+(})SH
+11640 23482 MT
+(V\050semaphore\051)SH
+11640 24596 MT
+({)SH
+16920 25710 MT
+(lock\050semaphore\051;)SH
+16920 26824 MT
+(semaphore->inuse = FALSE;)SH
+16920 27938 MT
+(next = dequeue\050semaphore->queue\051;)SH
+16920 29052 MT
+(if \050next != THREAD_NULL\051)SH
+22200 30166 MT
+(thread_resume\050next\051;)SH
+16920 31280 MT
+(unlock\050semaphore\051;)SH
+11640 32394 MT
+(})SH
+/Times-Roman SF
+9000 34042 MT
+(In this example, lock and unlock could be implemented as spin locks on shared memory.)
+149 W( To)575 W
+9000 35690 MT
+(perform the P operation, the caller)
+134 W( checks if the semaphore is in use.  If so, it puts itself on a)133 W
+9000 37338 MT
+(queue of threads waiting for the semaphore and goes into a suspended state.  When it is placed)94 W
+9000 38986 MT
+(back in running state it once again checks the semaphore, suspending)
+1 W( itself again if necessary.  To)SH
+9000 40634 MT
+(perform the V operation,)
+86 W( a thread checks for other waiting threads and places the first thread in)87 W
+9000 42282 MT
+(the semaphore queue into the running state.)SH
+9500 44754 MT
+(Note that placing a thread into the)
+297 W( suspended state is separated into a suspend operation)296 W
+9000 46402 MT
+(followed by a wait operation.  If there were not such a separation, it would be impossible for an)65 W
+9000 48050 MT
+(application to correctly synchronize)
+446 W( unless the kernel provided semaphores directly.  If)445 W
+9000 49698 MT
+(suspend/wait were a single operation a thread would be)
+157 W( forced to call it either before or after)158 W
+9000 51346 MT
+(unlocking the semaphore.  If the thread made the call before)
+107 W( unlocking the semaphore then the)106 W
+9000 52994 MT
+(application would deadlock because)
+81 W( the semaphore was never unlocked.  If the thread made the)82 W
+9000 54642 MT
+(call after unlocking the semaphore then it would be possible for the)
+15 W( thread holding the semaphore)14 W
+9000 56290 MT
+(to perform its resume before the waiting thread is able to suspend itself.)
+68 W( In)
+413 W( this case, the thread)69 W
+9000 57938 MT
+(would suspend itself and never be resumed.)SH
+9500 60410 MT
+(Of course, the kernel)
+19 W( could implement semaphores directly \050as does, for example, System V\051.  It)18 W
+9000 62058 MT
+(was felt, however,)
+326 W( that a semaphore package would only add yet another synchronization)327 W
+9000 63706 MT
+(mechanism to the kernel on top of that provided by the Mach IPC facility.)
+137 W( The)
+548 W( kernel would)136 W
+9000 65354 MT
+(inevitably implement only)
+152 W( a small set of semaphore types and applications that wanted to use)153 W
+9000 67002 MT
+(different semaphore semantics would still)
+67 W( be forced to use an extra layer of synchronization and)66 W
+9000 68650 MT
+(manage additional data structures.)SH
+10 SS 
+30350 75600 MT
+(3)SH
+ES
+%%Page: 4 5
+BS
+0 SI
+13 /Times-Bold AF
+9000 8071 MT
+(5. The C-Threads Package)SH
+11 /Times-Roman AF
+9500 9719 MT
+(The exported thread primitives are intentionally low)
+86 W( level to allow flexibility in dealing with a)87 W
+9000 11367 MT
+(variety of programming languages and)
+46 W( architectures.  By providing a minimal kernel interface, it)45 W
+9000 13015 MT
+(is possible to)
+193 W( implement many different application or language interfaces to threads without)194 W
+9000 14663 MT
+(burdening some applications in favor)
+10 W( of others.  For example, a feature that provided dynamically)9 W
+9000 16311 MT
+(growing stacks might be useful for a naive C programmer, but it might be extra baggage for)
+119 W( a)120 W
+9000 17959 MT
+(Lisp programmer.)SH
+9500 20431 MT
+(Higher level interfaces to threads can be provided in the form of:)SH
+/Symbol SF
+10969 22009 MT
+(\267)SH
+/Times-Roman SF
+11750 XM
+(run time libraries,)SH
+/Symbol SF
+10969 23903 MT
+(\267)SH
+/Times-Roman SF
+11750 XM
+(new language constructs and/or)SH
+/Symbol SF
+10969 25797 MT
+(\267)SH
+/Times-Roman SF
+11750 XM
+(home grown packages developed for specific applications.)SH
+9500 28269 MT
+(One such high-level package for)
+357 W( programming in C, called)356 W
+/Times-Italic SF
+38854 XM
+(C-threads)SH
+/Times-Roman SF
+(, has already been)356 W
+9000 29917 MT
+(implemented. It)
+368 W( provides a high level C interface to the low level thread primitives along with a)47 W
+9000 31565 MT
+(collection of other mechanisms useful in various parallel)
+209 W( programming paradigms \050similar to)208 W
+9000 33213 MT
+(those available in languages such as Mesa [6]\051.)SH
+9500 35685 MT
+(The C-Threads package provides)SH
+/Symbol SF
+10969 37263 MT
+(\267)SH
+/Times-Roman SF
+11750 XM
+(multiple threads of control for parallelism,)SH
+/Symbol SF
+10969 39157 MT
+(\267)SH
+/Times-Roman SF
+11750 XM
+(shared variables,)SH
+/Symbol SF
+10969 41051 MT
+(\267)SH
+/Times-Roman SF
+11750 XM
+(mutual exclusion for critical sections and)SH
+/Symbol SF
+10969 42945 MT
+(\267)SH
+/Times-Roman SF
+11750 XM
+(condition variables for synchronization of threads.)SH
+9500 45417 MT
+(To provide multiple threads)
+12 W( of control, the C-Threads interface defines)13 W
+/Times-Italic SF
+41118 XM
+(cthread_fork)SH
+/Times-Roman SF
+47088 XM
+(for creating)13 W
+9000 47065 MT
+(new threads,)108 W
+/Times-Italic SF
+15049 XM
+(cthread_exit)SH
+/Times-Roman SF
+20930 XM
+(for exiting threads and)108 W
+/Times-Italic SF
+31564 XM
+(cthread_join)SH
+/Times-Roman SF
+37569 XM
+(to wait)
+108 W( for a particular thread to)107 W
+9000 48713 MT
+(finish.)SH
+9500 51185 MT
+(Threads that wish to access shared data may use the mutual)
+174 W( exclusion facilities provided by)175 W
+9000 52833 MT
+(C-Threads. In)
+315 W( particular,)20 W
+/Times-Italic SF
+20502 XM
+(mutex_alloc)SH
+/Times-Roman SF
+26173 XM
+(and)SH
+/Times-Italic SF
+28056 XM
+(mutex_free)SH
+/Times-Roman SF
+33237 XM
+(allocate and deallocate)20 W
+/Times-Italic SF
+43588 XM
+(mutex)SH
+/Times-Roman SF
+46509 XM
+(objects. The)315 W
+/Times-Italic SF
+9000 54481 MT
+(mutex)SH
+/Times-Roman SF
+11957 XM
+(objects support the functions)56 W
+/Times-Italic SF
+25136 XM
+(mutex_lock)SH
+/Times-Roman SF
+30476 XM
+(and)SH
+/Times-Italic SF
+32396 XM
+(mutex_unlock)SH
+/Times-Roman SF
+38836 XM
+(which correspond to typical P)57 W
+9000 56129 MT
+(and V operations.)SH
+9500 58601 MT
+(Synchronization in C-Threads may also be accomplished with condition variables.)712 W
+/Times-Italic SF
+9000 60249 MT
+(Condition_alloc)SH
+/Times-Roman SF
+16491 XM
+(and)SH
+/Times-Italic SF
+18418 XM
+(condition_free)SH
+/Times-Roman SF
+25173 XM
+(allocate and free condition variables.  When)
+64 W( a thread wishes)65 W
+9000 61897 MT
+(to indicate that a condition is true, it uses)72 W
+/Times-Italic SF
+27980 XM
+(condition_signal)SH
+/Times-Roman SF
+35723 XM
+(to awaken at least one of the threads)72 W
+9000 63545 MT
+(waiting for the condition.  The)169 W
+/Times-Italic SF
+23731 XM
+(condition_broadcast)SH
+/Times-Roman SF
+33281 XM
+(primitive causes)
+169 W( all threads waiting for a)170 W
+9000 65193 MT
+(condition to wake up.  A thread may of course wait for a condition using)SH
+/Times-Italic SF
+41258 XM
+(condition_wait)SH
+/Times-Roman SF
+(.)SH
+9500 67665 MT
+(There are, currently, three separate C-Threads implementations.  The first implements threads)
+18 W( as)17 W
+9000 69313 MT
+(coroutines in a single task.  The second uses a separate task for each cthread,)
+161 W( using inherited)162 W
+9000 70961 MT
+(shared memory to partially simulate the environment in)
+125 W( which multiple threads run.  The third)124 W
+10 SS 
+30350 75600 MT
+(4)SH
+ES
+%%Page: 5 6
+BS
+0 SI
+11 /Times-Roman AF
+9000 7955 MT
+(implementation uses the thread primitives provided by the kernel.)SH
+9500 10427 MT
+(The coroutine version is generally easier to use for debugging since the order of context)288 W
+9000 12075 MT
+(switching is repeatable and the user need not worry about concurrent calls to C library routines.)78 W
+9000 13723 MT
+(However, the coroutine version can not exhibit parallelism as the other two versions do.)
+149 W( The)575 W
+9000 15371 MT
+(multiple task version can be an effective way to achieve parallelism on architectures which)
+7 W( do not)6 W
+9000 17019 MT
+(allow full, uniform access-delay sharing of memory.)SH
+13 /Times-Bold AF
+9000 20770 MT
+(6. The Effect of Threads on Unix Features)SH
+11 /Times-Roman AF
+9500 22418 MT
+(From a Unix programmer's perspective, the separation of the Unix)
+98 W( protection domain from its)99 W
+9000 24066 MT
+(control abstraction has been accomplished at no apparent cost.)
+360 W( Mach)
+994 W( provides complete)359 W
+9000 25714 MT
+(emulation of 4.3BSD Unix,)
+14 W( even for binaries on VAX machines. Overall system performance has)15 W
+9000 27362 MT
+(not been eroded.)SH
+9500 29834 MT
+(However, should)
+7 W( one desire to use a multithreaded task along with Unix features, there are many)6 W
+9000 31482 MT
+(potential pitfalls.  Unix was not designed to work in a)
+76 W( multithreaded environment.  Some of the)77 W
+9000 33130 MT
+(obvious problems are:)SH
+/Symbol SF
+10969 34708 MT
+(\267)SH
+/Times-Roman SF
+11750 XM
+(The semantics of common functions \050e.g. fork\051 are not well defined in the presence)83 W
+11750 35904 MT
+(of multiple threads.)SH
+/Symbol SF
+10969 37798 MT
+(\267)SH
+/Times-Roman SF
+11750 XM
+(Many standard library routines return results in static areas.)SH
+/Symbol SF
+10969 39692 MT
+(\267)SH
+/Times-Roman SF
+11750 XM
+(Most C compilers return structures in a static area.)SH
+/Symbol SF
+10969 41586 MT
+(\267)SH
+/Times-Roman SF
+11750 XM
+(The definitions of static returned)
+326 W( values such as)327 W
+/Times-Italic SF
+35622 XM
+(errno)SH
+/Times-Roman SF
+38668 XM
+(are inappropriate for a)327 W
+11750 42782 MT
+(multithreaded environment.)SH
+/Symbol SF
+10969 44676 MT
+(\267)SH
+/Times-Roman SF
+11750 XM
+(Many library routines, never expected to be run in a multithreaded)
+118 W( application, are)117 W
+11750 45872 MT
+(coded in non-reentrant)
+9 W( ways.  Many traditional Unix libraries would not even work if)10 W
+11750 47068 MT
+(a signal routine were to be called at the wrong time!)SH
+9500 49540 MT
+(Where the semantics of Unix)
+17 W( operations are not well defined in the presence of multiple threads,)16 W
+9000 51188 MT
+(it was necessary to determine some reasonable definition.  Two examples)
+151 W( of this are)152 W
+/Times-Italic SF
+48413 XM
+(fork)SH
+/Times-Roman SF
+50612 XM
+(and)SH
+/Times-Italic SF
+9000 52836 MT
+(signals)SH
+/Times-Roman SF
+(.)SH
+9500 55308 MT
+(The Unix fork primitive raises the question:  "When a thread in a task)
+212 W( containing multiple)211 W
+9000 56956 MT
+(threads executes the fork)
+33 W( system call, which threads does the child task contain?".  There are two)34 W
+9000 58604 MT
+(possible answers:)SH
+11200 60057 MT
+(1.)SH
+12300 XM
+(The child task contains exactly one thread corresponding to the calling thread.)SH
+11200 61951 MT
+(2.)SH
+12300 XM
+(The child task contains the same number)
+103 W( of threads as the parent.  Each thread in)102 W
+12300 63147 MT
+(the child corresponds to a thread in the parent.)SH
+9000 64795 MT
+(Mach implements the first choice, which is really the most logical when the properties)
+102 W( of tasks)103 W
+9000 66443 MT
+(and threads are considered.)
+65 W( Fork)
+403 W( is largely an address space manipulation and corresponds very)64 W
+9000 68091 MT
+(closely to the)8 W
+/Times-Italic SF
+15165 XM
+(task_create)SH
+/Times-Roman SF
+20518 XM
+(operation. Unix)
+291 W( process semantics dictate)
+8 W( that the child must contain at)9 W
+9000 69739 MT
+(least one)
+45 W( thread.  The logical choice for this thread is a replica of the calling thread.  This choice)44 W
+9000 71387 MT
+(also corresponds to the common case when a thread within a server task decides to)
+222 W( fork to)223 W
+10 SS 
+30350 75600 MT
+(5)SH
+ES
+%%Page: 6 7
+BS
+0 SI
+11 /Times-Roman AF
+9000 7955 MT
+(perform an operation in a separate address space.)SH
+9500 10427 MT
+(Signals present an interesting problem in the domain of multiple)
+130 W( threads.  Are signals sent to)129 W
+9000 12075 MT
+(tasks or threads?  Considering that the logical equivalent of a Mach task is)
+90 W( a Unix process, and)91 W
+9000 13723 MT
+(that signals are sent to processes, it is appropriate to define signals as being sent to)
+225 W( a task.)224 W
+9000 15371 MT
+(Unfortunately, a task is not an executable unit and can therefore)
+279 W( not handle a signal.  To)280 W
+9000 17019 MT
+(overcome this problem, the Mach kernel chooses some)
+7 W( thread within the task to handle the signal.)6 W
+9000 18667 MT
+(The actual thread that will handle the signal is not well-defined.)
+430 W( In)
+1137 W( fact, the current)431 W
+9000 20315 MT
+(implementation causes the first thread to notice the signal to be the handler.)
+9 W( This)
+292 W( is clearly not an)8 W
+9000 21963 MT
+(optimal solution because it can seriously confuse a Unix programmer that)
+10 W( wishes to use signals to)11 W
+9000 23611 MT
+(cause a stack unwinding operation such)
+83 W( as)82 W
+/Times-Italic SF
+28486 XM
+(longjmp)SH
+/Times-Roman SF
+(. The)
+439 W( better long term solution is to convert)82 W
+9000 25259 MT
+(signals into Mach IPC messages.  Each task)
+36 W( could then designate one or more threads that would)37 W
+9000 26907 MT
+(receive signals on a special)SH
+/Times-Italic SF
+21247 XM
+(signal port)SH
+/Times-Roman SF
+(.)SH
+13 /Times-Bold AF
+9000 30658 MT
+(7. Implementation: Details, Problems and Issues)SH
+11 /Times-Roman AF
+9500 32306 MT
+(Within the Mach kernel,)
+78 W( the task \050sic\051 of incorporating threads exacted a significant toll on the)77 W
+9000 33954 MT
+(implementors. This)
+655 W( was due to the fact that Mach currently provides for Unix)
+190 W( compatibility)191 W
+9000 35602 MT
+(directly in the kernel.  The 4.3 BSD kernel)
+123 W( code was designed \050presumably unintentionally\051 to)122 W
+9000 37250 MT
+(make a multiple)
+100 W( thread per address space implementation very difficult.  For example, both the)101 W
+9000 38898 MT
+(u-area and kernel stack reside in the user's address space and are even assumed to exist at the)125 W
+9000 40546 MT
+(same address for all processes.  Unix process management is not restricted to a handful)
+245 W( of)246 W
+9000 42194 MT
+(scheduling modules.  Instead, it)
+99 W( is spread throughout unrelated kernel code.  A form of process)98 W
+9000 43842 MT
+(management can even been found in device drivers.  The 4.3)
+100 W( BSD signal mechanism is neither)101 W
+9000 45490 MT
+(well defined nor even appropriate for such an environment.)SH
+9500 47962 MT
+(Perhaps the)
+370 W( most annoying problem was that of u-area management. There are literally)369 W
+9000 49610 MT
+(thousands of lines of kernel code)
+9 W( that use)10 W
+/Times-Italic SF
+27525 XM
+(u.)SH
+/Times-Roman SF
+28635 XM
+(to reference the u-area directly. This assumes that the)10 W
+9000 51258 MT
+(u-area is at the same address for all processes.  Since threads)
+66 W( must share an entire address space)65 W
+9000 52906 MT
+(and must each have their own u-like data structure,)
+46 W( the traditional u-area cannot exist at a single,)47 W
+9000 54554 MT
+(unique address.  In fact, the problem is even worse: some)
+120 W( fields of the old u-area refer to data)119 W
+9000 56202 MT
+(which should)
+188 W( be thread specific properties while other fields refer to task specific properties.)189 W
+9000 57850 MT
+(Therefore, within the BSD compatibility code, each u-area reference can no longer be)
+106 W( a simple)105 W
+9000 59498 MT
+(memory reference to a fixed address.  Instead, each u-area reference)
+381 W( must be a pointer)382 W
+9000 61146 MT
+(dereference with the pointer)
+120 W( depending on whether the desired field is a task or thread feature.)119 W
+9000 62794 MT
+(Rather than inspect and modify each of the thousands of)
+12 W( lines of C code, a few tricks were played)13 W
+9000 64442 MT
+(with the C preprocessor.)
+51 W( Two)
+376 W( new structures,)50 W
+/Times-Italic SF
+29930 XM
+(uthread)SH
+/Times-Roman SF
+33677 XM
+(and)SH
+/Times-Italic SF
+35590 XM
+(utask)SH
+/Times-Roman SF
+38237 XM
+(were defined to hold the thread)50 W
+9000 66090 MT
+(and task specific u-area information.  For example:)SH
+10 SS 
+30350 75600 MT
+(6)SH
+ES
+%%Page: 7 8
+BS
+0 SI
+11 /Courier AF
+11640 7886 MT
+(struct uthread {)SH
+16920 9000 MT
+(int uu_thread1;)2640 W
+16920 10114 MT
+(int uu_thread2;)2640 W
+16920 11228 MT
+(.)SH
+16920 12342 MT
+(.)SH
+16920 13456 MT
+(.)SH
+11640 14570 MT
+(};)SH
+11640 16798 MT
+(struct utask {)SH
+16920 17912 MT
+(int uu_task1;)2640 W
+16920 19026 MT
+(int uu_task2;)2640 W
+16920 20140 MT
+(.)SH
+16920 21254 MT
+(.)SH
+16920 22368 MT
+(.)SH
+11640 23482 MT
+(};)SH
+/Times-Roman SF
+9500 25954 MT
+(uu_thread1, uu_thread2, ... corresponded)
+52 W( to fields in the typical Unix u-area.  Next,)53 W
+/Times-Italic SF
+47084 XM
+(u)SH
+/Times-Roman SF
+47962 XM
+(itself was)53 W
+9000 27602 MT
+(defined as follows:)SH
+/Courier SF
+11640 29128 MT
+(#define u)
+SH( \050current_thread\050\051->u_address\051)3960 W
+/Times-Roman SF
+9500 31600 MT
+(with the)SH
+/Times-Italic SF
+13350 XM
+(u_address)SH
+/Times-Roman SF
+18147 XM
+(field of the thread structure defined as:)SH
+/Courier SF
+11640 33126 MT
+(struct thread {)SH
+16920 34240 MT
+(.)SH
+16920 35354 MT
+(.)SH
+16920 36468 MT
+(.)SH
+16920 37582 MT
+(struct u_address {)SH
+22200 38696 MT
+(struct uthread  *uthread;)SH
+22200 39810 MT
+(struct utask)
+SH( *utask;)1980 W
+16920 40924 MT
+(} u_address;)SH
+16920 42038 MT
+(.)SH
+16920 43152 MT
+(.)SH
+16920 44266 MT
+(.)SH
+11640 45380 MT
+(};)SH
+/Times-Roman SF
+9500 47852 MT
+(Finally, each potential u-area field was defined as:)SH
+/Courier SF
+11640 49378 MT
+(#define u_thread1)
+SH( uthread->uu_thread1)3960 W
+11640 50492 MT
+(#define u_thread2)
+SH( uthread->uu_thread2)3960 W
+16920 51606 MT
+(.)SH
+16920 52720 MT
+(.)SH
+16920 53834 MT
+(.)SH
+11640 54948 MT
+(#define u_task1)
+SH( utask->uu_task1)5280 W
+11640 56062 MT
+(#define u_task2)
+SH( utask->uu_task2)5280 W
+/Times-Roman SF
+9500 58534 MT
+(When a task is)
+30 W( created it is allocated a utask structure.  When a thread is created it is allocated a)29 W
+9000 60182 MT
+(uthread structure.  The pointer to this structure, along with)
+287 W( the pointer to the task's utask)288 W
+9000 61830 MT
+(structure, are then saved in the u_address sub-structure of the thread structure.)SH
+9500 64302 MT
+(The good news is that these definitions handle almost all uses of the u-area.  The)
+100 W( bad news is)99 W
+9000 65950 MT
+(that most u-area references change from)
+20 W( one instruction to several.  This increases both execution)21 W
+9000 67598 MT
+(time and code space.  After some intense hacking, each u-area reference was)
+97 W( reduced to only 3)96 W
+9000 69246 MT
+(VAX instructions.  The first instruction fetches the current)
+SH( thread, the second instruction loads the)1 W
+9000 70894 MT
+(appropriate pointer \050uthread or)
+320 W( utask\051, and the third instruction performs the actual u-area)319 W
+10 SS 
+30350 75600 MT
+(7)SH
+ES
+%%Page: 8 9
+BS
+0 SI
+11 /Times-Roman AF
+9000 7955 MT
+(reference.)SH
+9500 10427 MT
+(Even though each u-area reference is now)
+52 W( significantly more expensive than in a standard Unix)53 W
+9000 12075 MT
+(system, the Mach kernel still performs better)
+263 W( than a 4.3 kernel in measurements of overall)262 W
+9000 13723 MT
+(performance -- largely due to improvements in)
+SH( Mach's handling of virtual memory.  For example,)1 W
+9000 15371 MT
+(to compile all programs in /bin on a vanilla 4.3 system \050using a CMU enhanced cc and cpp\051)
+19 W( takes)18 W
+9000 17019 MT
+(1017 seconds on a VAX 780 \050with a Fujitsu Eagle disk drive\051.  A Mach)
+61 W( kernel without multiple)62 W
+9000 18667 MT
+(thread support)
+266 W( and normal u-area references takes only 964 seconds.  A Mach kernel with)265 W
+9000 20315 MT
+(multiple thread support and the expensive)
+31 W( u-area references requires 986 seconds to complete the)32 W
+9000 21963 MT
+(test. Given)
+291 W( that approximately 700 seconds is spent in user time, and since a Mach kernel can not)7 W
+9000 23611 MT
+(improve on the user time of existing binaries, it makes sense to factor that 700 seconds out of)
+29 W( the)30 W
+9000 25259 MT
+(measurements. Therefore,)
+697 W( we see that)
+211 W( 4.3 is responsible for 1017 - 700 = 317 seconds.  A)210 W
+9000 26907 MT
+(non-thread Mach kernel is responsible for 964 - 700 = 264 seconds.  A thread Mach kernel)
+133 W( is)134 W
+9000 28555 MT
+(responsible for 986 - 700 = 286 seconds.  So, a non-thread)
+271 W( Mach kernel is approximately)270 W
+9000 30203 MT
+(\050317-264\051/317 = 16.7% faster than 4.3.  A thread Mach kernel is still \050317-286\051/317 = 9.7% faster)7 W
+9000 31851 MT
+(than 4.3.)SH
+9500 34323 MT
+(It is expected that some improvement in the kernel supporting threads will be)
+292 W( gained by)291 W
+9000 35971 MT
+(identifying u-area hotspots: those places in the kernel that make many references)
+112 W( to the u-area.)113 W
+9000 37619 MT
+(Once identified, these sections of kernel code can be reworked to avoid using the u-area,)
+10 W( or to use)9 W
+9000 39267 MT
+(it in a more efficient way.)SH
+13 /Times-Bold AF
+9000 43018 MT
+(8. Performance Issues)SH
+11 /Times-Roman AF
+9500 44666 MT
+(While an order of magnitude less)
+134 W( expensive than the Unix)135 W
+/Times-Italic SF
+36687 XM
+(fork)SH
+/Times-Roman SF
+(/)SH
+/Times-Italic SF
+(exit)SH
+/Times-Roman SF
+40763 XM
+(operations,)SH
+/Times-Italic SF
+46030 XM
+(thread_create)SH
+/Times-Roman SF
+9000 46314 MT
+(and)SH
+/Times-Italic SF
+11085 XM
+(thread_terminate)SH
+/Times-Roman SF
+19220 XM
+(are still moderately expensive)
+222 W( operations as indicated in table 8-1.  In)221 W
+9000 47962 MT
+(addition to the O\0501 millisecond\051 each)
+220 W( operation takes on a MicroVAX II, there are also the)221 W
+9000 49610 MT
+(memory costs incurred by the)
+54 W( thread data structures themselves and the necessity for a \050pagable\051)53 W
+9000 51258 MT
+(kernel stack for each thread which)
+63 W( must be physically resident when the thread is runnable.  For)64 W
+9000 52906 MT
+(this reason, an application that needs huge numbers of thread-like)
+212 W( entities \050perhaps millions\051)211 W
+9000 54554 MT
+(would probably be best implemented as a hybrid of kernel-supplied threads and)
+33 W( coroutines.  That)34 W
+9000 56202 MT
+(is, a huge number of coroutines would map to a much smaller number of threads executing)
+76 W( in a)75 W
+9000 57850 MT
+(single process.  The number of threads used could correspond)
+94 W( either to the number of available)95 W
+9000 59498 MT
+(processors or the number of concurrently executing system calls or traps.)SH
+9500 61970 MT
+(Some of the costs of threads can be "optimized away".  For example, the C-threads)
+154 W( package)153 W
+9000 63618 MT
+(caches threads which have exited so they can be reused)
+53 W( when a new)54 W
+/Times-Italic SF
+39834 XM
+(cthread_fork)SH
+/Times-Roman SF
+45845 XM
+(is called.  In a)54 W
+9000 65266 MT
+(multiprocessor with a sufficient number of processors, context switching)
+120 W( is eliminated entirely.)119 W
+9000 66914 MT
+(On a single processor machine, however, many of the costs of scheduling Unix processes remain)40 W
+9000 68562 MT
+(in the scheduling of threads.)SH
+10 SS 
+30350 75600 MT
+(8)SH
+ES
+%%Page: 9 10
+BS
+43200 50 9000 8017 UL
+0 SI
+11 /Times-Bold AF
+21313 10445 MT
+(Fork/Exit vs. Thread Create/Terminate)SH
+43200 50 9000 12236 UL
+9 SS 
+16200 13787 MT
+(Kernel operation)SH
+27000 XM
+(VAX Instructions Executed)SH
+27000 14621 MT
+(\050typical case\051)SH
+43200 50 9000 15835 UL
+16200 17386 MT
+(fork)SH
+27000 XM
+(3069)SH
+16200 18220 MT
+(wait3)SH
+27000 XM
+(3440)SH
+16200 19054 MT
+(exit)SH
+27000 XM
+(916)SH
+16200 19888 MT
+(fork/wait3/exit \050total\051)SH
+27000 XM
+(7425)SH
+16200 20722 MT
+(thread_create)SH
+27000 XM
+(375)SH
+16200 21556 MT
+(thread_exit)SH
+27000 XM
+(409)SH
+16200 22390 MT
+(thread total)SH
+27000 XM
+(784)SH
+43200 50 9000 23604 UL
+11 SS 
+27926 26055 MT
+(Table 8-1:)SH
+9 /Times-Roman AF
+22525 27669 MT
+(Number of VAX CPU instructions executed.)SH
+24012 28520 MT
+(\050Mach, MicroVAX II, 4K page size\051)SH
+43200 50 9000 30326 UL
+13 /Times-Bold AF
+9000 34838 MT
+(9. Conclusion and Status)SH
+11 /Times-Roman AF
+9500 36486 MT
+(The Mach thread implementation is running \050April 1987\051 on multiprocessor and uniprocessor)141 W
+9000 38134 MT
+(VAX, Encore and)
+270 W( Sequent machines within CMU.  A version of Eric Cooper's C-Threads)271 W
+9000 39782 MT
+(package which uses threads is also working.  Mach is being released externally to)
+195 W( interested)194 W
+9000 41430 MT
+(researchers. The)
+275 W( first release \050Release 0\051 of Mach began in December of 1986.)SH
+13 /Times-Bold AF
+9000 45181 MT
+(10. Acknowledgements)SH
+11 /Times-Roman AF
+9500 46829 MT
+(The multiple thread kernel support)
+13 W( was implemented by Avie Tevanian, David Golub and David)14 W
+9000 48477 MT
+(Black. Eric)
+301 W( Cooper implemented the C-Thread package and along with)
+13 W( others had much input on)12 W
+9000 50125 MT
+(the final interface.  No one in their right mind would claim credit for thinking up the u-area hacks.)SH
+10 SS 
+30350 75600 MT
+(9)SH
+ES
+%%Page: 10 11
+BS
+0 SI
+13 /Times-Bold AF
+9000 8071 MT
+(I. Thread Operations)SH
+11 /Times-Roman AF
+9500 9719 MT
+(Following is a list of all kernel supported thread operations:)SH
+9 /Courier AF
+11160 11005 MT
+(thread_create\050task, child, child_data\051)SH
+15480 11953 MT
+(task_t task;)
+4860 W( /*)
+5400 W( parent task */)SH
+15480 12901 MT
+(thread_t *child;)
+3780 W( /*)
+4320 W( new thread */)SH
+15480 13849 MT
+(port_t *child_data;)
+4860 W( /*)
+1620 W( child data port */)SH
+11 /Times-Italic AF
+9000 15497 MT
+(Thread_create)SH
+/Times-Roman SF
+15774 XM
+(create a new thread in the specified task.)
+23 W( Initially,)
+323 W( the thread is in)24 W
+/Times-Italic SF
+45303 XM
+(suspended)SH
+/Times-Roman SF
+50184 XM
+(state)SH
+9000 17145 MT
+(and its registers contain undefined values.)SH
+43200 50 9000 18541 UL
+9 /Courier AF
+11160 20588 MT
+(thread_terminate\050thread\051)SH
+15480 21536 MT
+(thread_t thread;)
+3780 W( /*)
+4320 W( thread to terminate */)SH
+11 /Times-Italic AF
+9000 23184 MT
+(Thread_terminate)SH
+/Times-Roman SF
+17219 XM
+(destroys the specified thread.)SH
+43200 50 9000 24580 UL
+9 /Courier AF
+11160 26627 MT
+(thread_suspend\050thread\051)SH
+15480 27575 MT
+(thread_t thread;)
+3780 W( /*)
+4320 W( thread to suspend */)SH
+11 /Times-Roman AF
+9000 29223 MT
+(The specified thread is placed in)SH
+/Times-Italic SF
+23538 XM
+(will-suspend)SH
+/Times-Roman SF
+29375 XM
+(state.)SH
+43200 50 9000 30619 UL
+9 /Courier AF
+11160 32666 MT
+(thread_resume\050thread\051)SH
+15480 33614 MT
+(thread_t thread;)
+3780 W( /*)
+4320 W( thread to resume */)SH
+11 /Times-Roman AF
+9000 35262 MT
+(The specified thread is placed in)SH
+/Times-Italic SF
+23538 XM
+(running)SH
+/Times-Roman SF
+27297 XM
+(state.)SH
+43200 50 9000 36658 UL
+9 /Courier AF
+11160 38705 MT
+(thread_wait\050thread, wait\051)SH
+15480 39653 MT
+(thread_t thread;)
+3780 W( /*)
+4320 W( thread to cause to wait */)SH
+15480 40601 MT
+(boolean_t wait;)
+3240 W( /*)
+5400 W( wait for it to stop? */)SH
+11 /Times-Roman AF
+9000 42249 MT
+(If the specified thread is in)15 W
+/Times-Italic SF
+21124 XM
+(will-suspend)SH
+/Times-Roman SF
+26976 XM
+(state then)15 W
+/Times-Italic SF
+31465 XM
+(thread_wait)SH
+/Times-Roman SF
+37072 XM
+(will place it in)14 W
+/Times-Italic SF
+43728 XM
+(suspended)SH
+/Times-Roman SF
+48599 XM
+(state. If)303 W
+9000 43897 MT
+(the)SH
+/Times-Italic SF
+10755 XM
+(wait)SH
+/Times-Roman SF
+13063 XM
+(parameter is TRUE, the calling thread will wait for the thread to come to a complete)137 W
+9000 45545 MT
+(stop.)SH
+43200 50 9000 46941 UL
+9 /Courier AF
+11160 48988 MT
+(thread_status\050thread, status\051)SH
+15480 49936 MT
+(thread_t thread;)
+3780 W( /*)
+4320 W( thread to query */)SH
+15480 50884 MT
+(thread_status_t *status;)
+SH( /*)
+3780 W( thread status information */)SH
+11 /Times-Italic AF
+9000 52532 MT
+(Thread_status)SH
+/Times-Roman SF
+15644 XM
+(returns the register state of the specified thread.)
+73 W( The)420 W
+/Times-Italic SF
+39797 XM
+(status)SH
+/Times-Roman SF
+42712 XM
+(parameter returns the)72 W
+9000 54180 MT
+(address of a machine-dependent status structure describing the register state for)
+36 W( the machine type)37 W
+9000 55828 MT
+(the thread is executing on.)SH
+43200 50 9000 57224 UL
+9 /Courier AF
+11160 59271 MT
+(thread_mutate\050thread, status\051)SH
+15480 60219 MT
+(thread_t thread;)
+3780 W( /*)
+4320 W( thread to mutate */)SH
+15480 61167 MT
+(thread_status_t *status;)
+SH( /*)
+3780 W( status information to set */)SH
+11 /Times-Italic AF
+9000 62815 MT
+(Thread_mutate)SH
+/Times-Roman SF
+16198 XM
+(sets the register state of the specified thread.  As in)201 W
+/Times-Italic SF
+41073 XM
+(thread_status)SH
+/Times-Roman SF
+(, the)200 W
+/Times-Italic SF
+49632 XM
+(status)SH
+/Times-Roman SF
+9000 64463 MT
+(structure is machine-dependent.)SH
+10 SS 
+30100 75600 MT
+(10)SH
+ES
+%%Page: 11 12
+BS
+0 SI
+13 /Times-Bold AF
+9000 8071 MT
+(II. Task Operations)SH
+11 /Times-Roman AF
+9500 9719 MT
+(Following is a list of all kernel support task operations:)SH
+9 /Courier AF
+11160 11005 MT
+(task_create\050parent, inherit, child, child_port\051)SH
+15480 11953 MT
+(task_t parent;)
+4860 W( /*)
+4320 W( the parent task */)SH
+15480 12901 MT
+(boolean_t inherit;)
+3240 W( /*)
+3780 W( pass VM to child? */)SH
+15480 13849 MT
+(task_t *child;)
+4860 W( /*)
+4320 W( new task */)SH
+15480 14797 MT
+(port_t *child_port;)
+4860 W( /*)
+1620 W( new task's data port */)SH
+11 /Times-Italic AF
+9000 16445 MT
+(Task_create)SH
+/Times-Roman SF
+14660 XM
+(creates a new task.  The child's address space is created using)
+9 W( the parents inheritance)10 W
+9000 18093 MT
+(values if the)4 W
+/Times-Italic SF
+14662 XM
+(inherit)SH
+/Times-Roman SF
+17874 XM
+(flag is TRUE.  If the)3 W
+/Times-Italic SF
+27209 XM
+(inherit)SH
+/Times-Roman SF
+30421 XM
+(flag is FALSE, the child is created with an empty)3 W
+9000 19741 MT
+(address space.  Access to the child's task and data ports are returned in)178 W
+/Times-Italic SF
+42920 XM
+(child)SH
+/Times-Roman SF
+45574 XM
+(and)SH
+/Times-Italic SF
+47616 XM
+(child_port)SH
+/Times-Roman SF
+9000 21389 MT
+(respectively.)SH
+43200 50 9000 22785 UL
+9 /Courier AF
+11160 24832 MT
+(task_terminate\050task\051)SH
+15480 25780 MT
+(task_t task;)
+540 W( /*)
+9720 W( task to terminate */)SH
+11 /Times-Roman AF
+9000 27428 MT
+(The specified task is destroyed.)SH
+43200 50 9000 28824 UL
+9 /Courier AF
+11160 30871 MT
+(task_suspend\050task\051)SH
+15480 31819 MT
+(task_t task;)
+540 W( /*)
+9720 W( task to suspend */)SH
+11 /Times-Roman AF
+9000 33467 MT
+(The specified task is placed in)SH
+/Times-Italic SF
+22562 XM
+(will-suspend)SH
+/Times-Roman SF
+28399 XM
+(state.)SH
+43200 50 9000 34863 UL
+9 /Courier AF
+11160 36910 MT
+(task_resume\050task\051)SH
+15480 37858 MT
+(task_t task;)
+540 W( /*)
+9720 W( task to resume */)SH
+11 /Times-Roman AF
+9000 39506 MT
+(The specified task is placed in)SH
+/Times-Italic SF
+22562 XM
+(running)SH
+/Times-Roman SF
+26321 XM
+(state.)SH
+43200 50 9000 40902 UL
+9 /Courier AF
+11160 42949 MT
+(task_wait\050task, wait\051)SH
+15480 43897 MT
+(task_t task;)
+4860 W( /*)
+5400 W( task to cause to wait */)SH
+15480 44845 MT
+(boolean_t wait;)
+3240 W( /*)
+5400 W( wait for it to stop? */)SH
+11 /Times-Roman AF
+9000 46493 MT
+(If the)
+6 W( specified task is in)5 W
+/Times-Italic SF
+20089 XM
+(will-suspend)SH
+/Times-Roman SF
+25931 XM
+(state then)5 W
+/Times-Italic SF
+30401 XM
+(task_wait)SH
+/Times-Roman SF
+34899 XM
+(places it in)5 W
+/Times-Italic SF
+39955 XM
+(suspended)SH
+/Times-Roman SF
+44817 XM
+(state. If)
+285 W( the)5 W
+/Times-Italic SF
+50304 XM
+(wait)SH
+/Times-Roman SF
+9000 48141 MT
+(flag is TRUE the calling thread will wait for all threads in the task to come to a complete stop.)SH
+43200 50 9000 49537 UL
+9 /Courier AF
+11160 51584 MT
+(task_threads\050task, list\051)SH
+15480 52532 MT
+(task_t task;)
+4860 W( /*)
+5400 W( task to generate list for */)SH
+15480 53480 MT
+(thread_t *list[]; /*)
+3780 W( list of threads */)SH
+11 /Times-Italic AF
+9000 55128 MT
+(Task_threads)SH
+/Times-Roman SF
+15203 XM
+(returns the list of all threads in a task.)SH
+43200 50 9000 56524 UL
+9 /Courier AF
+11160 58571 MT
+(task_ports\050task, list\051)SH
+15480 59519 MT
+(task_t task;)
+4860 W( /*)
+5400 W( task to generate list for */)SH
+15480 60467 MT
+(port_t *list[];)
+4860 W( /*)
+3780 W( list of ports */)SH
+11 /Times-Italic AF
+9000 62115 MT
+(Task_ports)SH
+/Times-Roman SF
+14165 XM
+(returns the list of all ports the specified task has access to.)SH
+10 SS 
+30100 75600 MT
+(11)SH
+ES
+%%Page: 12 13
+BS
+0 SI
+14 /Times-Bold AF
+27334 8138 MT
+(References)SH
+11 /Times-Roman AF
+9000 10695 MT
+([1])SH
+12300 XM
+(Mike Accetta, Robert Baron, William Bolosky, David Golub, Richard Rashid, Avadis)SH
+12300 11891 MT
+(Tevanian, Michael Young.)SH
+12300 13087 MT
+(Mach: A New Kernel Foundation for UNIX Development.)SH
+12300 14283 MT
+(In)SH
+/Times-Italic SF
+13491 XM
+(Proceedings of Summer Usenix)SH
+/Times-Roman SF
+(. July,)
+275 W( 1986.)SH
+9000 16234 MT
+([2])SH
+12300 XM
+(D. R. Cheriton, M. A. Malcolm, L. S. Melen, and G. R. Sager.)SH
+12300 17430 MT
+(Thoth, a Portable Real-Time Operating System.)SH
+/Times-Italic SF
+12300 18626 MT
+(Communications of the ACM)SH
+/Times-Roman SF
+25378 XM
+(:105-115, February, 1979.)SH
+9000 20577 MT
+([3])SH
+12300 XM
+(D. R. Cheriton and W. Zwaenepoel.)SH
+12300 21773 MT
+(The Distributed V Kernel and its Performance for Diskless Workstations.)SH
+12300 22969 MT
+(In)SH
+/Times-Italic SF
+13491 XM
+(Proceedings of the 9th Symposium on Operating System Principles)SH
+/Times-Roman SF
+(, pages 128-139.)SH
+13950 24165 MT
+(ACM, October, 1983.)SH
+9000 26116 MT
+([4])SH
+12300 XM
+(Sequent Computer Systems, Inc.)SH
+/Times-Italic SF
+12300 27312 MT
+(Dynix Programmer's Manual)SH
+/Times-Roman SF
+12300 28508 MT
+(Sequent Computer Systems, Inc., 1986.)SH
+9000 30459 MT
+([5])SH
+12300 XM
+(Encore Computer Corporation.)SH
+/Times-Italic SF
+12300 31655 MT
+(UMAX 4.2 Programmer's Reference Manual)SH
+/Times-Roman SF
+12300 32851 MT
+(Encore Computer Corporation, 1986.)SH
+9000 34802 MT
+([6])SH
+12300 XM
+(Lampson, B.W. and D.D. Redell.)SH
+12300 35998 MT
+(Experience with Processes and Monitors in Mesa.)SH
+/Times-Italic SF
+12300 37194 MT
+(Communications of the ACM)SH
+/Times-Roman SF
+25378 XM
+(23\0502\051:105-113, February, 1980.)SH
+10 SS 
+30100 75600 MT
+(12)SH
+ES
+%%Page: i 14
+BS
+0 SI
+13 /Times-Bold AF
+25652 8071 MT
+(Table of Contents)SH
+12 SS 
+10800 9327 MT
+(1. Introduction)SH
+51600 XM
+(0)SH
+10800 10583 MT
+(2. Kernel Implemented Threads vs. Coroutines)SH
+51600 XM
+(1)SH
+10800 11839 MT
+(3. Mach Task and Thread Primitives)SH
+51600 XM
+(1)SH
+10800 13095 MT
+(4. User Level Thread Synchronization)SH
+51600 XM
+(2)SH
+10800 14351 MT
+(5. The C-Threads Package)SH
+51600 XM
+(4)SH
+10800 15607 MT
+(6. The Effect of Threads on Unix Features)SH
+51600 XM
+(5)SH
+10800 16863 MT
+(7. Implementation: Details, Problems and Issues)SH
+51600 XM
+(6)SH
+10800 18119 MT
+(8. Performance Issues)SH
+51600 XM
+(8)SH
+10800 19375 MT
+(9. Conclusion and Status)SH
+51600 XM
+(9)SH
+10800 20631 MT
+(10. Acknowledgements)SH
+51600 XM
+(9)SH
+10800 21887 MT
+(I. Thread Operations)SH
+51000 XM
+(10)SH
+10800 23143 MT
+(II. Task Operations)SH
+51000 XM
+(11)SH
+10 /Times-Roman AF
+30461 75600 MT
+(i)SH
+ES
+%%Page: ii 15
+BS
+0 SI
+13 /Times-Bold AF
+26808 8071 MT
+(List of Tables)SH
+12 SS 
+10800 9327 MT
+(Table 8-1:)SH
+51600 XM
+(9)SH
+10 /Times-Roman AF
+30322 75600 MT
+(ii)SH
+ES
+%%Trailer
+%%Pages: 15
+%%DocumentFonts: Times-Roman Times-Bold Times-Italic Symbol Courier

@@ -1,0 +1,148 @@
+MAIN_FILES = main.c
+CFLAGS = -Wl,--no-as-needed -Wno-unused-result -std=gnu99 -D_GNU_SOURCE -march=native -mtune=native -O3 -Iqd_lock_lib/src/c/
+LDFLAGS = -lnuma -pthread
+CC = gcc
+
+MP_COUNTER = mp-counter
+CC_COUNTER = cc-counter
+HYB_COUNTER = hyb-counter
+FAA = fetchadd
+
+CSL=0
+MAXOPS=200
+MIXED=1
+ALIGN=64
+BKOFF=0
+LBKOFF=600000
+D41=0
+D42=0
+SHUFFLE=0
+EMPTY=0
+
+
+
+
+
+
+
+ifeq ($(allocatorName), Custom_Allocator)
+	CFLAGS += -DALLOCATOR_FAKE 
+else
+	CFLAGS += -DALLOCATOR_REAL
+endif
+
+
+
+ifeq ($(backoffValue), "")
+	BKOFF = 0
+else
+	BKOFF = $(backoffValue)
+endif
+
+
+
+
+
+
+
+ifeq ($(MIXED),1)
+CFLAGS += -DMIXED_MAPPING
+endif
+
+ifeq ($(D41),1)
+CFLAGS += -DDISABLE41
+endif
+
+ifeq ($(D42),1)
+CFLAGS += -DDISABLE42
+endif
+
+ifeq ($(SHUFFLE),1)
+CFLAGS += -DSHUFFLE
+endif
+
+ifeq ($(EMPTY),1)
+CFLAGS += -DEMPTY_TX_DEBUG
+endif
+
+MP_LONGCS = mp-longcs
+CC_LONGCS = cc-longcs
+
+CC_MSQUEUE = cc-msqueue
+MP_MSQUEUE = mp-msqueue
+MP_MSQUEUE_1 = mp-msqueue-1
+MP_MSQUEUE_2 = mp-msqueue-2
+MP_MSQUEUE_S = mp-msqueue-s
+LCRQ = lcrq
+CC_STACK = cc-stack
+MP_STACK = mp-stack
+TREIBER = treiber
+
+all: counters longcs queues stacks
+
+counters: $(MP_COUNTER) $(CC_COUNTER) $(HCC_COUNTER) $(HYB_COUNTER) $(HHYB_COUNTER) $(FAA)
+
+longcs: $(MP_LONGCS) $(CC_LONGCS)
+
+queues: $(MP_MSQUEUE_1) $(MP_MSQUEUE_2) $(MP_MSQUEUE_S) $(CC_MSQUEUE) $(LCRQ)
+
+stacks: $(MP_STACK) $(CC_STACK) $(TREIBER)
+
+crazy-backoff :
+	$(CC) $(CFLAGS) $(LDFLAGS) $(MAIN_FILES) -DALIGNMENT=$(ALIGN) -DBACKOFF=$(BKOFF) -DCUSTOM_MAPPING crazy-counter.c -o crazy.run
+	$(CC) $(CFLAGS) $(LDFLAGS) $(MAIN_FILES) -DALIGNMENT=$(ALIGN) -DBACKOFF=$(BKOFF) -DCUSTOM_MAPPING crazy-latency.c -o latency.run
+	$(CC) $(CFLAGS) $(LDFLAGS) $(MAIN_FILES) -DALIGNMENT=$(ALIGN) -DBACKOFF=$(BKOFF) crazy-stream.c -o stream.run
+
+twoser :
+	$(CC) $(CFLAGS) $(LDFLAGS) $(MAIN_FILES) mp-2ser.c -DALIGNMENT=$(ALIGN) -DBACKOFF=$(BKOFF) -o mp-2ser.run
+	$(CC) $(CFLAGS) $(LDFLAGS) $(MAIN_FILES) mp-2ser.c -DALIGNMENT=$(ALIGN) -DBACKOFF=$(BKOFF) -DSTREAMING -o mp-2ser-s.run
+
+$(MP_COUNTER) :
+	$(CC) $(CFLAGS) $(LDFLAGS) $(MAIN_FILES) $(MP_COUNTER).c -DALIGNMENT=$(ALIGN) -DBACKOFF=$(BKOFF) -o $(MP_COUNTER).run
+	$(CC) $(CFLAGS) $(LDFLAGS) $(MAIN_FILES) $(MP_COUNTER).c -DALIGNMENT=$(ALIGN) -DBACKOFF=$(BKOFF) -DSTREAMING -o $(MP_COUNTER)-s.run
+$(FAA):
+	$(CC) $(CFLAGS) $(LDFLAGS) $(MAIN_FILES) $(FAA).c -o $(FAA).run
+$(HFAA):
+	$(CC) $(CFLAGS) $(LDFLAGS) $(MAIN_FILES) $(HFAA).c -o $(HFAA).run
+$(CC_COUNTER):
+	$(CC) $(CFLAGS) $(LDFLAGS) $(MAIN_FILES) $(CC_COUNTER).c -DMAX_COMBINED_OPS=$(MAXOPS) -o $(CC_COUNTER).run
+	$(CC) $(CFLAGS) $(LDFLAGS) $(MAIN_FILES) $(CC_COUNTER).c -DNUMA_AWARE -DMAX_COMBINED_OPS=$(MAXOPS) -o h$(CC_COUNTER).run
+$(HYB_COUNTER): 
+	$(CC) $(CFLAGS) $(LDFLAGS) $(MAIN_FILES) $(HYB_COUNTER).c -DALIGNMENT=$(ALIGN) -DMAX_COMBINED_OPS=$(MAXOPS) -o $(HYB_COUNTER).run
+	$(CC) $(CFLAGS) $(LDFLAGS) $(MAIN_FILES) $(HYB_COUNTER).c -DALIGNMENT=$(ALIGN) -DNUMA_AWARE -DMAX_COMBINED_OPS=$(MAXOPS) -o h$(HYB_COUNTER).run
+qd-counter:
+	$(CC) $(CFLAGS) $(LDFLAGS) $(MAIN_FILES) qd-counter.c qd_lock_lib/src/c/locks/qd_lock.c qd_lock_lib/src/c/locks/tatas_lock.c -DQD_QUEUE_BUFFER_SIZE=4096 -o qd-counter.run
+
+$(MP_LONGCS) : 
+	$(CC) $(CFLAGS) $(LDFLAGS) $(MAIN_FILES) $(MP_COUNTER).c -DALIGNMENT=$(ALIGN) -DBACKOFF=$(BKOFF) -DLONGCS -DCS_LENGTH=$(CSL) -o $(MP_LONGCS).run
+	$(CC) $(CFLAGS) $(LDFLAGS) $(MAIN_FILES) $(MP_COUNTER).c -DALIGNMENT=$(ALIGN) -DBACKOFF=$(BKOFF) -DSTREAMING -DLONGCS -DCS_LENGTH=$(CSL) -o $(MP_LONGCS)-s.run
+$(CC_LONGCS):
+	$(CC) $(CFLAGS) $(LDFLAGS) $(MAIN_FILES) $(CC_COUNTER).c -DMAX_COMBINED_OPS=$(MAXOPS) -DLONGCS -DCS_LENGTH=$(CSL) -o $(CC_LONGCS).run
+	$(CC) $(CFLAGS) $(LDFLAGS) $(MAIN_FILES) $(CC_COUNTER).c -DNUMA_AWARE -DMAX_COMBINED_OPS=$(MAXOPS) -DLONGCS -DCS_LENGTH=$(CSL) -o h$(CC_LONGCS).run
+
+$(MP_MSQUEUE_1) :
+	$(CC) $(CFLAGS) $(LDFLAGS) $(MAIN_FILES) $(MP_MSQUEUE).c -DALIGNMENT=$(ALIGN) -DBACKOFF=$(BKOFF) -DMS_SINGLE_LOCK -o $(MP_MSQUEUE_1).run
+$(MP_MSQUEUE_2) :
+	$(CC) $(CFLAGS) $(LDFLAGS) $(MAIN_FILES) $(MP_MSQUEUE).c -DALIGNMENT=$(ALIGN) -DBACKOFF=$(BKOFF) -o $(MP_MSQUEUE_2).run
+$(MP_MSQUEUE_S) :
+	$(CC) $(CFLAGS) $(LDFLAGS) $(MAIN_FILES) $(MP_MSQUEUE).c -DALIGNMENT=$(ALIGN) -DBACKOFF=$(BKOFF) -DMS_SINGLE_LOCK -DSTREAMING -o $(MP_MSQUEUE_S).run
+$(CC_MSQUEUE): 
+	$(CC) $(CFLAGS) $(LDFLAGS) $(MAIN_FILES) $(CC_MSQUEUE).c -DMAX_COMBINED_OPS=$(MAXOPS) -o $(CC_MSQUEUE).run
+	$(CC) $(CFLAGS) $(LDFLAGS) $(MAIN_FILES) $(CC_MSQUEUE).c -DNUMA_AWARE -DMAX_COMBINED_OPS=$(MAXOPS) -o h$(CC_MSQUEUE).run
+$(LCRQ) : 
+	$(CC) $(CFLAGS) $(LDFLAGS) $(MAIN_FILES) $(LCRQ).c -o $(LCRQ).run
+	$(CC) $(CFLAGS) $(LDFLAGS) $(MAIN_FILES) $(LCRQ).c -DNUMA_AWARE -DLCRQ_BACKOFF=$(LBKOFF) -o h$(LCRQ) .run
+
+$(MP_STACK) : 
+	$(CC) $(CFLAGS) $(LDFLAGS) $(MAIN_FILES) $(MP_STACK).c -DALIGNMENT=$(ALIGN) -DBACKOFF=$(BKOFF) -o $(MP_STACK).run
+	$(CC) $(CFLAGS) $(LDFLAGS) $(MAIN_FILES) $(MP_STACK).c -DALIGNMENT=$(ALIGN) -DBACKOFF=$(BKOFF) -DSTREAMING -o $(MP_STACK)-s.run
+$(CC_STACK): 
+	$(CC) $(CFLAGS) $(LDFLAGS) $(MAIN_FILES) $(CC_STACK).c -DMAX_COMBINED_OPS=$(MAXOPS) -o $(CC_STACK).run
+	$(CC) $(CFLAGS) $(LDFLAGS) $(MAIN_FILES) $(CC_STACK).c -DNUMA_AWARE -DMAX_COMBINED_OPS=$(MAXOPS) -o h$(CC_STACK).run
+$(TREIBER):
+	$(CC) $(CFLAGS) $(LDFLAGS) $(MAIN_FILES) $(TREIBER).c -o $(TREIBER).run
+
+clean:
+	rm -f *.o *.run
+
+.PHONY: all clean

@@ -1,0 +1,12 @@
+
+
+# Convention: <serverName> <serverDescription>
+#	- Server name		: Must be the same as the one contained in the command "hostname"
+#	- ServerDescription	: <nbr core>-<city>-<server short name>-<processor reference>
+
+
+
+
+
+paranoia 20-rennes-paranoia-Intel_Xeon_E5_2620
+parapluie 24-rennes-parapluie-AMD_Opteron_6164_HE

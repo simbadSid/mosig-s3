@@ -1,0 +1,13 @@
+
+
+# Convention: <serverName> <serverDescription>
+#	- Server name		: Must be the result of the command "hostname"
+#	- ServerDescription	: <nbr core>-<city>-<server short name>-<processor reference>
+
+
+
+
+
+
+genepi 8-grenoble-genepi-Intel_Xeon_E5_420
+adonis 8-grenoble-adonis-Intel_Xeon_E5_520

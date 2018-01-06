@@ -1,0 +1,12 @@
+
+
+# Convention: <serverName> <serverDescription>
+#	- Server name		: Must be the result of the command "hostname"
+#	- ServerDescription	: <nbr core>-<city>-<server short name>-<processor reference>
+
+
+
+
+
+hercule 12-lyon-hercule-Intel_Xeon_E5_2620
+orion 12-lyon-orion-Intel_Xeon_E5_2630
