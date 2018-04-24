@@ -1,0 +1,229 @@
+
+
+
+% TODO
+% - parasite worlds
+% - Replace "parallelization" by "overlapping"
+% - When presenting the AIO model (experimental results): tell that we have 3 regions (compute time << write time , ...)
+% - Transition between result pinned thread -> no false sharing:   Despite the intresting results, this solution is hard to implement (requires a preload of our patch to the AIO library).   Thus we needed to find a more user friendly solution.   Then we have considered another possible cause of the interference between the write and the compute
+
+
+
+
+
+
+
+
+
+%------------------------------------------------------
+%	PACKAGES AND OTHER DOCUMENT CONFIGURATIONS
+%---------------------------------------------------------------------------------------
+\documentclass[12pt]{article}											% font size
+
+\usepackage{amssymb}
+\usepackage{amsmath,amsfonts}
+\usepackage{subfig}
+\usepackage{graphicx}													% to include images
+\usepackage{float}														% to float figures
+\usepackage{booktabs,makecell}											% for diagonal cells
+\usepackage{hyperref}													% for hyperlinks
+\usepackage{listings}													% for including files
+\usepackage[top=1in, bottom=1in, left=1.25in, right=1.25in]{geometry}	% set margins
+\usepackage[utf8]{inputenc}												% for unicode input characters
+\usepackage{helvet}														% use helvetica per default
+\usepackage{hyperref}													% for hyperlinks
+\usepackage{scrextend}													% for text shifting
+\usepackage[T1]{fontenc}
+\usepackage[english]{babel}
+\usepackage{color}
+
+\renewcommand{\familydefault}{\sfdefault}								% use sans serif per default
+
+\definecolor{codegreen}{rgb}{0,0.6,0}									%New colors defined below
+\definecolor{codegray}{rgb}{0.5,0.5,0.5}
+\definecolor{codepurple}{rgb}{0.58,0,0.82}
+\definecolor{backcolour}{rgb}{0.95,0.95,0.92}
+
+\lstdefinestyle{mystyle}{												%Code listing style named "mystyle"
+	backgroundcolor=\color{backcolour},   commentstyle=\color{codegreen},
+	keywordstyle=\color{magenta},
+	numberstyle=\tiny\color{codegray},
+	stringstyle=\color{codepurple},
+	basicstyle=\footnotesize,
+	breakatwhitespace=false,         
+	breaklines=true,                 
+	captionpos=b,                    
+	keepspaces=true,                 
+	numbers=left,                    
+	numbersep=5pt,                  
+	showspaces=false,                
+	showstringspaces=false,
+	showtabs=false,                  
+	tabsize=2
+}
+
+\lstset{style=mystyle}													%"mystyle" code listing set
+
+% ----------------------------------------------------------------------------------------
+%	TITLE SECTION 
+% ----------------------------------------------------------------------------------------
+
+\makeatletter
+\makeatother
+\renewcommand{\familydefault}{\sfdefault}								% use sans serif per default
+\makeatother
+\title
+{
+	Internship Jülich Supercomputer Center\\
+	\emph{Speech thesis defence}
+}
+\author{Riyane SID-LAKHDAR}
+\date{September the $6^{th}$}
+
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+\end{abstract}
+
+\tableofcontents
+\newpage
+
+
+
+% ----------------------------------------------------------------------------------------
+%	Introduction
+% ----------------------------------------------------------------------------------------
+\section{Introduction}
+\subsection{Motivation: avoid idle write time}
+	Today, we are going to present to you the research we have led in order to outperform the response time of the cube remapper.   This cube remapper is performance profiling tool designed for HPC applications.
+
+	But before we even consider this software, let's begin by simply considering this very common computations pattern. where at each iteration a computation is processed and the result of this computation is written on disk.
+	This pattern might face an important performance issue when the buffer to be written at each iteration is large.   In this case, the write function may lead the processor to stall for a significant time.   Hence the important time overhead on this pattern.
+
+	Our general approach to face this performance issue is to overlap the write operations with the compute one.   As the compute thread doesn't need to wait for the write to be processed, it will then significantly reduce its processor stall time.
+
+	This approach is the one we have shipped to our custom implementation of the Cube remapper.
+
+	To present our research, we will first introduce the environment we have been working in:  we will present the underlying libraries and the parts of the Cube remapper which can effectively benefit from our approach.
+	In a second time, we will model from a theoretical point of view our solution and confirm the improvement it might bring.   The objective being to highlight the parameters that may influence such a gain.
+	Finally, we will present to you the custom implementation of the Cube remapper that we came with.   We will show you the interferences that our solution might bring on its pattern.   We will also show you the efficiency of our solution to overcome these interferences.
+
+
+% ----------------------------------------------------------------------------------------
+%	Environment and objective
+% ----------------------------------------------------------------------------------------
+\section{Environment and objective}
+	\subsection{The POSIX-based asynchronous I/O library}
+		\begin{itemize}
+			\item POSIX standard library (for retro compatibility purposes).   Deployed natively on most UNIX os distributions (GNU-Linux, MacOsX, freeBSD)
+			\item The main thread:
+			\item The writer threads (explain 1 thread per IO device.   Using more threads would be harmful)
+			\item The need to synchronization: control the memory footprint
+		\end{itemize}
+
+		%TODO add somewhere the windows compatibility (see text on report)
+
+
+	\subsection{The targeted objective: Cube-remapper}
+		\begin{itemize}
+			\item Use this asynchronous approach to optimize the response time of the Cube-remapper.
+			\item How to do that: present the Cube-remapper main loop + the compute/drop operation.   The processor is stall during the write operation
+			\item the objective is to get ride of this idle waiting time: parallelize the compute and the write operation.
+		\end{itemize}
+
+
+% ----------------------------------------------------------------------------------------
+%	Transition
+% ----------------------------------------------------------------------------------------
+\section{Transition}
+	%Recap previous results
+	So what we have presented is the environment we are going to work in.   Our objective being to replace the synchronous writing used by default in the Cube-remapper by the synchronous one.   What we expect from this approach is to get ride of the idle waiting time of each write where the processor is waiting for the write to be proceeded, knowing that it won't need it for the rest of its computation.\\
+
+
+	% Transition
+	Now that we have set our objective and the tools to reach it, let's focus on the interesting part.   How to handle this asynchronous model.   What potential gain does this might bring to the cube-Remapper?   What is the most suitable domain to use it.   And what are the potential limitations or risks of using it.\\
+	Talking about potential drawbacks of this asynchronous approach may seem exaggerated at this step.   But we will see that a miss-usage of this approach may easily lead to a very poor improvement or even a downgrade of the performance, mainly due to the synchronization overhead.\\
+
+
+	% Annouce the next section
+	To answer to all these questions, we will try to model the behaviour of our pattern in both synchronous and asynchronous model.   We will try to enhance our asynchronous model regarding experimental assessment and identify the parameters of the system that influence it.   And finally find the domain of these parameters that allow to have an maximum gain (compared to the synchronous model).\\
+	In order to better understand the theoretical behaviour of the asynchronous I/O library, we have first designed a custom testbed.    This implementation simulates the the Cube-Remapper pattern in different situations and different internal and external workloads.   This implementation allows to get ride of the potential interference between the real Cube-remapper and the asynchronous I/O.   Indeed, the performance of a multithreaded I/O is dependant of low level phenomenon at live memory and cache level.   Thus it might be sensitive to numerous and unexpected external interference.\\
+
+
+% ----------------------------------------------------------------------------------------
+%	The asynchronous-writing approach
+% ----------------------------------------------------------------------------------------
+\section{The asynchronous-writing approach}
+	\subsection{First approach: simplified theoretical model}
+		
+		****** After presenting the theoretical and experimental slides *********\\
+		As you may notice, this model might still be improved to fit more accurately the experimental assessment.   And this is what we do through different steps to reach this second one (more details about this second model and the reasons beneath this choice might be found on my thesis...).   However, let's for now keep it simple.
+
+
+	%-_____________________________
+	% Transition
+	%-_____________________________
+		From these theoretical and experimental discussion, two main need to be kept in mind.\\
+		First, we have shown experimentally the validity of our model.   Indeed, our modes has represented the inflexion points of the asynchronous pattern.   It identifies the domain where the asynchronous pattern is may significantly vary and its asymptotic behaviour.\\
+
+		On the other hand, our model allows us to identify the domain where the gain compared to the synchronous case is the most significant.   If we translate this to the cube remapper, this means that we have identified the trade of between compute and write time that allows the most significant improvement of our strategy.
+
+		****** Present the different variables of our test bed that we can tune: compute time, nb IoDevice, buffer size, ....
+
+	\subsection{Multiple parallel I/O device}
+
+
+% ----------------------------------------------------------------------------------------
+%	Transition
+% ----------------------------------------------------------------------------------------
+\section{Transition}
+	%Recap previous results
+	What is important to keep in mind from all this theoretical part is that asynchronous writing might indeed bring a significant improvement to the performances of our pattern.   But this can't be done without a careful tuning of the pattern.   Using asynchronous writing out of the previously spotted domain might lead to no improvement at all.   Given the engineering effort and the overhead due to synchronization, this might even be considered as harmful.\\
+	******* The experimental results have been obtained thanks to a simulation test bed.   We have simulated our pattern and replaced the computation by a system sleep operation******
+
+	% Transition
+	All what we have presented till now is the theory beneath the usage of asynchronous writing in a scientific computation pattern.   Some of you may already wonder why did we need to implement a test bed to simulate the behaviour of the considered pattern.   Why didn't we simply use the Cube-remapper, which already implements this pattern.   Well the reason for that is simple.   We did not want our theoretical results to be biased or influenced by the remapper.   And our next implementations and results on the Cube-remapper proves us right.\\
+
+
+	% Annouce the next section
+	In the next section, we first briefly introduce our version of the Cube-remapper based on asynchronous-writings.   Then we identify the different parts of the remapper that interfere with the asynchronous-writing.   We present different optimizations of the remapper to soften these interferences.   Finally, we present an experimental assessment of the remapper and evaluate the efficiency of our implementation.\\
+
+
+% ----------------------------------------------------------------------------------------
+%	The Cube-remapper
+% ----------------------------------------------------------------------------------------
+\section{The Cube-remapper optimization}
+	\subsection{Basic asynchronous I/O}
+	%+++++++++++ Cube remapper Write graphe
+	The first graphe represent an assessment of the write operation time within the Cube re-mapper.   As you can notice, the asynchronous strategy allows to bring a significant improvment to the write operation.   Indeed, this strategy consist in simply queueing a request write request.   The request is executed in parallel without processor stall.\\
+	This gain that you see is what we expect for the total time of the cube remapper.
+
+	%+++++++++++ Cube remapper total graphe
+	However, as you can see in this second graph the total time
+
+
+
+% ----------------------------------------------------------------------------------------
+%	The Cube-remapper
+% ----------------------------------------------------------------------------------------
+\section{Conclusion}
+	What we have proposed through this research is a theoretical study of the commonly considered pattern of the Cube re-mapper.   We have shown the potential gain brought by our asynchronous approach on this pattern and highlighted the domain that optimizes the gain of such a solution.\\
+
+	Meanwhile, we have implemented a custom version of the cube re-mapper.   We have shown through this version the potential interferences introduced by our solution.   And we have shown the efficiency of custom solutions to overcome them.\\
+
+	Thanks to all these enhancements, our full-fledged implementation of the Cube re-mapper has been proven to significantly outperform the performances of the pre-existing version.
+
+
+\section{Future work}
+	In order to go further, we have considered different approach to improve the reponse time of the Cube re-mapper.   The most promising one is probably to develop a full parallelization of the patter.   Thus we now don't simply overlap the write function with the compute ones, but we also overlap the computations between them.
+
+	Our point is that such a solution will not downgrade the improvement brought by our implementation.   Indeed, our work has been focused on implementing an optimal data distribution and synchronization between threads.   Thus such an approach would be an evaluation of our work at higher paralelization scale.
+	
+	
+
+
+\end{document}
+
+

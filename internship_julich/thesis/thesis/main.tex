@@ -1,0 +1,243 @@
+\documentclass[12pt, a4paper]{memoir}	% for a short document
+\usepackage[french,english]{babel}
+
+\usepackage [vscale=0.76,includehead]{geometry}
+%\geometry{a4paper}						% ... or a4paper or a5paper or ... 
+%\geometry{landscape}					% Activate for for rotated page geometry
+%\OnehalfSpacing
+%\setSingleSpace{1.05}
+%\usepackage[parfill]{parskip}			% Activate to begin paragraphs with an empty line rather than an indent
+
+
+%===================================== packages
+\usepackage{lipsum}
+\usepackage{graphicx}
+\usepackage{amsmath}
+\usepackage{fullpage}
+\usepackage{mathptmx}					% font = times
+\usepackage{helvet}						% font sf = helvetica
+\usepackage[latin1]{inputenc}
+\usepackage{relsize}
+\usepackage[T1]{fontenc}
+\usepackage{tikz}
+\usepackage{booktabs}
+\usepackage{textcomp}					%textquotesingle
+\usepackage{multirow}
+\usepackage{pgfplots}
+\usepackage{url}
+\usepackage{footnote}
+\usepackage{listings}
+\usepackage{subcaption}
+\usepackage{mwe}
+
+\usepackage{hyperref}					% TODO Maybe remove it for the final version
+\hypersetup								% TODO Maybe remove it for the final version
+{
+	colorlinks,
+	citecolor=black,
+	filecolor=black,
+	linkcolor=black,
+	urlcolor=black
+}
+\definecolor{salmon}{rgb}{1.0, 0.55, 0.41}
+\lstset{escapeinside={<@}{@>}}
+
+
+
+
+
+%============================================
+% Used for the code printing
+%============================================
+\definecolor{codegreen}{rgb}{0,0.6,0}
+\definecolor{codegray}{rgb}{0.5,0.5,0.5}
+\definecolor{codepurple}{rgb}{0.58,0,0.82}
+\definecolor{backcolour}{rgb}{0.95,0.95,0.92}
+ 
+\lstdefinestyle{mystyle}{
+    backgroundcolor=\color{backcolour},   
+    commentstyle=\color{codegreen},
+    keywordstyle=\color{magenta},
+    numberstyle=\tiny\color{codegray},
+    stringstyle=\color{codepurple},
+    basicstyle=\footnotesize,
+    breakatwhitespace=false,         
+    breaklines=true,                 
+    captionpos=b,                    
+    keepspaces=true,                 
+    numbers=left,                    
+    numbersep=5pt,                  
+    showspaces=false,                
+    showstringspaces=false,
+    showtabs=false,                  
+    tabsize=2
+}
+ 
+\lstset{style=mystyle}
+
+
+%============================================
+\usetikzlibrary{arrows,shapes,positioning,shadows,trees}
+\makesavenoteenv{tabular}
+\makesavenoteenv{table}
+%==============================================
+\def\checkmark{\tikz\fill[scale=0.4](0,.35) -- (.25,0) -- (1,.7) -- (.25,.15) -- cycle;}
+%Style des têtes de section, headings, chapitre
+\headstyles{komalike}
+\nouppercaseheads
+\chapterstyle{dash}
+\makeevenhead{headings}{\sffamily\thepage}{}{\sffamily\leftmark} 
+\makeoddhead{headings}{\sffamily\rightmark}{}{\sffamily\thepage}
+%\makeoddfoot{plain}{}{}{} % Pages chapitre. 
+\makeoddfoot{headings}{}{}{} % Pages chapitre. 
+\makeheadrule{headings}{\textwidth}{\normalrulethickness}
+%\renewcommand{\leftmark}{\thechapter ---}
+\renewcommand{\chaptername}{\relax}
+\renewcommand{\chaptitlefont}{ \sffamily\bfseries \LARGE}
+\renewcommand{\chapnumfont}{ \sffamily\bfseries \LARGE}
+\setsecnumdepth{subsection}
+
+
+% Title page formatting -- do not change!
+\pretitle{\HUGE\sffamily \bfseries\begin{center}} 
+\posttitle{\end{center}}
+\preauthor{\LARGE  \sffamily \bfseries\begin{center}}
+\postauthor{\par\end{center}}
+\newcommand{\jury}[1]{% 
+\gdef\juryB{#1}} 
+\newcommand{\juryB}{} 
+\newcommand{\session}[1]{% 
+\gdef\sessionB{#1}} 
+\newcommand{\sessionB}{} 
+\newcommand{\option}[1]{% 
+\gdef\optionB{#1}} 
+\newcommand{\optionB} {}
+
+\renewcommand{\maketitlehookd}{% 
+\vfill{}  \large\par\noindent  
+\begin{center}\juryB \bigskip\sessionB\end{center}
+\vspace{-1.5cm}}
+\renewcommand{\maketitlehooka}{% 
+\vspace{-1.5cm}\noindent\includegraphics[height=12ex]{pics/logo-uga.png}\hfill\raisebox{2ex}{\includegraphics[height=14ex]{pics/logoINP.png}}\\
+\bigskip
+% =======================End of title page formatting
+
+
+
+% ==============================================
+% First page
+% ==============================================
+\begin{center} \large
+Master of Computer Science at Grenoble \\
+Specialization in \emph{\optionB}
+\end{center}\vfill}
+\option{Parallel Distributed Embedded Systems} 
+\title{On the Impact of Asynchronous I/O on the performance of the Cube re-mapper at High Performance Computing Scale} %\\\vspace{-1ex}\rule{10ex}{0.5pt} \\sub-title} 
+\author{Riyane SID LAKHDAR}
+\date{September, 2017} % Delete this line to display the current date
+\jury{
+Research project performed at the \emph{\textbf{Advanced Institute for Simulation}} within the \emph{\textbf{J$\ddot{u}$lich Supercomputing Center}} \\\medskip
+Under the supervision of:\\
+\emph{Dr. Pavel SAVIANKOU}\\\medskip
+Defended before a jury composed of:\\
+\emph{Dr. Arnaud LEGRAND} (President)\\
+\emph{Dr. James CROWLEY} (Examiner)\\
+\emph{Dr. Bruno RAFFIN} (External expert)\\
+%\emph{Jury member 2}\\
+}
+\session{September \hfill 2017}
+\setcounter{tocdepth}{4}
+\setcounter{secnumdepth}{4}
+% =======================First page
+
+
+% ==============================================
+% Constant notations
+% ==============================================
+\newcommand{\targetPlatformHpc}				{HPC \targetPlatformHpcProcessor}
+\newcommand{\targetPlatformHpcProcessor}	{\emph{Intel Xeon} CPU E5-2680 v3}
+\newcommand{\targetPlatformHpcFrequency}	{2.5 GHz}
+
+\newcommand{\targetPlatformLaptop}			{\emph{Intel Core} CPU i7-6700}
+\newcommand{\targetPlatformLaptopFrequency}	{3.4 GHz}
+
+\newcommand{\toolProfiling}					{\emph{Score-P}}
+\newcommand{\toolTraceAnalyzed}				{\emph{Cube}}
+\newcommand{\toolTargetSoftware}			{\emph{Cube re-mapper}}
+\newcommand{\toolSimulationSoftware}		{\emph{simulation test-bed}}
+
+\newcommand{\notationIO}					{I/O}
+\newcommand{\notationAIO}					{Asynchronous \notationIO}
+\newcommand{\notationaio}					{asynchronous \notationIO}
+\newcommand{\notationaioShort}				{AIO}
+\newcommand{\notationaioComputeThread}		{\emph{compute} thread}
+\newcommand{\notationaioWriteThread}		{\emph{write} thread}
+\newcommand{\notationaioWriteThreads}		{\emph{write} threads}
+
+% ==============================================
+% Begin document
+% ==============================================
+\begin{document}
+\selectlanguage{English}
+
+\frontmatter
+\begin{titlingpage}
+\maketitle
+\end{titlingpage}
+
+%\small
+\setlength{\parskip}{-1pt plus 1pt}
+
+\renewcommand{\abstracttextfont}{\normalfont}
+\abstractintoc
+\include{./chapters/0-abstract}
+\renewcommand\abstractname{R\'esum\'e}
+\include{./chapters/0-abstract-fr}
+\abstractintoc
+
+\renewcommand\abstractname{Acknowledgement}
+\begin{abstract}
+I would like to express my sincere gratitude to Dr. Pavel SAVIANKOU for doing me the honour of accepting me as part of his team within the JSC laboratory.   His priceless assistance and his tendency to call into question every statement I made have definitely increased the standards of our research.\\
+
+I would also like to thank Dr. Christian FELD for his very precious and accurate explanations.   His help to understand and patch the \toolProfiling\space software has been a real blessing.   Not to mention our very inspiring conversation on the potential evolutions of the software.\\
+
+Meanwhile, I am very thankful to Ilya ZHUKOV for providing the data samples used for our experimentations.   I would also like to express all my friendship to my colleague Margarita LONGSWORTH for her cheering energy and her \emph{joie de vivre}.   Not to mention her priceless reviews of my work.\\
+
+Last but certainly not least, I would like to offer my deepest and most sincere gratitude to Dr. Halim LEHTIHET for his invaluable help and high-standard advises.   His unique support, through the years, and his constant push to strive for excellency are the main reasons why I am currently allowed to defend this thesis.
+\end{abstract}
+
+
+
+\cleardoublepage
+
+\tableofcontents* % the asterisk means that the table of contents itself isn't put into the ToC
+\newpage
+\listoffigures*
+
+\normalsize
+
+\mainmatter
+\SingleSpace
+%==============================CHAPTERS==================
+\include{./chapters/1-introduction}
+\include{./chapters/2-stateOfTheArt}
+\include{./chapters/3-materialsAndMethod}
+\include{./chapters/4-resultsAndDiscussion}
+\include{./chapters/conclusion}
+%=========================================================
+
+
+%=========================================================
+\backmatter
+
+
+\nocite{*}
+%\bibliographystyle{amsplain}
+\bibliographystyle{plain} % plain-fr si rapport en français 
+\bibliography{bibfile.bib}
+
+%\cleardoublepage % Goes to an odd page
+%\pagestyle{empty} % no page number
+%~\newpage % goes to a new even page
+
+\end{document}

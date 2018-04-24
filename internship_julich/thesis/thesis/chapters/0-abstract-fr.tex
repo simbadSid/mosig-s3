@@ -1,0 +1,21 @@
+
+%pattern: loop: computation (large amount of data generated) + write this data.   The write data might represent a significant time overhead and processor stall.
+
+\begin{abstract} \selectlanguage{French}
+	%************ Context: 
+	%The high performance computing (HPC) ecosystem is, by design, obsessed with performance optimization.   Developing an HPC-specific application requires the proper performance profiling and analysing tools.
+	L'environnement des calculateurs a haute performance (HPC) est, par essence, tourn\'e vers l'optimisation des performances.   D\'evelopper une application destin\'ee \'a un environnement HPC requi\'ere l'utilisation des outilles ad\'equats pour profiler et analyser ses performances.
+	%************  Need: what we have -> what we want
+%	The high number of \emph{compute} cores and the complexity of an HPC platform lead these utilities to generate and deal with very large performance-trace files.   %An efficient access to this \notationIO\space resource is mandatory for a reasonable performance-profiling execution time.
+	Le grand nombre de cores (CPU) et la complexit\'e des plate-formes HPC am\'enent ces utilitaires \'a g\'en\'erer et \'a g\'erer de tr\'es larges fichiers repr\'esentant ces performances.   Un acc\'es efficace aux ressources sur disque (ROM) est donc primordiale pour analyser en un temps raisonnable ces traces.
+	%**********TODO: Task: present custom implementation + serie of enhancements***)
+%	In this context, we have considered enhancing the \notationIO-access of the \toolTargetSoftware, a state-of-the-art trace-analysis software for HPC executions.
+	Dans ce contexte, nous nous sommes attel\'es \'a optimiser les acc\'es au disque effectu\'es par le \toolTargetSoftware, un outil d'analyse de performance d\'edi\'e aux executions de logiciel sur HPC.
+	%************  Object of the document
+%	We propose an overlapping-\notationIO\space \emph{write} approach to outperform the time-response of the \toolTargetSoftware.
+	Nous proposons ainsi une m\'ethode permettant de superposer les acc\'es en \'ecriture au disque dans le but de r\'eduire le temps de r\'eponse du \toolTargetSoftware.
+	%************  Findings
+	%Thanks to a theoretical study of the general pattern followed by the \toolTargetSoftware, we show that our method may bring an improvement up to $75\%$ on this pattern.   We also show that our custom implementation of the \toolTargetSoftware\space allows to reduce significantly the perturbation introduced by overlapping the \emph{write} threads.   Our most enhanced version is thus shown to improve the time-response of the \toolTargetSoftware\space by up to $64\%$.
+	Grace \'a notre \'etude th\'eorique de l'architecture global constituant le \toolTargetSoftware, nous d\'emontrons que notre m\'ethode permet un gain allant jusqu'\'a $75\%$ du temps de r\'eponse de cette architecture.   De m\^eme, nous d\'emontrons que notre implantation du \toolTargetSoftware\space permet de r\'eduire significativement les perturbations introduites par toute m\'ethode de superposition des \'ecritures sur disque.   Ainsi, nous d\'emontrons que notre version la plus \'elabor\'ee du \toolTargetSoftware\space permet un gain de l'ordre de $60\%$ par rapport a la version actuelle.
+
+\end{abstract}

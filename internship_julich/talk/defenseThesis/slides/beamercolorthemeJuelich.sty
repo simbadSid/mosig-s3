@@ -1,0 +1,61 @@
+% Latex-Beamer Template Research Centre Juelich
+% version 09.02
+% please report any problems to i.kabadshow@fz-juelich.de
+
+\mode<presentation>
+
+\definecolor{beamer@fzjblue50}{cmyk}{1,0.2,0.05,0.50}
+\definecolor{beamer@fzjblue35}{cmyk}{1,0.2,0.05,0.35}
+\definecolor{beamer@fzjblue30}{cmyk}{1,0.2,0.05,0.30}
+\definecolor{beamer@fzjblue20}{cmyk}{1,0.2,0.05,0.20}
+\definecolor{beamer@fzjblue10}{cmyk}{1,0.2,0.05,0.10}
+
+\definecolor{beamer@fzjgray80}{cmyk}{0,0,0,0.8}
+\definecolor{beamer@fzjgray50}{cmyk}{0,0,0,0.5}
+\definecolor{beamer@fzjgray30}{cmyk}{0,0,0,0.3}
+\definecolor{beamer@fzjwhite}{cmyk}{0,0,0,0}
+
+\definecolor{beamer@fzjbranchred}{cmyk}{0,0.95,1.0,0.0}% Gesundheit
+\definecolor{beamer@fzjbranchyellow}{cmyk}{0,0.30,1.0,0.0}% Energie und Umwelt
+\definecolor{beamer@fzjbranchblue}{cmyk}{0.98,0.24,0.0,0.0}% Informationstechnologie
+
+\setbeamercolor{normal text}{fg=black,bg=white}
+\setbeamercolor{alerted text}{fg=beamer@fzjbranchred}
+\setbeamercolor{example text}{fg=beamer@fzjblue20}
+\setbeamercolor{emphasized text}{fg=beamer@fzjblue20}
+
+\setbeamercolor{structure}{fg=beamer@fzjblue50}
+\setbeamercolor{fzjblue50}{bg=beamer@fzjblue50}
+\setbeamercolor{fzjblue35}{bg=beamer@fzjblue35}
+\setbeamercolor{fzjblue30}{bg=beamer@fzjblue30}
+\setbeamercolor{fzjblue20}{bg=beamer@fzjblue20}
+\setbeamercolor{fzjblue10}{bg=beamer@fzjblue10}
+
+\setbeamercolor{fzjgray80}{bg=beamer@fzjgray80}
+\setbeamercolor{fzjgray50}{bg=beamer@fzjgray50}
+\setbeamercolor{fzjgray30}{bg=beamer@fzjgray30}
+
+\setbeamercolor{fzjwhite}{bg=beamer@fzjwhite}
+
+\setbeamercolor{fzjbranchred}{bg=beamer@fzjbranchred}
+\setbeamercolor{fzjbranchyellow}{bg=beamer@fzjbranchyellow}
+\setbeamercolor{fzjbranchblue}{bg=beamer@fzjbranchblue}
+
+\setbeamercolor{title}{fg=white}
+\setbeamercolor{date}{fg=white}
+\setbeamercolor{author}{fg=white}
+\setbeamercolor{date in head/foot}{fg=structure}
+
+\setbeamercolor{part name}{fg=white}
+\setbeamercolor{part title}{fg=white}
+
+% Block stuff
+\setbeamercolor{block title}{use=structure,fg=white,bg=structure.fg}
+\setbeamercolor{block title alerted}{use=alerted text,fg=white,bg=alerted text.fg}
+\setbeamercolor{block title example}{use=example text,fg=white,bg=example text.fg}
+
+\setbeamercolor{block body}{parent=normal text,use=block title,bg=block title.bg!10!bg}
+\setbeamercolor{block body alerted}{parent=normal text,use=block title alerted,bg=beamer@fzjbranchred!10!bg}
+\setbeamercolor{block body example}{parent=normal text,use=block title example,bg=beamer@fzjblue10!10!bg}
+
+\mode<all>

@@ -1,0 +1,34 @@
+%This section presents the outcome of the work by interpreting the findings at a higher level of abstraction than the Discussion and by relating these findings to the motivation stated in the Introduction.
+
+
+%	*******************************
+%	********* Simulation results
+%	*******************************
+
+
+\chapter{Conclusion}
+
+
+	%**************** Context and (objective)
+	Performance-profiling and analysing is a mandatory step when developing an HPC-specific application.   In this context, our objective was to outperform a specific tool for HPC-performance analysing: the \toolTargetSoftware.   Given the amount of data (stored on the \notationIO\space disk) to be processed by such a software, our study has focused on enhancing the algorithms of the \notationIO-resource access.\\
+
+	%**************** Finding about the remapper pattern: optimal domain for our solution
+	From a theoretical perspective, our study has considered a quite commonly-used computation-pattern\footnote{The pattern followed by the \toolTargetSoftware\space (see Section \ref{section:cubeRemapper_stateOfTheArt})}.   It has proposed an \notationaio\space approach to enhance this pattern as well as the theoretical models related to this custom version of the pattern.   This study has enabled to model accurately the response time of the considered pattern when the \notationIO\space \emph{write} functions are overlapped with the \emph{compute} ones.   Our models also accurately predict the improvement brought by our overlapping approach on a specific implementation of the \toolTargetSoftware\space pattern (referred to as the \emph{\toolSimulationSoftware}).   More importantly, our study has enabled to unveil the parameters that influence most this improvement.\\
+
+	Consequently, our custom implementation of the overlapped \notationIO\space \emph{write}\footnote{Using the POSIX \notationaioShort\space library coupled with our custom synchronization implementation} is shown to potentially outperform the response time of this well-known programming pattern: up to $75\%$ improvement\footnote{Experimental result relative to the considered hardware} compared to the original version of the pattern (assuming an equivalent \emph{compute} and \emph{write} times).\\
+
+	%**************** Finding about the remapper implementation
+	From a programmer perspective, our study has highlighted the limitations of using such a well-considered overlapping (\notationaio) approach on the considered pattern (the \toolTargetSoftware\space is used as flagship of this pattern).   This study has made an assessment of some targeted hardware dimensions (processor running/stall time, L3 cache miss-rate) to emphasize the interferences produced by the \notationaio\space approach on the considered pattern.   The study has also proposed two custom solutions\footnote{Namely: adapting the kernel thread-scheduling policy and aligning the dynamic memory allocation with the cache lines} that dramatically soften the impact of such interferences.   Finally, this study has demonstrated the usefulness of our custom memory allocator which was designed to enhance the interaction between the \notationaioComputeThread\space and the \notationaioWriteThreads.\\
+
+	Consequently, our best version of the \toolTargetSoftware\space is shown to bring an improvement up to $64\%$ compared to the original version of this software.\\
+
+	%**************** Perspectives
+	In the pattern considered in this study, a buffer created by the \emph{compute} function at a given iteration is never accessed (read nor write) by a later \emph{compute} call.   Thus, this buffer might be written at any more convenient time.   This data-access pattern of the \toolTargetSoftware\space has led us to reduce the overall time-response by overlapping the \notationIO\space access with the \emph{compute} function.   However, it could also be an argument to go further and make the whole pattern of the \toolTargetSoftware\space parallel.   In this context, the \emph{compute} operation could be processed concurrently with the \emph{write} operation as well as with other \emph{compute} calls (at other iterations).   A parallel loop (example: \emph{MPI} or \emph{Cilk} parallel loop) would thus be used in addition to the already overlapped \emph{write} and \emph{compute} thread.
+
+
+
+
+%The main idea we have been following in this paper has been to reduce the overall time by trying to smooth the impact of the first main operation in our pattern: the writing time.\\
+%An other approach would be to consider the computation time.   Indeed, each computation is independent from the others.   It is also independent from the write operation.   Thus it could easily and efficiently be scattered on concurrent processor cores (using threads or MPI processes).   A naive analyze of this approach would state that the overall computation time would be divided by the number of concurrently used processors.   But how would the IO devices react to the additional payload (in parallel).   Meanwhile, we saw in (section where we define the model) that the overall behavior of our system depends on the report between the write and the compute time.   So how would this new approach ..... \\
+
+%Obviously, this case has not been considered for lack of time.   But also for some non trivial complexities:   By splitting the compute work on several independent threads (or work-flows)

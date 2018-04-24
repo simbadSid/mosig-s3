@@ -1,0 +1,79 @@
+
+
+
+
+\chapter{State of the art}\label{chapter:stateOfTheArt}
+	This study has been conducted as a part of the \emph{Scalasca}\footnote{The project is developed by the \emph{J$\ddot{u}$lich Supercomputing Centre} (J$\ddot{u}$lich, Germany) and the \emph{German Research School for Simulation Science} (Aachen, Germany)} \cite{zhukov2013assessing} project, a tool-set that provides highly scalable performance measurements and analysis primarily for leadership-HPC platforms\footnote{Such as the IBM Blue Gene/Q}.
+	Thus, this study aims to develop a tool that eases the identification and the treatment of performance-bottlenecks during computations at HPC scale.\\
+
+	A performance study at HPC scale is generally significantly complex due to the number of parameters involved\footnote{The considered applications are influenced by the high number of concurrent work-flows (process, kernel or \emph{MPI} threads) as well as their inter-communication and memory accesses}.   Tackling such a difficulty requires the use of the proper tools to measure accurately the performance parameters and identify the performance-critical sections.   It also requires a user-friendly way to represent them in order to simplify the human intervention.\\
+
+	In this chapter, we first present the tools that we relied upon during the experimental assessments of our solutions.   We identify the dimensions assessed by these tools as well as the relevancy of these dimensions when evaluating our solutions.   Then, we introduce the performance-profiling software that our study attempts to outperform; namely: the \toolTargetSoftware.   We present a global view of its implementation.   We also focus on the main specifications of this implementation which, according to us, represents a limitation to the overall time-response of the \toolTargetSoftware.
+
+
+%--------------------------------------------
+\section{Working framework} \label{section:workingFramework}
+	\subsection{Execution profiling: \toolProfiling} \label{section:executionProfiling}
+		% ******************What we mean by profiling an application
+		Profiling an application is the first step toward the identification of its performance bottlenecks.   The objective of this phase is to observe the behaviour of the considered application at runtime.\\
+
+		% ******************Present scorep (fonction, architectur and usage).
+		In order to profile our solutions, we have used \toolProfiling \cite{knupfer2012score}, a performance measurement infrastructure, which is being jointly developed by leading HPC performance tools groups\footnote{Including but not limited to the "\emph{J$\ddot{u}$lich Supercomputing Centre}" (J$\ddot{u}$lich, Germany)", the "\emph{Technische Universitat M$\ddot{u}$nchen}" (M$\ddot{u}$nchen, Germany) and the "\emph{University of Oregon}" (Eugene, USA)}.\\
+		The \toolProfiling\space (Scalable Performance Measurement Infrastructure for Parallel Codes) is a plug-in to the regular compiler (primarily \emph{gcc}, \emph{g++} and \emph{gfortran}).   It consists of an instrumentation framework shipped with several runtime libraries.   At compile time, \toolProfiling\space allows to inject some measurement routines within the input user code\footnote{The C/C++ and Fortran are the main programming languages.   Different frameworks ensued from these languages are also handled such as \emph{MPI}\cite{karniadakis2003parallel}, \emph{CUDA}\cite{langdon2014genetically} and \emph{PGAS}\cite{zheng2014upc++}}.   When running the generated binary file, these injected routines will collect some relevant data regarding the execution of the input code.   At the end of this execution, an execution-profile file is generated.   It is accessible to the user for a later analysis.   Thanks to this architecture and functional designs, \toolProfiling\space offers two major interests for our study.\\
+
+		% ******************Scorep generates the input file of the Cube-remapper.    It allows a postmortem analyze of the data => low interference on the execution
+		On one hand, \toolProfiling\space allows an accurate and non-invasive measurement of the runtime performance.   This commonly-known observation objective is achieved thanks to a reduced memory and time foot-print of the measurement routines.\\
+		Indeed, the generated performance profile (representing the runtime statistics) is simply stored during the target program execution\footnote{This storage is performed (till a given threshold) on live memory(RAM) for performance purposes}.   No analysis routine is executed while running the assessed software.   The analyses of these raw data are performed \textit{post-mortem} (for both performance purposes and compatibility with the profile-analysis tools).\\
+		% ******************Basic generated data => optimal data collection
+		At the same time, the information gathered by \toolProfiling\space is reduced to a set of basic dimensions\footnote{No single data might be deduced from a set of other ones}.   Such a design optimizes the number of overhead instructions executed at runtime and thus creates a limited interference with the observed application.   These data might be transformed later on (post-mortem) to unveil derived dimensions \footnote{Such a data-transformation is performed in order to be presented to the user in a more user-friendly way.   The \toolTargetSoftware (see section \ref{section:cubeRemapper_stateOfTheArt}) is an example of software that performs it}.\\
+		Finally, the dimensions assessed by \toolProfiling\space are often relative to kernel-level statistics\footnote{Such as the \notationIO-resource access or the process-heap consumption and leak}. Thus, their assessment may be processed by the kernel it-self during its management time\footnote{Different from a system-call which is executed by the kernel while the caller process is waiting}.   Hence the reduction of the contention on the observed application.\\
+
+		% ******************Explain why is it accurate enough to use scorep with time (instead of CPU cycles)
+		On the other hand, \toolProfiling\space enables to measure the execution time of a target application.   This time dimension suits the theoretical study we came with on our proposed asynchronous model (see section \ref{section:asynchronousModel}) and allows its experimental verification.\\
+		It is not common to assess experimentally parallel (multi-threaded or multi-process) applications using their execution time\footnote{Commonly, the state-of-the-art studies of parallel applications use CPU cycles instead of time}.   This dimension is, as a matter of fact, subject to non-negligible random variations due to the OS scheduler behaviour.   Time measurement may also hardly be paused when the observed thread is un-scheduled by the kernel.   Hence a delayed effective runtime compared to the total execution time.\\
+		Thanks to its user-code re-factoring, \toolProfiling\space ensures that the measurement routines only run during the processor-quantums of the observed code.   Thus, the time-measurement routine is perfectly in phase with the observed thread.
+
+	\subsection{Performance analyses: \toolTraceAnalyzed}\label{subsection:traceAnalyses}
+		The statistic file (PPF) generated by the execution-profiling (\toolProfiling) tool is mainly intended to allow a \emph{post-mortem} analysis of a program execution.   Another advantage of such a file is to allow a translation of its content to several data standards.   The purpose being the compatibility with different standards and performance-analysis tools that implement them.\\
+		In this context, \toolProfiling\space is compatible with different execution-profiling standards including \emph{TAU}\cite{shende2006tau}, \emph{Scalasca}\cite{zhukov2013assessing} and \emph{Vampir}\cite{knupfer2008vampir}.   The one that we have considered in this study is the \toolTraceAnalyzed\cite{saviankou2015cube}.\\
+
+		%****************** Define cube and its measurement intrest
+		The \toolTraceAnalyzed\cite{saviankou2015cube} is a tool-set that allows a graphical representation and analysis of a runtime execution profile.   It also defines a data model to store these execution profiles\footnote{Mainly used by the \emph{Scalasca} parallel performance tool} as well as a set of translators to map the \toolTraceAnalyzed\space data model with other data models\footnote{Ex: \emph{TAU}\cite{shende2006tau} and \emph{Vampir}\cite{knupfer2008vampir}}.\\
+		The \toolTraceAnalyzed\space framework targets especially the large-scale applications running on several thousands of \emph{compute} cores (such as HPC-specific applications).   The execution-profile file (generated by \toolProfiling) is thus subsequently analysed by \toolTraceAnalyzed\space to identify performance-critical parts of the corresponding program.   It thus fulfils the intrinsic necessity of the HPC world to analyse and optimize complicated parallel performance behaviours.
+
+%--------------------------------------------
+\section{The \toolTargetSoftware} \label{section:cubeRemapper_stateOfTheArt}
+	The performance-analysis framework described in Section \ref{subsection:traceAnalyses} is the basis of our research.   Indeed, the main purpose of our study is to optimize the performance of a part of the \toolTraceAnalyzed\space tool-set, namely: the \toolTargetSoftware.\\
+
+	% ****************** Define the cube-remapper
+	The \toolTargetSoftware\space is one of the numerous \toolTraceAnalyzed\space tools used to pre-process the raw data contained in an performance-profile file (PPF).   The purpose of such a transformation being to map the basic data contained in the the PPF with some inherited dimensions.   It might also be used to pre-process an PPF that has been built using other standards.\\
+
+	% ****************** General algo of the cube remapper and limitations
+	The existing version of the \toolTargetSoftware\space is based on a common scientific-computation pattern (see listing \ref{code:remapperBasis}).   After parsing the original PPF, the \toolTargetSoftware\space loops over all the parsed dimensions.   For each dimension, a \emph{computation} (\emph{mapping} function) is applied to the corresponding data.   Then, the result of the computation (potentially more than one dimension) is written in an output PPF.  The output file of the \toolTargetSoftware\space is intended to be used by a profile-analyse tool (ex: the \toolTraceAnalyzed).\\
+	\begin{minipage}{\linewidth}
+	\begin{lstlisting}[language=C++, caption={\toolTargetSoftware: simplified pattern}, label={code:remapperBasis}]
+void mainCubeRemapper
+{
+    File* inputFile = new Cube(inputPPF);
+    Cube* input     = new Cube(inputFile);
+
+    for (int i=0; i<nbMetric;++i)
+    {
+        File* outputFile = openFile("w");
+        <@\textcolor{red}{compute(input, i, \&bufer);}@>
+        <@\textcolor{green}{write(buffer, outputFile);}@>
+    }
+}
+	\end{lstlisting}
+	\end{minipage}
+	The \emph{write} function used by this implementation is a standard (synchronous) one.   The considered buffer is forwarded to the kernel in order to be written on the disk (system call).   The \emph{write} function waits till the data is effectively transmitted to the \notationIO\space resource before it returns.   To the best of our knowledge, no specific \notationIO\space optimization\footnote{Ex: disk page mapped to the process heap(\emph{mmap} system-call)} is being used on common desktop and HPC kernels\footnote{See section \ref{subsection:osPortability} for more details on the considered operating system distributions}.\\
+
+	% ****************** Explain the necessity to optimize the remapper: very large input data due to enormous amount of data especially for large scale applications
+	Our concern about the \toolTargetSoftware\space implementation comes from the \emph{write} function.   Given the large size of data written\footnote{The considered data files corresponds to the performance statistics collected regarding an applications running on HPC system.   It can thus be overwhelming due to the high number of dimensions assessed and the number of compute cores involved}, the \emph{write} operation may be responsible for a significant time overhead (compared to the computation time).\\
+	Likewise, the created processor-stall (due to the \notationIO\space access wait time) might lead to a significant time overhead during the memory (live memory) and the cache accesses.   Indeed, during the time of the considered \emph{write} operation, the processor is mainly yielded and left accessible to other instructions than that of the \toolTargetSoftware.   Hence, the process corresponding to the \toolTargetSoftware\space is scheduled-out by the kernel.   The more this delay increases, the more likely the data corresponding to the \toolTargetSoftware\space process will be swapped-out from the RAM and from the caches.   Hence, a potential overhead\footnote{RAM page miss or cache(L2, L2, L3 or TLB) miss} during the next access (after the \emph{write} operation).\\
+
+	% ****************** Notice that the pattern is ideal for parallelization/overlapping: data creat at a given step are not reused.  Ideal for the I/O access parallelixation: use different files at each write
+	In Section \ref{section:customAioImplementation}, we will introduce our approach to optimize the \toolTargetSoftware\space writing strategy.   This approach is based on an overlapping of the \emph{write} operation with the \emph{compute} one.   The potential gain that we expect from this method is linked to the ideal data access-pattern (though time) within the \toolTargetSoftware.\\
+	Indeed, one can notice that the data written at a given iteration is never accessed (read nor write) afterwards.   Thus, this data could be written at any more convenient moment\footnote{In our case, this \emph{write} will be done in parallel with one of the next \emph{compute} operations}.\\
+	Meanwhile, the algorithm of the \toolTargetSoftware\space shows that each \notationIO-write is done within an independent file.   Thus, a parallel access to the \notationIO\space resource (at hardware level) could be done with a minimal overhead, assuming that independent \notationIO\space disk-heads are available.\\
+

@@ -1,0 +1,63 @@
+%Must convince their audience that the research presented is important, valid, and relevant to other scientists in the same field. To this end, they must emphasize both the motivation for the work and the outcome of it, and they must include just enough evidence to establish the validity of this outcome.
+
+%This section clarifies the motivation for the work presented and prepares readers for the structure of the paper.
+
+
+
+
+
+\chapter{Introduction}
+	For the end of the fifties, the computer science world has known a real race to increase the computation power.   This phenomenon was partly observed through the development of new algorithmic paradigms and through the design of more application-oriented kernels\footnote{Such as the \emph{Micro-kernel} and the \emph{Elastic-kernel}}.   However, the evolution of the hardware architectures has probably had the most prominent impact.\\
+	Indeed, one commonly-cited hardware-processor limitation is linked to the transistor limitation predicted by \emph{Moore}'s law\footnote{"Moore's law is the observation that the number of transistors in a dense integrated circuit doubles approximately every two years." \cite{intelMooreLow}}.   In order to circumvent it, various approaches have been deployed, based on a distribution or an aggregation of concurrent \emph{compute cores}.\\
+
+	Our work deals with the flagship of these massively parallel supercomputers: the \emph{High Performance Computers} (HPC).   The present report describes an experimentally-driven study of the pattern implemented by an HPC-performance analysis tool (namely: the \toolTargetSoftware).   In this study, we propose and evaluate an \notationaio\space approach with the aim of outperforming the \toolTargetSoftware.   We also emphasize the perturbations introduced by such an approach;   Then, we propose and assess a succession of enhanced variants to overcome these drawbacks.\\
+
+
+%--------------------------------------------
+\section{Context: the high performance computing ecosystem}
+	% ******** Define HPC (hardware spec + perf spec + expectation)
+	The term \emph{HPC} refers to an atomic hardware platform with a high level of computing, storage and communication resources (compared to a general-purpose desktop or server).   It gathers a high number of computation units\footnote{Up to roughly $10^{7}$ CPU cores for the number one in the \emph{TOP500} ranking (\emph{Sunway TaihuLight}, 2016)} on the same physical platform.\\
+
+	In addition to the important hardware resources, common HPC platforms implement some modern hardware designs in order to tackle the contention of the numerous parallel instructions.   For instance, the platform we consider in this work (see section \ref{section:experimentalSetup}) implements hardware \emph{instruction pipelining}\footnote{"Instruction pipelining is a technique that implements a form of parallelism called instruction-level parallelism within a single processor"\cite{wikipediaInstructionPipelining}} and \emph{vector processing}\footnote{"A vector processor is a central processing unit (CPU) that implements an instruction set containing instructions that operate on one-dimensional arrays of data, compared to scalar processors, whose instructions operate on single data items."\cite{wikipediaVectorProcessor}}.\\
+
+	% ******** The need to HPC: high computation scale + need to distributed system 
+	The computation power offered by the HPC platforms is not a simple theoretical achievement.   It fulfils a real need of the scientific community to process very-large-scale data (exascale).   Indeed, various scientific and simulation fields have different computational requirements and expectations.   However, they often have a common need to processing-scalability.   For instance, algorithms for modern weather-forecast or medical-imaging have to handle complex numerical models.   The numerous parameters involved and their inter-dependency within these models make such computations require up to $10^{18}$ floating-point operations (exaFLOP).\\
+	Meanwhile, these same computations require a massive parallel execution to be run in a reasonable time.   The HPC platforms allow to solve such distributed operations in a fully parallel (physically) execution.   Moreover, thanks to the CPU-core proximity, this level of parallelization is reached with a reduced intercommunication overhead.\\
+
+
+%--------------------------------------------
+\section{HPC-application development: performance-analysis driven}\label{section:environment}
+	% ******** The need to performance analysis in HPC (link with previous HPC ecosystem: performance analysis tools are part of the HPC ecosystem.   They are a mandatory tool for deploying HPC-specific applications)
+	The performance analysis tools are a major and founding part of the HPC ecosystem.   They are a mandatory material for the development and the deployment process of HPC-specific applications.   Indeed, the HPC environment is, by design, obsessed with efficiency and performance improvement.   The whole idea beneath its hardware architecture is to merge computation cores\footnote{It also focuses on optimizing the corresponding communication and interference} in a purely performance-driven vision.\\
+
+	% ******** The need to use them: the HPC software development is made complicated by the complicated hardware platform and the large application scale (parallel thread/process/MPI).   Thus  the developement of this app is driven by its performance analysis.   Finding performance-bottlenecks is no anymore possible with simple debugger: highly parallel + \\
+	Performance-profiling and performance-analysis are significantly hard when dealing with HPC because of the complex hardware architecture.   The large application scale\footnote{massively parallel threads, process or MPI threads} that is considered makes the performance-profiling task even harder.   Thus, a regular debugger may no longer be sufficient to detect efficiency bottlenecks.   In fact, the amount of potential performance bottlenecks has sky-rocketed with the increase in the complexity of the hardware and software.   Consequently, the human intervention for detecting them is no longer achievable without analysis-software and automated processes.\\
+
+	% ******** Introduce scorep, cube
+	In this context, using the proper tool-set is primordial.   To lead the experimental part of our study, we have relied on \toolProfiling\cite{knupfer2012score} to profile the execution of each of our custom implementation as well the benchmark one.   We expected from \toolProfiling\space to record the behaviour of these implementations regarding some performance-critical parameters (such as the execution time, the \notationIO\space resource access, the cache access and misses).   Then, we have used the \toolTraceAnalyzed\cite{saviankou2015cube} utility in order to plot and analyse the previously-generated execution profiles.   We will show how the results of these utilities have highlighted some unexpected weaknesses in our preliminary custom implementations.   It has also driven us to design and validate the corresponding solutions.\\
+
+	% ******** Introduce cuberemapper to solve this pb\\
+	One of the major challenges for the HPC-specific performance analysis tools comes from the enormous amount of data generated and analysed.   Tracing a large-scale application running on several thousands of compute cores requires to record, among other things, the execution on each core and the communication between them\footnote{The number of communication channel (at software level) grows exponentially with the number of concurrent compute cores}.   Thus, the key facet of our study was to tackle this efficiency issue on a part of the \toolTraceAnalyzed\space tool-set: the \toolTargetSoftware.
+
+
+%--------------------------------------------
+\section{Objective: introducing an asynchronous \notationIO\space approach to the \toolTargetSoftware} \label{section:introductionObjective}
+	% ******** Optimize the cub re-mapper (IO access).
+	Our main objective is to optimize the response-time of the \toolTargetSoftware.   In order to reach this goal, we first identify the performance limitations of this software.   As a part of the HPC performance-profile tools, the \toolTargetSoftware\space is dealing with a significantly large amount of data on hard disk (corresponding to the execution-trace of some profiled applications).   Such an \notationIO\space resource access is well-known for introducing a relatively large time overhead (at processor scale) as well as making the processor stall.\\
+
+	Considering the \notationIO\space resource-access issue, we propose and evaluate a new approach to deal with the data stored to the hard disk.   Our approach to reach this goal is based on an asynchronous \notationIO\space method.  We propose an algorithm of the \toolTargetSoftware\space based on an overlapping of the \emph{compute} and the \notationIO\space \emph{write} operations.   We also try to take advantage of the low-overhead parallel-access to the \notationIO\space resource at hardware level in the HPC\footnote{In our experimentation, we used a \emph{General Parallel File System} (see section \ref{section:experimentalSetup})}.   The primarily considered design of the corresponding hardware-disk architecture being the multiple access-heads that might be used in parallel.\\
+
+
+%--------------------------------------------
+\section{Structure and contribution}
+	The \toolTargetSoftware\space follows a pattern shared by several scientific-computation applications (see listing \ref{code:remapperBasis}).   Our attempt to improve the performances of the \toolTargetSoftware\space might thus be seen as a general-purpose process that could be applied beyond the scope of this software.\\
+
+	The present report is organized as follows:\\
+	In chapter \ref{chapter:stateOfTheArt}, we present the state-of-the-art regarding the performance profiling and analysing tools specific to the HPC platforms.   We principally focus on the \toolTraceAnalyzed\space and the \toolProfiling\space software.   We also introduce the existing synchronous-\notationIO\space version of the \toolTargetSoftware, which will be used as a benchmark.\\
+	In chapter \ref{chapter:materialAndMethod}, we describe our solution to enhance the performances of the \toolTargetSoftware\space and reduce the corresponding processor-stall time.   We give the implementation details of our \notationaio\space strategy and the way it has been shipped to the existing implementation of the \toolTargetSoftware.   We also offer theoretical models to predict the response-time of our approach as well as the gain brought by our solution.   We then highlight the parameters that influence most this gain.\\
+	In chapter \ref{chapter:results}, we give the experimental results obtained via our approach and its variants.   These results are compared to those obtained via the existing implementation of the \toolTargetSoftware\space which, in our case, plays the role of a benchmark.   We identify the deviations of our proposal with respect to its predicted behaviour. We then adapt our proposal accordingly.\\
+	We should mention that, in a preamble step, we do not use the full version of our implementation to generate our experimental results.   We start with a simplified implementation (referred to as the \toolSimulationSoftware) which still implements the main functions of the pattern but through lightweight algorithms.   The purpose is to get ride of the potential interferences created by the complex behaviour of the \toolTargetSoftware.\\
+
+	Our contribution is, first, a theoretical study of the pattern followed by the \toolTargetSoftware.   We have designed a \toolSimulationSoftware\space to observe this pattern running using different strategies\footnote{We used different algorithms to simulate the computation function and the writing function (synchronous and asynchronous)}.   Using this custom test-bed, we have located the optimal domain to run an \notationaio\space solution depending on the hardware architecture (\notationIO\space \emph{write} time, \emph{compute} time and number of parallel \notationIO\space access heads).\\
+	Using our \notationaio\space approach, we have implemented a custom version of the \toolTargetSoftware.   Finally, by observing the deviations with respect to the predicted behaviour, we have proposed and assessed a sequence of improved variants for our proposal.   We show that our most enhanced variants of the \toolTargetSoftware\space outperforms the response time of the existing version by an average of $64\%$.\\
+
